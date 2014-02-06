@@ -23,6 +23,7 @@ package de.keyle.dungeoncraft.editor.editors.entity;
 
 import de.keyle.dungeoncraft.editor.GuiMain;
 import de.keyle.dungeoncraft.editor.editors.entity.Components.*;
+import de.keyle.dungeoncraft.editor.editors.trigger.TriggerEditor;
 import de.keyle.dungeoncraft.editor.util.Util;
 
 import javax.swing.*;
@@ -30,7 +31,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.event.*;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -84,6 +84,7 @@ public class EntityCreator {
     private JTextField field_Max_Health;
     private JTextField field_Walk_Speed;
     private JTextField field_Display_Name;
+    private JPanel triggerPanel;
 
     String selectedMobtype;
     boolean editMode = false;
@@ -478,6 +479,8 @@ public class EntityCreator {
         entityTemplateTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
         mobTypeComboBox = new JComboBox(GuiMain.mobTypes);
+
+        triggerPanel = new TriggerEditor().getMainPanel();
 
         //deactivateAllTemplatePanel();
     }
