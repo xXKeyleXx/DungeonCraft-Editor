@@ -20,25 +20,68 @@
 
 package de.keyle.dungeoncraft.editor.editors;
 
+import de.keyle.dungeoncraft.editor.About;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 public class MainForm {
     private JFrame editorFrame;
     private JTabbedPane editorsTabbedPane;
+    private JButton openFromFolderButton;
+    private JButton saveButton;
+    private JButton openButton;
+    private JButton saveAsButton;
+    private JButton aboutButton;
+    private JPanel mainPanel;
+
+
+    public MainForm() {
+        aboutButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                About.showAbout();
+            }
+        });
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        saveAsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        openButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        openFromFolderButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+    }
 
     public void registerNewEditor(Editor editor) {
         editorsTabbedPane.add(editor.getName(), editor.getPanel());
     }
-    
+
     public JFrame showFrame() {
         if (editorFrame == null) {
             editorFrame = new JFrame("DungeonCraft - Editor");
 
-            editorFrame.setContentPane(editorsTabbedPane);
-            editorFrame.setMinimumSize(new Dimension(600,500));
+            editorFrame.setContentPane(mainPanel);
+            editorFrame.setMinimumSize(new Dimension(600, 500));
             editorFrame.pack();
             editorFrame.setVisible(true);
             editorFrame.setLocationRelativeTo(null);

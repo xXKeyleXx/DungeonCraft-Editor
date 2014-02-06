@@ -1,11 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="de.keyle.dungeoncraft.editor.editors.MainForm">
-  <tabbedpane id="fc3dd" binding="editorsTabbedPane">
+  <grid id="ef8ac" binding="mainPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
       <xy x="20" y="20" width="798" height="639"/>
     </constraints>
     <properties/>
     <border type="none"/>
-    <children/>
-  </tabbedpane>
+    <children>
+      <tabbedpane id="fc3dd" binding="editorsTabbedPane">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="200" height="200"/>
+          </grid>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children/>
+      </tabbedpane>
+      <toolbar id="e24bf">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="-1" height="20"/>
+          </grid>
+        </constraints>
+        <properties>
+          <floatable value="false"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <component id="89c50" class="javax.swing.JButton" binding="openFromFolderButton">
+            <constraints/>
+            <properties>
+              <icon value="images/open-folder.png"/>
+              <text value=""/>
+              <toolTipText value="Open Dungeon From Folder"/>
+            </properties>
+          </component>
+          <component id="76874" class="javax.swing.JButton" binding="openButton">
+            <constraints/>
+            <properties>
+              <icon value="images/open-document.png"/>
+              <text value=""/>
+              <toolTipText value="Open Dungeon"/>
+            </properties>
+          </component>
+          <component id="f4c9d" class="javax.swing.JToolBar$Separator">
+            <constraints/>
+            <properties/>
+          </component>
+          <component id="213d1" class="javax.swing.JButton" binding="saveButton">
+            <constraints/>
+            <properties>
+              <icon value="images/save.png"/>
+              <text value=""/>
+              <toolTipText value="Save Dungeon"/>
+            </properties>
+          </component>
+          <component id="15ca5" class="javax.swing.JButton" binding="saveAsButton">
+            <constraints/>
+            <properties>
+              <icon value="images/save-as.png"/>
+              <text value=""/>
+              <toolTipText value="Save Dungeon As"/>
+            </properties>
+          </component>
+          <component id="3ff82" class="javax.swing.JToolBar$Separator">
+            <constraints/>
+            <properties/>
+          </component>
+          <component id="42528" class="javax.swing.JButton" binding="aboutButton">
+            <constraints/>
+            <properties>
+              <icon value="images/help-about.png"/>
+              <text value=""/>
+              <toolTipText value="About"/>
+            </properties>
+          </component>
+        </children>
+      </toolbar>
+    </children>
+  </grid>
 </form>
