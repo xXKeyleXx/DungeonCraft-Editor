@@ -11,7 +11,7 @@ public class EquipmentWeaponComponent implements IComponent<JSONObject> {
     }
 
     @Override
-    public String getName() {
+    public String getClassName() {
         return "de.keyle.dungeoncraft.entity.template.components.EquipmentWeaponComponent";
     }
 
@@ -23,5 +23,10 @@ public class EquipmentWeaponComponent implements IComponent<JSONObject> {
     @Override
     public void setValue(JSONObject value) {
         this.value = value;
+    }
+
+    @Override
+    public String getParameterName() {
+        return null;
     }
 }

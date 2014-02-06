@@ -36,6 +36,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+//TODO Wenn man mehr als eine Entity created wird sie nicht richtig eingefügt
 public class EntityCreator {
     private JButton loadButton;
     private JButton saveFileButton;
@@ -154,6 +156,16 @@ public class EntityCreator {
                 }
             }
         });
+        saveFileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int returnVal = fileChooser.showOpenDialog(entityCreatorPanel);
+
+                if(returnVal == JFileChooser.APPROVE_OPTION) {
+                    loader.saveAsJson(templateList,fileChooser.getSelectedFile());
+                }
+            }
+        });
         loadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -241,7 +253,7 @@ public class EntityCreator {
                                 editTemplate.getComponents().remove(iComponent);
                             } else if (field_Range_Damage.isEnabled()) {
                                 Map<String, Double> tmpMap = new HashMap<String, Double>();
-                                tmpMap.put((String) combobox_Projectile.getSelectedItem(), Double.parseDouble(field_Range_Damage.getText()));
+                                tmpMap.put(((String) combobox_Projectile.getSelectedItem()).replace(" ", ""), Double.parseDouble(field_Range_Damage.getText()));
                                 ((RangeDamageComponent) iComponent).setValue(tmpMap);
                             }
                         } else if (iComponent instanceof ArmorComponent) {
@@ -330,7 +342,7 @@ public class EntityCreator {
                     if (field_Range_Damage.isEnabled() && !field_Range_Damage.getText().equals("")) {
                         if (!componentExists(editTemplate, RangeDamageComponent.class)) {
                             Map<String, Double> tmpMap = new HashMap<String, Double>();
-                            tmpMap.put((String) combobox_Projectile.getSelectedItem(), Double.parseDouble(field_Range_Damage.getText()));
+                            tmpMap.put(((String) combobox_Projectile.getSelectedItem()).replace(" ", ""), Double.parseDouble(field_Range_Damage.getText()));
                             editTemplate.getComponents().add(new RangeDamageComponent(tmpMap));
                         }
                     }
@@ -453,7 +465,7 @@ public class EntityCreator {
                                 editTemplate(template);
                                 break;
                             case KeyEvent.VK_DELETE:
-                               /* selectedMobtype.removeSkillTree(template.getName());
+                               /* selectedMobtype.removeSkillTree(template.getClassName());
                                 skilltreeTreeSetSkilltrees();    */
                                 break;
                         }
@@ -464,8 +476,6 @@ public class EntityCreator {
         });
         loader = new EntityTemplateLoader();
         fileChooser = new JFileChooser();
-        //loadCreaturesInTemplate(new File("D:" +File.separator + "Minecraft Testserver" +File.separator + "1.7.2" +File.separator + "plugins" +File.separator + "DungeonCraft" +File.separator + "dungeons" +File.separator + "test1" + File.separator + "entity-templates.json"));
-        //templateList = loader.loadCreaturesInTemplate(new File("D:" + File.separator + "Minecraft Testserver" + File.separator + "1.7.2" + File.separator + "plugins" + File.separator + "DungeonCraft" + File.separator + "dungeons" + File.separator + "test1" + File.separator + "entity-templates.json"));
         templateList = new ArrayList<EntityTemplate>();
 
         loadCreaturesInTemplate();
@@ -479,6 +489,7 @@ public class EntityCreator {
         entityTemplateTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
         mobTypeComboBox = new JComboBox(GuiMain.mobTypes);
+        combobox_Projectile = new JComboBox(new String[] {"Arrow", "Wither Skull","Snowball", "Large Fireball", "Small Fireball"});
 
         triggerPanel = new TriggerEditor().getMainPanel();
 
@@ -625,15 +636,19 @@ public class EntityCreator {
         field_Range_Damage.setEnabled(true);
         combobox_Projectile.setEnabled(true);
         field_Range_Damage.setText("");
-        //combobox_Projectile.setSelectedIndex(0);
+        combobox_Projectile.setSelectedIndex(0);
 
         if (editMode) {
             for (IComponent c : template.getComponents()) {
                 if (c instanceof RangeDamageComponent) {
                     for (String key : ((HashMap<String, Double>) c.getValue()).keySet()) {
                         field_Range_Damage.setText(((HashMap<String, Double>) c.getValue()).get(key).toString());
-                        combobox_Projectile.setSelectedItem(key);
-
+                        for (int i = 0; i < combobox_Projectile.getItemCount(); i++) {
+                            if (((String) combobox_Projectile.getItemAt(i)).replace(" ", "").equalsIgnoreCase(key)) {
+                                combobox_Projectile.setSelectedIndex(i);
+                                break;
+                            }
+                        }
                     }
                 }
             }

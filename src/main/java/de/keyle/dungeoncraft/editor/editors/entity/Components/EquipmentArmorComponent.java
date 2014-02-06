@@ -2,28 +2,33 @@ package de.keyle.dungeoncraft.editor.editors.entity.Components;
 
 import org.json.simple.JSONObject;
 
-import java.util.List;
+import java.util.Map;
 
-public class EquipmentArmorComponent implements IComponent<List<JSONObject>> {
+public class EquipmentArmorComponent implements IComponent<Map<String,JSONObject>> {
 
-    List<JSONObject> value;
+    Map<String,JSONObject> value;
 
-    public EquipmentArmorComponent(List<JSONObject> value) {
+    public EquipmentArmorComponent(Map<String,JSONObject> value) {
         this.value = value;
     }
 
     @Override
-    public String getName() {
+    public String getClassName() {
         return "de.keyle.dungeoncraft.entity.template.components.EquipmentArmorComponent";
     }
 
     @Override
-    public List<JSONObject> getValue() {
+    public Map<String,JSONObject> getValue() {
         return value;
     }
 
     @Override
-    public void setValue(List<JSONObject> value) {
+    public void setValue(Map<String,JSONObject> value) {
          this.value = value;
+    }
+
+    @Override
+    public String getParameterName() {
+        return null;
     }
 }

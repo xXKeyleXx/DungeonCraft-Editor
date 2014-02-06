@@ -9,7 +9,7 @@ public class MeeleDamageComponent implements IComponent<Double> {
     }
 
     @Override
-    public String getName() {
+    public String getClassName() {
         return "de.keyle.dungeoncraft.entity.template.components.MeeleDamageComponent";
     }
 
@@ -21,5 +21,10 @@ public class MeeleDamageComponent implements IComponent<Double> {
     @Override
     public void setValue(Double value) {
         this.value = value;
+    }
+
+    @Override
+    public String getParameterName() {
+        return "damage";
     }
 }

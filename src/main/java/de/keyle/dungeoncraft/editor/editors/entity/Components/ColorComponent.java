@@ -9,7 +9,7 @@ public class ColorComponent implements IComponent<Byte>{
     }
 
     @Override
-    public String getName() {
+    public String getClassName() {
         return "de.keyle.dungeoncraft.entity.template.components.ColorComponent";
     }
 
@@ -21,5 +21,10 @@ public class ColorComponent implements IComponent<Byte>{
     @Override
     public void setValue(Byte value) {
         this.value = value;
+    }
+
+    @Override
+    public String getParameterName() {
+        return "color";
     }
 }

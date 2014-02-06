@@ -55,12 +55,9 @@ public class ConfigurationJson {
             Object obj = parser.parse(reader);
             config = (JSONObject) obj;
         } catch (ParseException e) {
-            //DungeonCraftLogger.write(ChatColor.RED + "Could not parse/load " + jsonFile.getName());
-            //DebugLogger.warning("Could not parse/load " + jsonFile.getName());
             return false;
         } catch (Exception e) {
             e.printStackTrace();
-           // DebugLogger.printThrowable(e);
             return false;
         } finally {
             if (reader != null) {

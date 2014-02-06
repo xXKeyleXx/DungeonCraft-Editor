@@ -11,7 +11,7 @@ public class RangeDamageComponent implements IComponent<Map<String,Double>> {
     }
 
     @Override
-    public String getName() {
+    public String getClassName() {
         return "de.keyle.dungeoncraft.entity.template.components.RangedDamageComponent";
     }
 
@@ -23,5 +23,10 @@ public class RangeDamageComponent implements IComponent<Map<String,Double>> {
     @Override
     public void setValue(Map<String, Double> value) {
         this.value = value;
+    }
+
+    @Override
+    public String getParameterName() {
+        return "damage";
     }
 }

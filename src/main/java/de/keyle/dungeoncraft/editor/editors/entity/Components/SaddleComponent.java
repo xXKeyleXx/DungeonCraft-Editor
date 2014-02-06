@@ -9,7 +9,7 @@ public class SaddleComponent implements IComponent<Boolean> {
     }
 
     @Override
-    public String getName() {
+    public String getClassName() {
         return "de.keyle.dungeoncraft.entity.template.components.SaddleComponent";
     }
 
@@ -21,5 +21,10 @@ public class SaddleComponent implements IComponent<Boolean> {
     @Override
     public void setValue(Boolean value) {
         this.value = value;
+    }
+
+    @Override
+    public String getParameterName() {
+        return "saddle";
     }
 }

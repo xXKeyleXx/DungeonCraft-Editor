@@ -27,6 +27,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -55,7 +57,7 @@ public class EntityTemplateLoader {
                         JSONObject template = (JSONObject) templateObject;
                         EntityTemplate entityTemplate = new EntityTemplate();
                         if (!template.containsKey("template-id") || !template.containsKey("entity-type")) {
-                            //DebugLogger.warning("\"template-id\" node is missing in a template!", "DC]b:[" + dungeonBase.getName());
+                            //DebugLogger.warning("\"template-id\" node is missing in a template!", "DC]b:[" + dungeonBase.getClassName());
                             continue;
                         }
                         String templateId = (String) template.get("template-id");
@@ -87,7 +89,7 @@ public class EntityTemplateLoader {
                                     if (componentObject instanceof JSONObject) {
                                         JSONObject component = (JSONObject) componentObject;
                                         if (!component.containsKey("class")) {
-                                            //DebugLogger.warning("Component \"class\" node is missing in template with id: " + templateId, "DC]b:[" + dungeonBase.getName());
+                                            //DebugLogger.warning("Component \"class\" node is missing in template with id: " + templateId, "DC]b:[" + dungeonBase.getClassName());
                                             continue;
                                         }
                                         JSONObject parameter = null;
@@ -124,12 +126,12 @@ public class EntityTemplateLoader {
                                         } else if (className.contains("ColorCom")) {
                                             comp = new ColorComponent(Byte.parseByte(parameter.get("color").toString()));
                                         } else if (className.contains("EquipmentArmorCom")) {
-                                            List<JSONObject> tmpList = new ArrayList<JSONObject>();
-                                            tmpList.add((JSONObject) parameter.get("helmet"));
-                                            tmpList.add((JSONObject) parameter.get("chestplate"));
-                                            tmpList.add((JSONObject) parameter.get("leggins"));
-                                            tmpList.add((JSONObject) parameter.get("boots"));
-                                            comp = new EquipmentArmorComponent(tmpList);
+                                            Map<String,JSONObject> tmpmap = new HashMap<String, JSONObject>();
+                                            tmpmap.put("helmet", (JSONObject) parameter.get("helmet"));
+                                            tmpmap.put("chestplate",(JSONObject) parameter.get("chestplate"));
+                                            tmpmap.put("leggins", (JSONObject) parameter.get("leggins"));
+                                            tmpmap.put("boots",(JSONObject) parameter.get("boots"));
+                                            comp = new EquipmentArmorComponent(tmpmap);
                                         } else if (className.contains("EquipmentWeaponCom")) {
                                             comp = new EquipmentWeaponComponent((JSONObject) parameter.get("weapon"));
                                         } else if (className.contains("FireCom")) {
@@ -171,7 +173,58 @@ public class EntityTemplateLoader {
         }
         return null;
     }
+
+    @SuppressWarnings("unchecked")
+    public void saveAsJson(List<EntityTemplate> templates, File outputFile) {
+
+        JSONObject rootObj = new JSONObject();
+        JSONArray templatesArray = new JSONArray();
+
+        for(EntityTemplate template : templates) {
+            JSONObject templateObj = new JSONObject();
+            templateObj.put("template-id", template.getTemplateId());
+            templateObj.put("entity-type", template.getEntityType());
+            templateObj.put("display-name", template.getDisplayName());
+            templateObj.put("walk-speed", template.getWalkSpeed());
+            templateObj.put("max-health", template.getMaxHealth());
+            JSONArray componentsArray = new JSONArray();
+            for(IComponent iComponent : template.getComponents()) {
+                JSONObject componentsObj = new JSONObject();
+                componentsObj.put("class", iComponent.getClassName());
+                JSONObject parameterObj = new JSONObject();
+                if(iComponent instanceof RangeDamageComponent) {
+                    for(String s : ((RangeDamageComponent)iComponent).getValue().keySet()) {
+                        parameterObj.put("damage",((RangeDamageComponent)iComponent).getValue().get(s));
+                        parameterObj.put("projectile",s);
+                    }
+                } else if(iComponent instanceof EquipmentArmorComponent) {
+                    for(String s : ((EquipmentArmorComponent)iComponent).getValue().keySet()) {
+                        parameterObj.put(s,((EquipmentArmorComponent)iComponent).getValue().get(s));
+                    }
+                } else {
+                    parameterObj.put(iComponent.getParameterName(),iComponent.getValue());
+                }
+                componentsObj.put("parameter",parameterObj);
+                componentsArray.add(componentsObj);
+            }
+            templateObj.put("components",componentsArray);
+            templatesArray.add(templateObj);
+        }
+        rootObj.put("templates",templatesArray);
+
+
+        try {
+            FileWriter writer = new FileWriter(outputFile);
+            rootObj.writeJSONString(writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
 }
+
 
  /*class DungeonNode extends DefaultMutableTreeNode {
     //private SkillTree skillTree;

@@ -9,7 +9,7 @@ public class ArmorComponent implements IComponent<Integer>{
     }
 
     @Override
-    public String getName() {
+    public String getClassName() {
         return "de.keyle.dungeoncraft.entity.template.components.ArmorComponent";
     }
 
@@ -21,5 +21,10 @@ public class ArmorComponent implements IComponent<Integer>{
     @Override
     public void setValue(Integer value) {
         this.value = value;
+    }
+
+    @Override
+    public String getParameterName() {
+        return "armor";
     }
 }
