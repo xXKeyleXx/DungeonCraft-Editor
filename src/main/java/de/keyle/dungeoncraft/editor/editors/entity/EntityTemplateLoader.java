@@ -21,13 +21,16 @@
 package de.keyle.dungeoncraft.editor.editors.entity;
 
 
+import de.keyle.dungeoncraft.editor.editors.entity.Components.*;
 import de.keyle.dungeoncraft.editor.util.ConfigurationJson;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EntityTemplateLoader {
 
@@ -79,7 +82,7 @@ public class EntityTemplateLoader {
                             Object componentsObject = template.get("components");
                             if (componentsObject instanceof JSONArray) {
                                 JSONArray componentsArray = (JSONArray) componentsObject;
-                                List<Component> componentList = new ArrayList<Component>();
+                                List<IComponent> componentList = new ArrayList<IComponent>();
                                 for (Object componentObject : componentsArray) {
                                     if (componentObject instanceof JSONObject) {
                                         JSONObject component = (JSONObject) componentObject;
@@ -97,56 +100,58 @@ public class EntityTemplateLoader {
                                         if (parameter == null) {
                                             parameter = new JSONObject();
                                         }
-                                        Component comp = new Component();
+                                        IComponent comp = null;
                                         String className = (String) component.get("class");
-                                        comp.setComponentName(className);
 
-                                        if (comp.getComponentName().contains("MeeleDamage")) {
-                                            comp.setMeeleDamage(Double.parseDouble(parameter.get("damage").toString()));
-                                        } else if (comp.getComponentName().contains("RangedDamage")) {
-                                            comp.setRangeDamage(Double.parseDouble(parameter.get("damage").toString()));
-                                            comp.setProjectile(parameter.get("projectile").toString());
-                                        } else if (comp.getComponentName().contains("AgeCom")) {
-                                            comp.setAge(Integer.parseInt(parameter.get("age").toString()));
-                                        } else if (comp.getComponentName().contains("AngryCom")) {
-                                            comp.setAngry(Boolean.parseBoolean(parameter.get("angry").toString()));
-                                        } else if (comp.getComponentName().contains("ArmorCom")) {
-                                            //comp.setArmor(Integer.parseInt(parameter.get("armor").toString()));
-                                        } else if (comp.getComponentName().contains("BabyCom")) {
-                                            comp.setBaby(Boolean.parseBoolean(parameter.get("baby").toString()));
-                                        } else if (comp.getComponentName().contains("CatCom")) {
-                                            comp.setCatType(Integer.parseInt(parameter.get("catType").toString()));
-                                        } else if (comp.getComponentName().contains("ChestCom")) {
-                                            comp.setChest(Boolean.parseBoolean(parameter.get("chest").toString()));
-                                        } else if (comp.getComponentName().contains("ColorCom")) {
-                                            comp.setColor(Byte.parseByte(parameter.get("color").toString()));
-                                        } else if (comp.getComponentName().contains("EquipmentArmorCom")) {
-                                            comp.setHelmet((JSONObject) parameter.get("helmet"));
-                                            comp.setChestplate((JSONObject) parameter.get("chestplate"));
-                                            comp.setLeggins((JSONObject) parameter.get("leggins"));
-                                            comp.setBoots((JSONObject) parameter.get("boots"));
-                                        } else if (comp.getComponentName().contains("EquipmentWeaponCom")) {
-                                            comp.setWeapon((JSONObject) parameter.get("weapon"));
-                                        } else if (comp.getComponentName().contains("FireCom")) {
-                                            comp.setFire(Boolean.parseBoolean(parameter.get("fire").toString()));
-                                        } else if (comp.getComponentName().contains("HorseType")) {
-                                            comp.setHorseType(Byte.parseByte(parameter.get("horseType").toString()));
-                                        } else if (comp.getComponentName().contains("PoweredCom")) {
-                                            comp.setPowered(Boolean.parseBoolean(parameter.get("powered").toString()));
-                                        } else if (comp.getComponentName().contains("ProfessionCom")) {
-                                            comp.setProfession(Integer.parseInt(parameter.get("profession").toString()));
-                                        } else if (comp.getComponentName().contains("SaddleCom")) {
-                                            comp.setSaddle(Boolean.parseBoolean(parameter.get("saddle").toString()));
-                                        } else if (comp.getComponentName().contains("SitCom")) {
-                                            comp.setSitting(Boolean.parseBoolean(parameter.get("sitting").toString()));
-                                        } else if (comp.getComponentName().contains("SizeCom")) {
-                                            comp.setSize(Integer.parseInt(parameter.get("size").toString()));
-                                        } else if (comp.getComponentName().contains("TamedCom")) {
-                                            comp.setTamed(Boolean.parseBoolean(parameter.get("tamed").toString()));
-                                        } else if (comp.getComponentName().contains("VariantCom")) {
-                                            comp.setVariant(Integer.parseInt(parameter.get("variant").toString()));
-                                        } else if (comp.getComponentName().contains("WitherCom")) {
-                                            comp.setWither(Boolean.parseBoolean(parameter.get("wither").toString()));
+                                        if (className.contains("MeeleDamage")) {
+                                            comp = new MeeleDamageComponent(Double.parseDouble(parameter.get("damage").toString()));
+                                        } else if (className.contains("RangedDamage")) {
+                                            Map<String,Double> tmpMap = new HashMap<String, Double>();
+                                            tmpMap.put(parameter.get("projectile").toString(),Double.parseDouble(parameter.get("damage").toString()));
+                                            comp = new RangeDamageComponent(tmpMap);
+                                        } else if (className.contains("AgeCom")) {
+                                            comp = new AgeComponent(Integer.parseInt(parameter.get("age").toString()));
+                                        } else if (className.contains("AngryCom")) {
+                                            comp = new AngryComponent(Boolean.parseBoolean(parameter.get("angry").toString()));
+                                        } else if (className.contains("ArmorCom") && !className.contains("Equip")) {
+                                            comp = new ArmorComponent(Integer.parseInt(parameter.get("armor").toString()));
+                                        } else if (className.contains("BabyCom")) {
+                                            comp = new BabyComponent(Boolean.parseBoolean(parameter.get("baby").toString()));
+                                        } else if (className.contains("CatCom")) {
+                                            comp = new CatTypeComponent(Integer.parseInt(parameter.get("catType").toString()));
+                                        } else if (className.contains("ChestCom")) {
+                                            comp = new ChestComponent(Boolean.parseBoolean(parameter.get("chest").toString()));
+                                        } else if (className.contains("ColorCom")) {
+                                            comp = new ColorComponent(Byte.parseByte(parameter.get("color").toString()));
+                                        } else if (className.contains("EquipmentArmorCom")) {
+                                            List<JSONObject> tmpList = new ArrayList<JSONObject>();
+                                            tmpList.add((JSONObject) parameter.get("helmet"));
+                                            tmpList.add((JSONObject) parameter.get("chestplate"));
+                                            tmpList.add((JSONObject) parameter.get("leggins"));
+                                            tmpList.add((JSONObject) parameter.get("boots"));
+                                            comp = new EquipmentArmorComponent(tmpList);
+                                        } else if (className.contains("EquipmentWeaponCom")) {
+                                            comp = new EquipmentWeaponComponent((JSONObject) parameter.get("weapon"));
+                                        } else if (className.contains("FireCom")) {
+                                            comp = new FireComponent(Boolean.parseBoolean(parameter.get("fire").toString()));
+                                        } else if (className.contains("HorseType")) {
+                                            comp = new HorseTypeComponent(Byte.parseByte(parameter.get("horseType").toString()));
+                                        } else if (className.contains("PoweredCom")) {
+                                            comp = new PoweredComponent(Boolean.parseBoolean(parameter.get("powered").toString()));
+                                        } else if (className.contains("ProfessionCom")) {
+                                            comp = new ProfessionComponent(Integer.parseInt(parameter.get("profession").toString()));
+                                        } else if (className.contains("SaddleCom")) {
+                                            comp = new SaddleComponent(Boolean.parseBoolean(parameter.get("saddle").toString()));
+                                        } else if (className.contains("SitCom")) {
+                                            comp = new SittingComponent(Boolean.parseBoolean(parameter.get("sitting").toString()));
+                                        } else if (className.contains("SizeCom")) {
+                                            comp = new SizeComponent(Integer.parseInt(parameter.get("size").toString()));
+                                        } else if (className.contains("TamedCom")) {
+                                            comp = new TamedComponent(Boolean.parseBoolean(parameter.get("tamed").toString()));
+                                        } else if (className.contains("VariantCom")) {
+                                            comp = new VariantComponent(Integer.parseInt(parameter.get("variant").toString()));
+                                        } else if (className.contains("WitherCom")) {
+                                            comp = new WitherComponent(Boolean.parseBoolean(parameter.get("wither").toString()));
                                         }
                                         componentList.add(comp);
                                     }

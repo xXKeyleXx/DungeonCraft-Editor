@@ -20,6 +20,8 @@
 
 package de.keyle.dungeoncraft.editor.editors.entity;
 
+import de.keyle.dungeoncraft.editor.editors.entity.Components.IComponent;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,17 +29,17 @@ public class EntityTemplate {
 
     private String templateId;
     private String entityType;
-    private double maxHealth;
-    private double walkSpeed;
+    private Double maxHealth;
+    private Double walkSpeed;
     private String displayName;
 
-    private List<Component> components = new ArrayList<Component>();
+    private List<IComponent> components = new ArrayList<IComponent>();
 
-    public List<Component> getComponents() {
+    public List<IComponent> getComponents() {
         return components;
     }
 
-    public void setComponents(List<Component> components) {
+    public void setComponents(List<IComponent> components) {
         this.components = components;
     }
 
@@ -57,7 +59,7 @@ public class EntityTemplate {
         this.entityType = entityType;
     }
 
-    public double getMaxHealth() {
+    public Double getMaxHealth() {
         return maxHealth;
     }
 
@@ -65,7 +67,7 @@ public class EntityTemplate {
         this.maxHealth = maxHealth;
     }
 
-    public double getWalkSpeed() {
+    public Double getWalkSpeed() {
         return walkSpeed;
     }
 
