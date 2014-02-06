@@ -18,8 +18,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.keyle.EntityCreator;
+package de.keyle.dungeoncraft.editor.editors.entity;
 
+
+import de.keyle.dungeoncraft.editor.GuiMain;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -35,7 +37,7 @@ public class EntityCreator {
     private JButton createButton;
     private JButton editButton;
     static DefaultTreeModel entityTemplateTreeModel;
-    private  EntityTemplateLoader loader;
+    private EntityTemplateLoader loader;
     JFrame entityCreatorFrame;
     JPanel entityCreatorPanel;
     private JPanel templatePanel;
@@ -167,7 +169,7 @@ public class EntityCreator {
 
     public JFrame getFrame() {
         if (entityCreatorFrame == null) {
-            entityCreatorFrame = new JFrame("EntityCreator - DungeonCraft");
+            entityCreatorFrame = new JFrame("dungeoncraft - DungeonCraft");
         }
         return entityCreatorFrame;
     }

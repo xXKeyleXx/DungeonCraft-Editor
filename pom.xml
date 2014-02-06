@@ -24,35 +24,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>EntityCreator</artifactId>
-
-
     <groupId>de.keyle</groupId>
-    <version>1.1.8-SNAPSHOT</version>
+    <artifactId>dungeoncraft-editor</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>EntityCreator</name>
+    <name>DungeonCraft-Editor</name>
     <url>http://dev.bukkit.org/bukkit-plugins/dungeoncraft/</url>
 
     <properties>
-    <minecraft.version>1.7.2</minecraft.version>
-    <bukkit.version>R0.3-SNAPSHOT</bukkit.version>
-
-    <forms_rt.version>7.0.3</forms_rt.version>
+        <forms_rt.version>7.0.3</forms_rt.version>
     </properties>
 
-
-    <repositories>
-        <repository>
-            <id>bukkit-repo</id>
-            <url>http://repo.bukkit.org/content/groups/public/</url>
-        </repository>
-    </repositories>
-
     <pluginRepositories>
-        <pluginRepository>
-            <id>bukkit-plugins</id>
-            <url>http://repo.bukkit.org/content/groups/public/</url>
-        </pluginRepository>
         <pluginRepository>
             <id>keyle-plugins</id>
             <url>http://repo.keyle.de</url>
@@ -60,19 +43,6 @@
     </pluginRepositories>
 
     <dependencies>
-        <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
-            <version>${minecraft.version}-${bukkit.version}</version>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>craftbukkit</artifactId>
-            <version>${minecraft.version}-${bukkit.version}</version>
-            <scope>compile</scope>
-        </dependency>
         <dependency>
             <groupId>com.intellij</groupId>
             <artifactId>forms_rt</artifactId>
@@ -85,123 +55,112 @@
             <artifactId>json-simple</artifactId>
             <version>1.1.1</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 
     <build>
-    <defaultGoal>clean package</defaultGoal>
-    <resources>
-        <resource>
-            <directory>src/main/resources</directory>
-            <filtering>true</filtering>
-            <includes>
-                <include>*.yml</include>
-            </includes>
-        </resource>
-        <resource>
-            <directory>src/main/resources</directory>
-            <filtering>false</filtering>
-            <excludes>
-                <exclude>*.yml</exclude>
-            </excludes>
-        </resource>
-    </resources>
-    <plugins>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>2.3.2</version>
-            <configuration>
-                <source>1.6</source>
-                <target>1.6</target>
-            </configuration>
-        </plugin>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-jar-plugin</artifactId>
-            <version>2.1</version>
-            <configuration>
-                <jarName>${project.name}-${project.version}</jarName>
-                <archive>
-                    <manifestEntries>
-                        <Main-Class>de.keyle.EntityCreator.GuiMain</Main-Class>
-                        <Project-Author>Keyle</Project-Author>
-                        <Project-Name>${project.name}</Project-Name>
-                        <Project-Version>${project.version}</Project-Version>
-                        <Project-Build>${BUILD_NUMBER}</Project-Build>
-                        <Project-Minecraft-Version>${minecraft.version}</Project-Minecraft-Version>
-                        <Git-Commit>${GIT_COMMIT}</Git-Commit>
-                    </manifestEntries>
-                </archive>
-            </configuration>
-        </plugin>
-        <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>ideauidesigner-maven-plugin</artifactId>
-            <version>1.0-beta-2</version>
-            <executions>
-                <execution>
-                    <goals>
-                        <goal>javac2</goal>
-                    </goals>
-                </execution>
-            </executions>
-            <configuration>
-                <fork>true</fork>
-                <debug>true</debug>
-                <failOnError>true</failOnError>
-            </configuration>
-        </plugin>
-        <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>build-helper-maven-plugin</artifactId>
-            <version>1.8</version>
-            <executions>
-                <execution>
-                    <id>parse-version</id>
-                    <goals>
-                        <goal>parse-version</goal>
-                    </goals>
-                </execution>
-            </executions>
-        </plugin>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-shade-plugin</artifactId>
-            <version>2.0</version>
-            <executions>
-                <execution>
-                    <phase>package</phase>
-                    <goals>
-                        <goal>shade</goal>
-                    </goals>
-                    <configuration>
-                        <createDependencyReducedPom>false</createDependencyReducedPom>
-                        <artifactSet>
-                            <includes>
-                                <include>com.intellij:forms_rt:*</include>
-                                <include>com.googlecode.json-simple:json-simple</include>
-                            </includes>
-                        </artifactSet>
-                        <relocations>
-                            <relocation>
-                                <pattern>com.intellij.uiDesigner.core</pattern>
-                                <shadedPattern>de.keyle.EntityCreator.uiDesigner</shadedPattern>
-                            </relocation>
-                        </relocations>
-                        <filters>
-                            <filter>
-                                <artifact>com.intellij:forms_rt</artifact>
+        <defaultGoal>clean package</defaultGoal>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.1</version>
+                <configuration>
+                    <jarName>${project.name}-${project.version}</jarName>
+                    <archive>
+                        <manifestEntries>
+                            <Main-Class>de.keyle.dungeoncraft.editor.GuiMain</Main-Class>
+                            <Project-Author>Keyle</Project-Author>
+                            <Project-Name>${project.name}</Project-Name>
+                            <Project-Version>${project.version}</Project-Version>
+                            <Project-Build>${BUILD_NUMBER}</Project-Build>
+                            <Git-Commit>${GIT_COMMIT}</Git-Commit>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>ideauidesigner-maven-plugin</artifactId>
+                <version>1.0-beta-2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>javac2</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <fork>true</fork>
+                    <debug>true</debug>
+                    <failOnError>true</failOnError>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <id>parse-version</id>
+                        <goals>
+                            <goal>parse-version</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <artifactSet>
                                 <includes>
-                                    <include>com/intellij/uiDesigner/core/**</include>
+                                    <include>com.intellij:forms_rt:*</include>
+                                    <include>com.googlecode.json-simple:json-simple</include>
                                 </includes>
-                            </filter>
-                        </filters>
-                    </configuration>
-                </execution>
-            </executions>
-        </plugin>
-    </plugins>
+                            </artifactSet>
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.intellij.uiDesigner.core</pattern>
+                                    <shadedPattern>de.keyle.dungeoncraft.editor.uiDesigner</shadedPattern>
+                                </relocation>
+                            </relocations>
+                            <filters>
+                                <filter>
+                                    <artifact>com.intellij:forms_rt</artifact>
+                                    <includes>
+                                        <include>com/intellij/uiDesigner/core/**</include>
+                                    </includes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 
 </project>

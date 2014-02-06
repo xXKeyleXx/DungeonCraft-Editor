@@ -18,7 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.keyle.EntityCreator.JsonConfig;
+package de.keyle.dungeoncraft.editor.util;
 
 
 import org.json.simple.JSONObject;

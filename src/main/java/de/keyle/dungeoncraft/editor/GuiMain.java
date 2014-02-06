@@ -18,8 +18,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.keyle.EntityCreator;
+package de.keyle.dungeoncraft.editor;
 
+
+import de.keyle.dungeoncraft.editor.editors.entity.EntityCreator;
 
 import javax.swing.*;
 import java.awt.*;
