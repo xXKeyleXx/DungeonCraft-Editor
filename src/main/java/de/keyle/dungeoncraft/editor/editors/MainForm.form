@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="de.keyle.dungeoncraft.editor.editors.MainForm">
+  <tabbedpane id="fc3dd" binding="editorsTabbedPane">
+    <constraints>
+      <xy x="20" y="20" width="798" height="639"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children/>
+  </tabbedpane>
+</form>

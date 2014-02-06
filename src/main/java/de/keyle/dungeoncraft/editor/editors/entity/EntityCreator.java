@@ -21,9 +21,8 @@
 package de.keyle.dungeoncraft.editor.editors.entity;
 
 
-import de.keyle.dungeoncraft.editor.GuiMain;
+import de.keyle.dungeoncraft.editor.editors.Editor;
 import de.keyle.dungeoncraft.editor.editors.entity.Components.*;
-import de.keyle.dungeoncraft.editor.editors.trigger.TriggerEditor;
 import de.keyle.dungeoncraft.editor.util.Util;
 
 import javax.swing.*;
@@ -38,17 +37,15 @@ import java.util.Map;
 
 
 //TODO Wenn man mehr als eine Entity created wird sie nicht richtig eingefügt
-public class EntityCreator {
+public class EntityCreator implements Editor {
     private JButton loadButton;
     private JButton saveFileButton;
     private JTree entityTemplateTree;
     private JButton createButton;
     private JButton editButton;
-    static DefaultTreeModel entityTemplateTreeModel;
+    private DefaultTreeModel entityTemplateTreeModel;
     private EntityTemplateLoader loader;
-    JFrame entityCreatorFrame;
-    JPanel entityCreatorPanel;
-    private JPanel templatePanel;
+    private JPanel entityCreatorPanel;
     private JComboBox mobTypeComboBox;
     private JCheckBox onFireCheckBox;
     private JButton saveButton1;
@@ -82,11 +79,9 @@ public class EntityCreator {
     private JComboBox boots_enchant_comboBox;
     private JComboBox weapon_comboBox;
     private JComboBox weapon_enchant_comboBox;
-    private JTabbedPane editors_tabbedPane;
     private JTextField field_Max_Health;
     private JTextField field_Walk_Speed;
     private JTextField field_Display_Name;
-    private JPanel triggerPanel;
 
     String selectedMobtype;
     boolean editMode = false;
@@ -94,6 +89,8 @@ public class EntityCreator {
     EntityTemplate editTemplate;
     List<EntityTemplate> templateList;
     JFileChooser fileChooser;
+
+    public static String[] MOB_TYPES = new String[]{"Bat", "Blaze", "CaveSpider", "Chicken", "Cow", "Creeper", "Enderman", "Ghast", "Giant", "Horse", "IronGolem", "MagmaCube", "Mooshroom", "Ocelot", "Pig", "PigZombie", "Sheep", "Silverfish", "Skeleton", "Slime", "Snowman", "Spider", "Squid", "Witch", "Wither", "Wolf", "Villager", "Zombie"};
 
     public EntityCreator() {
         mobTypeComboBox.addItemListener(new ItemListener() {
@@ -162,7 +159,7 @@ public class EntityCreator {
                 int returnVal = fileChooser.showOpenDialog(entityCreatorPanel);
 
                 if(returnVal == JFileChooser.APPROVE_OPTION) {
-                    loader.saveAsJson(templateList,fileChooser.getSelectedFile());
+                    loader.saveAsJson(templateList, fileChooser.getSelectedFile());
                 }
             }
         });
@@ -488,10 +485,8 @@ public class EntityCreator {
         entityTemplateTree = new JTree(entityTemplateTreeModel);
         entityTemplateTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
-        mobTypeComboBox = new JComboBox(GuiMain.mobTypes);
+        mobTypeComboBox = new JComboBox(MOB_TYPES);
         combobox_Projectile = new JComboBox(new String[] {"Arrow", "Wither Skull","Snowball", "Large Fireball", "Small Fireball"});
-
-        triggerPanel = new TriggerEditor().getMainPanel();
 
         //deactivateAllTemplatePanel();
     }
@@ -502,15 +497,9 @@ public class EntityCreator {
         }
     }
 
-    public JFrame getFrame() {
-        if (entityCreatorFrame == null) {
-            entityCreatorFrame = new JFrame("dungeoncraft - DungeonCraft");
-        }
-        return entityCreatorFrame;
-    }
-
-    public JTabbedPane getMainPanel() {
-        return editors_tabbedPane;
+    @Override
+    public JPanel getPanel() {
+        return entityCreatorPanel;
     }
 
     public void loadCreaturesInTemplate() {
@@ -524,6 +513,11 @@ public class EntityCreator {
         }
         templateTreeExpandAll();
 
+    }
+
+    @Override
+    public String getName() {
+        return "Entity Creator";
     }
 
     private class TemplateNode extends DefaultMutableTreeNode {

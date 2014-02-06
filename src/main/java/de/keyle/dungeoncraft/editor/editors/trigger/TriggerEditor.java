@@ -20,13 +20,15 @@
 
 package de.keyle.dungeoncraft.editor.editors.trigger;
 
+import de.keyle.dungeoncraft.editor.editors.Editor;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TriggerEditor {
+public class TriggerEditor implements Editor {
     private JPanel mainPanel;
     private JTabbedPane triggerFilesTabbedPane;
     private JButton addTriggerButton;
@@ -93,7 +95,8 @@ public class TriggerEditor {
         });
     }
 
-    public JPanel getMainPanel() {
+    @Override
+    public JPanel getPanel() {
         return mainPanel;
     }
 
@@ -108,5 +111,10 @@ public class TriggerEditor {
 
     public void load() {
         //ToDo Load triggers
+    }
+
+    @Override
+    public String getName() {
+        return "Trigger Editor";
     }
 }

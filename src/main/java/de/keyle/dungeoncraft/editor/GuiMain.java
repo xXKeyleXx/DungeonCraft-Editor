@@ -20,49 +20,17 @@
 
 package de.keyle.dungeoncraft.editor;
 
-
+import de.keyle.dungeoncraft.editor.editors.MainForm;
 import de.keyle.dungeoncraft.editor.editors.entity.EntityCreator;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import de.keyle.dungeoncraft.editor.editors.trigger.TriggerEditor;
 
 public class GuiMain {
-
-    public static EntityCreator entityCreator;
-    public static String[] mobTypes = new String[]{"Bat", "Blaze", "CaveSpider", "Chicken", "Cow", "Creeper", "Enderman", "Ghast", "Giant", "Horse", "IronGolem", "MagmaCube", "Mooshroom", "Ocelot", "Pig", "PigZombie", "Sheep", "Silverfish", "Skeleton", "Slime", "Snowman", "Spider", "Squid", "Witch", "Wither", "Wolf", "Villager", "Zombie"};
     public static void main(String[] args) {
-        entityCreator = new EntityCreator();
-        final JFrame entityCreatorFrame = entityCreator.getFrame();
-        entityCreatorFrame.setContentPane(entityCreator.getMainPanel());
-        entityCreatorFrame.setMinimumSize(new Dimension(600,500));
-        //entityCreatorFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        entityCreatorFrame.pack();
-        entityCreatorFrame.setVisible(true);
-        entityCreatorFrame.setLocationRelativeTo(null);
-        entityCreatorFrame.addWindowListener(new WindowListener() {
-            public void windowOpened(WindowEvent e) {
-            }
+        MainForm entityCreator = new MainForm();
 
-            public void windowClosing(WindowEvent e) {
-                    System.exit(0);
-            }
+        entityCreator.registerNewEditor(new EntityCreator());
+        entityCreator.registerNewEditor(new TriggerEditor());
 
-            public void windowClosed(WindowEvent e) {
-            }
-
-            public void windowIconified(WindowEvent e) {
-            }
-
-            public void windowDeiconified(WindowEvent e) {
-            }
-
-            public void windowActivated(WindowEvent e) {
-            }
-
-            public void windowDeactivated(WindowEvent e) {
-            }
-        });
+        entityCreator.showFrame();
     }
 }
