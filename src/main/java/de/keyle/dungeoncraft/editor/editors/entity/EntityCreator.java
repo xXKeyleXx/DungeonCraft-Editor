@@ -25,6 +25,7 @@ import de.keyle.dungeoncraft.editor.editors.Editor;
 import de.keyle.dungeoncraft.editor.editors.entity.ComboBoxItems.*;
 import de.keyle.dungeoncraft.editor.editors.entity.Components.*;
 import de.keyle.dungeoncraft.editor.util.Util;
+import org.json.simple.JSONObject;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -36,7 +37,6 @@ import java.util.*;
 import java.util.List;
 
 
-//TODO Wenn man mehr als eine Entity created wird sie nicht richtig eingefügt
 public class EntityCreator implements Editor {
     private JButton loadButton;
     private JButton saveFileButton;
@@ -68,20 +68,25 @@ public class EntityCreator implements Editor {
     private JCheckBox isTamedCheckBox;
     private JCheckBox isWitherCheckBox;
     private JComboBox variant_comboBox;
-    private JComboBox helmet_comboBox;
-    private JComboBox helmet_enchant_comboBox;
-    private JComboBox chest_comboBox;
-    private JComboBox chest_enchant_comboBox;
-    private JComboBox leggins_comboBox;
-    private JComboBox leggins_enchant_comboBox;
-    private JComboBox boots_comboBox;
-    private JComboBox boots_enchant_comboBox;
-    private JComboBox weapon_comboBox;
-    private JComboBox weapon_enchant_comboBox;
     private JTextField field_Max_Health;
     private JTextField field_Walk_Speed;
     private JTextField field_Display_Name;
     private JTextField field_Size;
+    private JTextField field_weapon_id;
+    private JTextField field_weapon_data;
+    private JTextField field_weapon_tag;
+    private JTextField field_helmet_id;
+    private JTextField field_helmet_data;
+    private JTextField field_helmet_tag;
+    private JTextField field_chest_id;
+    private JTextField field_chest_data;
+    private JTextField field_chest_tag;
+    private JTextField field_leggins_id;
+    private JTextField field_leggins_data;
+    private JTextField field_leggins_tag;
+    private JTextField field_boots_id;
+    private JTextField field_boots_data;
+    private JTextField field_boots_tag;
 
     String selectedMobtype;
     boolean createMode = false;
@@ -198,6 +203,7 @@ public class EntityCreator implements Editor {
         });
         saveButton1.addActionListener(new ActionListener() {
             @Override
+            @SuppressWarnings("unchecked")
             public void actionPerformed(ActionEvent e) {
                 boolean save = true;
 
@@ -332,6 +338,120 @@ public class EntityCreator implements Editor {
                             if (field_Size.isEnabled()) {
                                 ((SizeComponent) iComponent).setValue(Integer.parseInt(field_Size.getText()));
                             }
+                        } else if (iComponent instanceof EquipmentWeaponComponent) {
+                            if (field_weapon_id.isEnabled() && field_weapon_id.getText().equals("")) {
+                                editTemplate.getComponents().remove(iComponent);
+                            } else if (field_Range_Damage.isEnabled()) {
+                                JSONObject weaponObj = new JSONObject();
+                                if(Util.isInt(field_weapon_id.getText())) {
+                                    weaponObj.put("material",Integer.parseInt(field_weapon_id.getText()));
+                                } else {
+                                    weaponObj.put("material",field_weapon_id.getText());
+                                }
+                                if(!field_weapon_data.getText().equals("")) {
+                                    if(Util.isInt(field_weapon_data.getText())) {
+                                        weaponObj.put("data",Integer.parseInt(field_weapon_data.getText()));
+                                    } else {
+                                        weaponObj.put("data",field_weapon_data.getText());
+                                    }
+                                }
+                                if(!field_weapon_tag.getText().equals("")) {
+                                    weaponObj.put("tag",field_weapon_tag.getText());
+                                }
+                                ((EquipmentWeaponComponent) iComponent).setValue(weaponObj);
+                            }
+                        } else if(iComponent instanceof EquipmentArmorComponent) {
+                            if(field_helmet_id.isEnabled() && field_helmet_id.getText().equals("")
+                               && field_chest_id.isEnabled() && field_chest_id.getText().equals("")
+                               && field_leggins_id.isEnabled() && field_leggins_id.getText().equals("")
+                               && field_boots_id.isEnabled() && field_boots_id.getText().equals("")) {
+                                  editTemplate.getComponents().remove(iComponent);
+                            } else {
+                                if (field_helmet_id.isEnabled() && field_helmet_id.getText().equals("")) {
+                                    ((EquipmentArmorComponent) iComponent).getValue().remove("helmet");
+                                } else if(field_helmet_id.isEnabled()){
+                                    JSONObject helmetObj = new JSONObject();
+                                    if(Util.isInt(field_helmet_id.getText())) {
+                                        helmetObj.put("material",Integer.parseInt(field_helmet_id.getText()));
+                                    } else {
+                                        helmetObj.put("material",field_helmet_id.getText());
+                                    }
+                                    if(!field_helmet_data.getText().equals("")) {
+                                        if(Util.isInt(field_helmet_data.getText())) {
+                                            helmetObj.put("data",Integer.parseInt(field_helmet_data.getText()));
+                                        } else {
+                                            helmetObj.put("data",field_helmet_data.getText());
+                                        }
+                                    }
+                                    if(!field_helmet_tag.getText().equals("")) {
+                                        helmetObj.put("tag",field_helmet_tag.getText());
+                                    }
+                                    ((EquipmentArmorComponent) iComponent).getValue().put("helmet",helmetObj);
+                                }
+                                if (field_chest_id.isEnabled() && field_chest_id.getText().equals("")) {
+                                    ((EquipmentArmorComponent) iComponent).getValue().remove("chestplate");
+                                } else if(field_chest_id.isEnabled()){
+                                    JSONObject chestObj = new JSONObject();
+                                    if(Util.isInt(field_chest_id.getText())) {
+                                        chestObj.put("material", Integer.parseInt(field_chest_id.getText()));
+                                    } else {
+                                        chestObj.put("material", field_chest_id.getText());
+                                    }
+                                    if(!field_chest_data.getText().equals("")) {
+                                        if(Util.isInt(field_chest_data.getText())) {
+                                            chestObj.put("data", Integer.parseInt(field_chest_data.getText()));
+                                        } else {
+                                            chestObj.put("data", field_chest_data.getText());
+                                        }
+                                    }
+                                    if(!field_chest_tag.getText().equals("")) {
+                                        chestObj.put("tag", field_chest_tag.getText());
+                                    }
+                                    ((EquipmentArmorComponent) iComponent).getValue().put("chestplate",chestObj);
+                                }
+                                if (field_leggins_id.isEnabled() && field_leggins_id.getText().equals("")) {
+                                    ((EquipmentArmorComponent) iComponent).getValue().remove("leggins");
+                                } else if(field_leggins_id.isEnabled()){
+                                    JSONObject legginsObj = new JSONObject();
+                                    if(Util.isInt(field_leggins_id.getText())) {
+                                        legginsObj.put("material", Integer.parseInt(field_leggins_id.getText()));
+                                    } else {
+                                        legginsObj.put("material", field_leggins_id.getText());
+                                    }
+                                    if(!field_leggins_data.getText().equals("")) {
+                                        if(Util.isInt(field_leggins_data.getText())) {
+                                            legginsObj.put("data", Integer.parseInt(field_leggins_data.getText()));
+                                        } else {
+                                            legginsObj.put("data", field_leggins_data.getText());
+                                        }
+                                    }
+                                    if(!field_leggins_tag.getText().equals("")) {
+                                        legginsObj.put("tag", field_leggins_tag.getText());
+                                    }
+                                    ((EquipmentArmorComponent) iComponent).getValue().put("leggins",legginsObj);
+                                }
+                                if (field_boots_id.isEnabled() && field_boots_id.getText().equals("")) {
+                                    ((EquipmentArmorComponent) iComponent).getValue().remove("boots");
+                                } else if(field_boots_id.isEnabled()){
+                                    JSONObject bootsObj = new JSONObject();
+                                    if(Util.isInt(field_boots_id.getText())) {
+                                        bootsObj.put("material", Integer.parseInt(field_boots_id.getText()));
+                                    } else {
+                                        bootsObj.put("material", field_boots_id.getText());
+                                    }
+                                    if(!field_boots_data.getText().equals("")) {
+                                        if(Util.isInt(field_boots_data.getText())) {
+                                            bootsObj.put("data", Integer.parseInt(field_boots_data.getText()));
+                                        } else {
+                                            bootsObj.put("data", field_boots_data.getText());
+                                        }
+                                    }
+                                    if(!field_boots_id.getText().equals("")) {
+                                        bootsObj.put("tag", field_boots_tag.getText());
+                                    }
+                                    ((EquipmentArmorComponent) iComponent).getValue().put("boots",bootsObj);
+                                }
+                            }
                         }
 
                     }
@@ -434,6 +554,110 @@ public class EntityCreator implements Editor {
                         if (!componentExists(editTemplate, SizeComponent.class)) {
                             editTemplate.getComponents().add(new SizeComponent(Integer.parseInt(field_Size.getText())));
                         }
+                    }
+                    if (field_weapon_id.isEnabled() && !field_weapon_id.getText().equals("")) {
+                        if(!componentExists(editTemplate, EquipmentWeaponComponent.class)) {
+                            JSONObject weaponObj = new JSONObject();
+                            if(Util.isInt(field_weapon_id.getText())) {
+                                weaponObj.put("material",Integer.parseInt(field_weapon_id.getText()));
+                            } else {
+                                weaponObj.put("material",field_weapon_id.getText());
+                            }
+                            if(!field_weapon_data.getText().equals("")) {
+                                if(Util.isInt(field_weapon_data.getText())) {
+                                    weaponObj.put("data",Integer.parseInt(field_weapon_data.getText()));
+                                } else {
+                                    weaponObj.put("data",field_weapon_data.getText());
+                                }
+                            }
+                            if(!field_weapon_tag.getText().equals("")) {
+                                weaponObj.put("tag",field_weapon_tag.getText());
+                            }
+                            editTemplate.getComponents().add(new EquipmentWeaponComponent(weaponObj));
+                        }
+                    }
+                    if(field_helmet_id.isEnabled() && !field_helmet_id.getText().equals("")
+                            || field_chest_id.isEnabled() && !field_chest_id.getText().equals("")
+                            || field_leggins_id.isEnabled() && !field_leggins_id.getText().equals("")
+                            || field_boots_id.isEnabled() && !field_boots_id.getText().equals("")) {
+                        Map<String, JSONObject> newMap = new HashMap<String, JSONObject>();
+                        if(field_helmet_id.isEnabled()){
+                            JSONObject helmetObj = new JSONObject();
+                            if(Util.isInt(field_helmet_id.getText())) {
+                                helmetObj.put("material",Integer.parseInt(field_helmet_id.getText()));
+                            } else {
+                                helmetObj.put("material",field_helmet_id.getText());
+                            }
+                            if(!field_helmet_data.getText().equals("")) {
+                                if(Util.isInt(field_helmet_data.getText())) {
+                                    helmetObj.put("data",Integer.parseInt(field_helmet_data.getText()));
+                                } else {
+                                    helmetObj.put("data",field_helmet_data.getText());
+                                }
+                            }
+                            if(!field_helmet_tag.getText().equals("")) {
+                                helmetObj.put("tag",field_helmet_tag.getText());
+                            }
+                            newMap.put("helmet", helmetObj);
+                        }
+                        if(field_chest_id.isEnabled()){
+                            JSONObject chestObj = new JSONObject();
+                            if(Util.isInt(field_chest_id.getText())) {
+                                chestObj.put("material", Integer.parseInt(field_chest_id.getText()));
+                            } else {
+                                chestObj.put("material", field_chest_id.getText());
+                            }
+                            if(!field_chest_data.getText().equals("")) {
+                                if(Util.isInt(field_chest_data.getText())) {
+                                    chestObj.put("data", Integer.parseInt(field_chest_data.getText()));
+                                } else {
+                                    chestObj.put("data", field_chest_data.getText());
+                                }
+                            }
+                            if(!field_chest_tag.getText().equals("")) {
+                                chestObj.put("tag", field_chest_tag.getText());
+                            }
+                            newMap.put("chestplate", chestObj);
+                        }
+                        if(field_leggins_id.isEnabled()){
+                            JSONObject legginsObj = new JSONObject();
+                            if(Util.isInt(field_leggins_id.getText())) {
+                                legginsObj.put("material", Integer.parseInt(field_leggins_id.getText()));
+                            } else {
+                                legginsObj.put("material", field_leggins_id.getText());
+                            }
+                            if(!field_leggins_data.getText().equals("")) {
+                                if(Util.isInt(field_leggins_data.getText())) {
+                                    legginsObj.put("data", Integer.parseInt(field_leggins_data.getText()));
+                                } else {
+                                    legginsObj.put("data", field_leggins_data.getText());
+                                }
+                            }
+                            if(!field_leggins_tag.getText().equals("")) {
+                                legginsObj.put("tag", field_leggins_tag.getText());
+                            }
+                            newMap.put("leggins", legginsObj);
+                        }
+                        if(field_boots_id.isEnabled()){
+                            JSONObject bootsObj = new JSONObject();
+                            if(Util.isInt(field_boots_id.getText())) {
+                                bootsObj.put("material", Integer.parseInt(field_boots_id.getText()));
+                            } else {
+                                bootsObj.put("material", field_boots_id.getText());
+                            }
+                            if(!field_boots_data.getText().equals("")) {
+                                if(Util.isInt(field_boots_data.getText())) {
+                                    bootsObj.put("data", Integer.parseInt(field_boots_data.getText()));
+                                } else {
+                                    bootsObj.put("data", field_boots_data.getText());
+                                }
+                            }
+                            if(!field_boots_tag.getText().equals("")) {
+                                bootsObj.put("tag", field_boots_tag.getText());
+                            }
+                            newMap.put("boots", bootsObj);
+                        }
+                        editTemplate.getComponents().add(new EquipmentArmorComponent(newMap));
                     }
                     if(createMode) {
                         //templateList.remove(toDelete);
@@ -697,11 +921,28 @@ public class EntityCreator implements Editor {
     }
 
     public void activateWeapon(boolean editMode, EntityTemplate template) {
-        weapon_comboBox.setEnabled(true);
-        weapon_enchant_comboBox.setEnabled(true);
+        field_weapon_id.setEnabled(true);
+        field_weapon_data.setEnabled(true);
+        field_weapon_tag.setEnabled(true);
+        field_weapon_id.setText("");
+        field_weapon_data.setText("");
+        field_weapon_tag.setText("");
 
         if (editMode) {
-            //TODO Waffen deserialisieren  (DungeonCraft ParsedItem.Java
+            for(IComponent c : template.getComponents()) {
+                if(c instanceof EquipmentWeaponComponent) {
+                    JSONObject weaponObj = ((EquipmentWeaponComponent) c).getValue();
+                    if(weaponObj.containsKey("material")) {
+                        field_weapon_id.setText(weaponObj.get("material").toString());
+                    }
+                    if(weaponObj.containsKey("data")) {
+                        field_weapon_data.setText(weaponObj.get("data").toString());
+                    }
+                    if(weaponObj.containsKey("tag")) {
+                        field_weapon_tag.setText(weaponObj.get("tag").toString());
+                    }
+                }
+            }
         }
     }
 
@@ -839,17 +1080,82 @@ public class EntityCreator implements Editor {
     }
 
     public void activateArmorEquip(boolean editMode, EntityTemplate template) {
-        helmet_comboBox.setEnabled(true);
-        helmet_enchant_comboBox.setEnabled(true);
-        chest_comboBox.setEnabled(true);
-        chest_enchant_comboBox.setEnabled(true);
-        leggins_comboBox.setEnabled(true);
-        leggins_enchant_comboBox.setEnabled(true);
-        boots_comboBox.setEnabled(true);
-        boots_enchant_comboBox.setEnabled(true);
+        field_helmet_data.setEnabled(true);
+        field_helmet_id.setEnabled(true);
+        field_helmet_tag.setEnabled(true);
+        field_leggins_data.setEnabled(true);
+        field_leggins_id.setEnabled(true);
+        field_leggins_tag.setEnabled(true);
+        field_chest_data.setEnabled(true);
+        field_chest_id.setEnabled(true);
+        field_chest_tag.setEnabled(true);
+        field_boots_data.setEnabled(true);
+        field_boots_id.setEnabled(true);
+        field_boots_tag.setEnabled(true);
+
+        field_helmet_id.setText("");
+        field_helmet_data.setText("");
+        field_helmet_tag.setText("");
+        field_leggins_data.setText("");
+        field_leggins_id.setText("");
+        field_leggins_tag.setText("");
+        field_chest_data.setText("");
+        field_chest_id.setText("");
+        field_chest_tag.setText("");
+        field_boots_data.setText("");
+        field_boots_id.setText("");
+        field_boots_tag.setText("");
 
         if (editMode) {
-            //TODO Armor deserialisieren  (DungeonCraft ParsedItem.Java)
+            for(IComponent c : template.getComponents()) {
+                if(c instanceof EquipmentArmorComponent) {
+                    Map<String,JSONObject> jsonObjectMap = ((EquipmentArmorComponent)c).getValue();
+
+                    for(String key : jsonObjectMap.keySet()) {
+                        if(key.equals("helmet")) {
+                            if(jsonObjectMap.get(key).containsKey("material")) {
+                                field_helmet_id.setText(jsonObjectMap.get(key).get("material").toString());
+                            }
+                            if(jsonObjectMap.get(key).containsKey("data")) {
+                                field_helmet_data.setText(jsonObjectMap.get(key).get("data").toString());
+                            }
+                            if(jsonObjectMap.get(key).containsKey("tag")) {
+                                field_helmet_tag.setText(jsonObjectMap.get(key).get("tag").toString());
+                            }
+                        } else if(key.equals("chestplate")) {
+                            if(jsonObjectMap.get(key).containsKey("material")) {
+                                field_chest_id.setText(jsonObjectMap.get(key).get("material").toString());
+                            }
+                            if(jsonObjectMap.get(key).containsKey("data")) {
+                                field_chest_data.setText(jsonObjectMap.get(key).get("data").toString());
+                            }
+                            if(jsonObjectMap.get(key).containsKey("tag")) {
+                                field_chest_tag.setText(jsonObjectMap.get(key).get("tag").toString());
+                            }
+                        } else if(key.equals("leggins")) {
+                            if(jsonObjectMap.get(key).containsKey("material")) {
+                                field_leggins_id.setText(jsonObjectMap.get(key).get("material").toString());
+                            }
+                            if(jsonObjectMap.get(key).containsKey("data")) {
+                                field_leggins_data.setText(jsonObjectMap.get(key).get("data").toString());
+                            }
+                            if(jsonObjectMap.get(key).containsKey("tag")) {
+                                field_leggins_tag.setText(jsonObjectMap.get(key).get("tag").toString());
+                            }
+                        } else if(key.equals("boots")) {
+                            if(jsonObjectMap.get(key).containsKey("material")) {
+                                field_boots_id.setText(jsonObjectMap.get(key).get("material").toString());
+                            }
+                            if(jsonObjectMap.get(key).containsKey("data")) {
+                                field_boots_data.setText(jsonObjectMap.get(key).get("data").toString());
+                            }
+                            if(jsonObjectMap.get(key).containsKey("tag")) {
+                                field_boots_tag.setText(jsonObjectMap.get(key).get("tag").toString());
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -988,8 +1294,9 @@ public class EntityCreator implements Editor {
         saveButton1.setEnabled(false);
         onFireCheckBox.setEnabled(false);
         isPoweredCheckBox.setEnabled(false);
-        weapon_comboBox.setEnabled(false);
-        weapon_enchant_comboBox.setEnabled(false);
+        field_weapon_data.setEnabled(false);
+        field_weapon_id.setEnabled(false);
+        field_weapon_tag.setEnabled(false);
         field_Age.setEnabled(false);
         isTamedCheckBox.setEnabled(false);
         variant_comboBox.setEnabled(false);
@@ -999,14 +1306,18 @@ public class EntityCreator implements Editor {
         field_Size.setEnabled(false);
         isSittingCheckBox.setEnabled(false);
         catType_comboBox.setEnabled(false);
-        helmet_comboBox.setEnabled(false);
-        helmet_enchant_comboBox.setEnabled(false);
-        chest_comboBox.setEnabled(false);
-        chest_enchant_comboBox.setEnabled(false);
-        leggins_comboBox.setEnabled(false);
-        leggins_enchant_comboBox.setEnabled(false);
-        boots_comboBox.setEnabled(false);
-        boots_enchant_comboBox.setEnabled(false);
+        field_helmet_data.setEnabled(false);
+        field_helmet_id.setEnabled(false);
+        field_helmet_tag.setEnabled(false);
+        field_leggins_data.setEnabled(false);
+        field_leggins_id.setEnabled(false);
+        field_leggins_tag.setEnabled(false);
+        field_chest_data.setEnabled(false);
+        field_chest_id.setEnabled(false);
+        field_chest_tag.setEnabled(false);
+        field_boots_data.setEnabled(false);
+        field_boots_id.setEnabled(false);
+        field_boots_tag.setEnabled(false);
         color_comboBox.setEnabled(false);
         profession_comboBox.setEnabled(false);
         isAngryCheckBox.setEnabled(false);

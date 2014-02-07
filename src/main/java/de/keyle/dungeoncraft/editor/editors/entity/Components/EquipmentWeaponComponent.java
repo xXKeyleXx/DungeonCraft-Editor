@@ -27,6 +27,6 @@ public class EquipmentWeaponComponent implements IComponent<JSONObject> {
 
     @Override
     public String getParameterName() {
-        return null;
+        return "weapon";
     }
 }
