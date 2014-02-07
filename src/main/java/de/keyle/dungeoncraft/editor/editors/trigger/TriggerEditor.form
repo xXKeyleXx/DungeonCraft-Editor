@@ -57,6 +57,31 @@
             <constraints/>
             <properties/>
           </component>
+          <component id="e6bf1" class="javax.swing.JToolBar$Separator">
+            <constraints/>
+            <properties/>
+          </component>
+          <component id="8de2f" class="javax.swing.JLabel">
+            <constraints/>
+            <properties>
+              <labelFor value="6116d"/>
+              <text value="&amp;Theme "/>
+            </properties>
+          </component>
+          <component id="6116d" class="javax.swing.JComboBox" binding="themeComboBox">
+            <constraints/>
+            <properties>
+              <maximumSize width="80" height="32767"/>
+              <model>
+                <item value="Default"/>
+                <item value="Dark"/>
+                <item value="Eclipse"/>
+                <item value="Idea"/>
+                <item value="VS"/>
+              </model>
+              <opaque value="false"/>
+            </properties>
+          </component>
         </children>
       </toolbar>
     </children>

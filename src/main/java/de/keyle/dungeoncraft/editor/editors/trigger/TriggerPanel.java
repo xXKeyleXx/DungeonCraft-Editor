@@ -22,14 +22,20 @@ package de.keyle.dungeoncraft.editor.editors.trigger;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class TriggerPanel extends JPanel {
     private RSyntaxTextArea triggerTextArea;
     private Trigger trigger;
+
+    public enum Themes {
+        Default, Dark, Eclipse, Idea, VS
+    }
 
     public TriggerPanel(Trigger trigger) {
         this.trigger = trigger;
@@ -58,5 +64,33 @@ public class TriggerPanel extends JPanel {
     public void save() {
         trigger.setName(this.getName());
         trigger.setContent(triggerTextArea.getText());
+    }
+
+    public void loadTheme(Themes t) {
+        Theme theme = null;
+        try {
+            switch (t) {
+                case Default:
+                    theme = Theme.load(getClass().getResourceAsStream("/editor/trigger/themes/default.xml"));
+                    break;
+                case Dark:
+                    theme = Theme.load(getClass().getResourceAsStream("/editor/trigger/themes/dark.xml"));
+                    break;
+                case Eclipse:
+                    theme = Theme.load(getClass().getResourceAsStream("/editor/trigger/themes/eclipse.xml"));
+                    break;
+                case Idea:
+                    theme = Theme.load(getClass().getResourceAsStream("/editor/trigger/themes/idea.xml"));
+                    break;
+                case VS:
+                    theme = Theme.load(getClass().getResourceAsStream("/editor/trigger/themes/vs.xml"));
+                    break;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(theme != null) {
+            theme.apply(triggerTextArea);
+        }
     }
 }

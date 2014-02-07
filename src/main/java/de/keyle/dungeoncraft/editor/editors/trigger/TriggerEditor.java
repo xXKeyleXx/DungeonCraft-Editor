@@ -34,6 +34,7 @@ public class TriggerEditor implements Editor {
     private JButton addTriggerButton;
     private JButton deleteTriggerButton;
     private JButton renameTriggerButton;
+    private JComboBox themeComboBox;
 
     private List<TriggerPanel> triggerPanels = new ArrayList<TriggerPanel>();
 
@@ -50,10 +51,11 @@ public class TriggerEditor implements Editor {
                                 return;
                             }
                         }
-                        Trigger newTrigger = new Trigger(response, "");
+                        Trigger newTrigger = new Trigger(response, "function init() {\n\n}");
                         TriggerPanel panel = new TriggerPanel(newTrigger);
                         triggerPanels.add(panel);
                         triggerFilesTabbedPane.add(panel);
+                        panel.loadTheme(getTextAreaTheme());
                     } else {
                         JOptionPane.showMessageDialog(null, "This is not a valid trigger name!\n\na-z\nA-Z\n0-9\n_ -", "Create new Trigger", JOptionPane.ERROR_MESSAGE);
                     }
@@ -93,6 +95,32 @@ public class TriggerEditor implements Editor {
                 }
             }
         });
+        themeComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TriggerPanel.Themes selectedTheme = getTextAreaTheme();
+                for(TriggerPanel panel : triggerPanels) {
+                    panel.loadTheme(selectedTheme);
+                }
+            }
+        });
+    }
+
+    private TriggerPanel.Themes getTextAreaTheme() {
+        String selectedThemeName = themeComboBox.getSelectedItem().toString();
+        TriggerPanel.Themes selectedTheme;
+        if(selectedThemeName.equals("Dark")) {
+            selectedTheme = TriggerPanel.Themes.Dark;
+        } else if(selectedThemeName.equals("Eclipse")) {
+            selectedTheme = TriggerPanel.Themes.Eclipse;
+        } else if(selectedThemeName.equals("Idea")) {
+            selectedTheme = TriggerPanel.Themes.Idea;
+        } else if(selectedThemeName.equals("VS")) {
+            selectedTheme = TriggerPanel.Themes.VS;
+        } else {
+            selectedTheme = TriggerPanel.Themes.Default;
+        }
+        return selectedTheme;
     }
 
     @Override
