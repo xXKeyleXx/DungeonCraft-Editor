@@ -215,7 +215,9 @@ public class EntityTemplateLoader {
 
         try {
             FileWriter writer = new FileWriter(outputFile);
-            rootObj.writeJSONString(writer);
+            writer.write(rootObj.toJSONString());
+            writer.flush();
+            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

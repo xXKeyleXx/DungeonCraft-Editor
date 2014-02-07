@@ -22,6 +22,7 @@ package de.keyle.dungeoncraft.editor.editors.entity;
 
 
 import de.keyle.dungeoncraft.editor.editors.Editor;
+import de.keyle.dungeoncraft.editor.editors.entity.ComboBoxItems.*;
 import de.keyle.dungeoncraft.editor.editors.entity.Components.*;
 import de.keyle.dungeoncraft.editor.util.Util;
 
@@ -29,11 +30,10 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
+import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 
 //TODO Wenn man mehr als eine Entity created wird sie nicht richtig eingefügt
@@ -65,7 +65,6 @@ public class EntityCreator implements Editor {
     private JComboBox profession_comboBox;
     private JCheckBox hasSaddleCheckBox;
     private JCheckBox isSittingCheckBox;
-    private JComboBox size_comboBox;
     private JCheckBox isTamedCheckBox;
     private JCheckBox isWitherCheckBox;
     private JComboBox variant_comboBox;
@@ -82,9 +81,9 @@ public class EntityCreator implements Editor {
     private JTextField field_Max_Health;
     private JTextField field_Walk_Speed;
     private JTextField field_Display_Name;
+    private JTextField field_Size;
 
     String selectedMobtype;
-    boolean editMode = false;
     boolean createMode = false;
     EntityTemplate editTemplate;
     List<EntityTemplate> templateList;
@@ -194,7 +193,6 @@ public class EntityCreator implements Editor {
             public void actionPerformed(ActionEvent e) {
                 deactivateAllTemplatePanel();
                 mobTypeComboBox.setEnabled(true);
-                editTemplate = new EntityTemplate();
                 createMode = true;
             }
         });
@@ -202,7 +200,11 @@ public class EntityCreator implements Editor {
             @Override
             public void actionPerformed(ActionEvent e) {
                 boolean save = true;
-                EntityTemplate toDelete = editTemplate;
+
+                if(createMode) {
+                    editTemplate = new EntityTemplate();
+                }
+                //EntityTemplate toDelete = editTemplate;
                 if (createMode) {
                     editTemplate.setEntityType((String) mobTypeComboBox.getSelectedItem());
                 }
@@ -222,12 +224,16 @@ public class EntityCreator implements Editor {
                     field_Walk_Speed.setText("This has to be a number");
                     save = false;
                 }
-                if (!Util.isDouble(field_Meele_Damage.getText())) {
+                if (!Util.isDouble(field_Meele_Damage.getText()) && !field_Meele_Damage.getText().equals("")) {
                     field_Meele_Damage.setText("This has to be a number");
                     save = false;
                 }
-                if (!Util.isDouble(field_Range_Damage.getText())) {
+                if (!Util.isDouble(field_Range_Damage.getText()) && !field_Range_Damage.getText().equals("")) {
                     field_Range_Damage.setText("This has to be a number");
+                    save = false;
+                }
+                if(!Util.isInt(field_Size.getText()) && !field_Size.getText().equals("")) {
+                    field_Size.setText("This has to be a number");
                     save = false;
                 }
 
@@ -236,6 +242,7 @@ public class EntityCreator implements Editor {
                     editTemplate.setMaxHealth(Double.parseDouble(field_Max_Health.getText()));
                     editTemplate.setWalkSpeed(Double.parseDouble(field_Walk_Speed.getText()));
                     editTemplate.setTemplateId(field_Template_ID.getText());
+                    editTemplate.setDisplayName(field_Display_Name.getText());
 
                     //Update or create components
                     for (IComponent iComponent : editTemplate.getComponents()) {
@@ -303,27 +310,27 @@ public class EntityCreator implements Editor {
                             }
                         } else if (iComponent instanceof HorseTypeComponent) {
                             if (horseType_comboBox.isEnabled()) {
-                                ((HorseTypeComponent) iComponent).setValue((Byte) horseType_comboBox.getSelectedItem());
+                                ((HorseTypeComponent) iComponent).setValue(((HorseTypeItem)horseType_comboBox.getSelectedItem()).getType());
                             }
                         } else if (iComponent instanceof VariantComponent) {
                             if (variant_comboBox.isEnabled()) {
-                                ((VariantComponent) iComponent).setValue((Integer) variant_comboBox.getSelectedItem());
+                                ((VariantComponent) iComponent).setValue(((VariantItem)variant_comboBox.getSelectedItem()).getVariant());
                             }
                         } else if (iComponent instanceof CatTypeComponent) {
                             if (catType_comboBox.isEnabled()) {
-                                ((CatTypeComponent) iComponent).setValue((Integer) catType_comboBox.getSelectedItem());
+                                ((CatTypeComponent) iComponent).setValue(((CatTypeItem)catType_comboBox.getSelectedItem()).getType());
                             }
                         } else if (iComponent instanceof ColorComponent) {
                             if (color_comboBox.isEnabled()) {
-                                ((ColorComponent) iComponent).setValue((Byte) color_comboBox.getSelectedItem());
+                                ((ColorComponent) iComponent).setValue(((ColorItem) color_comboBox.getSelectedItem()).getColor_id());
                             }
                         } else if (iComponent instanceof ProfessionComponent) {
                             if (profession_comboBox.isEnabled()) {
-                                ((ProfessionComponent) iComponent).setValue((Integer) profession_comboBox.getSelectedItem());
+                                ((ProfessionComponent) iComponent).setValue(((ProfessionItem) profession_comboBox.getSelectedItem()).getProfession());
                             }
                         } else if (iComponent instanceof SizeComponent) {
-                            if (size_comboBox.isEnabled()) {
-                                ((SizeComponent) iComponent).setValue((Integer) size_comboBox.getSelectedItem());
+                            if (field_Size.isEnabled()) {
+                                ((SizeComponent) iComponent).setValue(Integer.parseInt(field_Size.getText()));
                             }
                         }
 
@@ -400,36 +407,39 @@ public class EntityCreator implements Editor {
                     }
                     if (horseType_comboBox.isEnabled()) {
                         if (!componentExists(editTemplate, HorseTypeComponent.class)) {
-                            editTemplate.getComponents().add(new HorseTypeComponent((Byte) horseType_comboBox.getSelectedItem()));
+                            editTemplate.getComponents().add(new HorseTypeComponent(((HorseTypeItem)horseType_comboBox.getSelectedItem()).getType()));
                         }
                     }
                     if (variant_comboBox.isEnabled()) {
                         if (!componentExists(editTemplate, VariantComponent.class)) {
-                            editTemplate.getComponents().add(new VariantComponent((Integer) variant_comboBox.getSelectedItem()));
+                            editTemplate.getComponents().add(new VariantComponent(((VariantItem)variant_comboBox.getSelectedItem()).getVariant()));
                         }
                     }
                     if (catType_comboBox.isEnabled()) {
                         if (!componentExists(editTemplate, CatTypeComponent.class)) {
-                            editTemplate.getComponents().add(new CatTypeComponent((Integer) catType_comboBox.getSelectedItem()));
+                            editTemplate.getComponents().add(new CatTypeComponent(((CatTypeItem)catType_comboBox.getSelectedItem()).getType()));
                         }
                     }
                     if (color_comboBox.isEnabled()) {
                         if (!componentExists(editTemplate, ColorComponent.class)) {
-                            editTemplate.getComponents().add(new ColorComponent((Byte) color_comboBox.getSelectedItem()));
+                            editTemplate.getComponents().add(new ColorComponent(((ColorItem) color_comboBox.getSelectedItem()).getColor_id()));
                         }
                     }
                     if (profession_comboBox.isEnabled()) {
                         if (!componentExists(editTemplate, ProfessionComponent.class)) {
-                            editTemplate.getComponents().add(new ProfessionComponent((Integer) profession_comboBox.getSelectedItem()));
+                            editTemplate.getComponents().add(new ProfessionComponent(((ProfessionItem) profession_comboBox.getSelectedItem()).getProfession()));
                         }
                     }
-                    if (size_comboBox.isEnabled()) {
+                    if (field_Size.isEnabled() && !field_Size.getText().equals("")) {
                         if (!componentExists(editTemplate, SizeComponent.class)) {
-                            editTemplate.getComponents().add(new SizeComponent((Integer) size_comboBox.getSelectedItem()));
+                            editTemplate.getComponents().add(new SizeComponent(Integer.parseInt(field_Size.getText())));
                         }
                     }
-                    templateList.remove(toDelete);
-                    templateList.add(editTemplate);
+                    if(createMode) {
+                        //templateList.remove(toDelete);
+                        templateList.add(editTemplate);
+                    }
+
                     loadCreaturesInTemplate();
                 }
 
@@ -444,6 +454,8 @@ public class EntityCreator implements Editor {
                     if (entityTemplateTree.getSelectionPath().getPath().length == 2) {
                         if (entityTemplateTree.getSelectionPath().getPathComponent(1) instanceof TemplateNode) {
                             EntityTemplate template = ((TemplateNode) entityTemplateTree.getSelectionPath().getPathComponent(1)).getEntityTemplate();
+                            mobTypeComboBox.setEnabled(false);
+                            createMode = false;
                             editTemplate(template);
                         }
                     }
@@ -459,6 +471,7 @@ public class EntityCreator implements Editor {
                         switch (e.getKeyCode()) {
                             case KeyEvent.VK_ENTER:
                                 mobTypeComboBox.setEnabled(false);
+                                createMode = false;
                                 editTemplate(template);
                                 break;
                             case KeyEvent.VK_DELETE:
@@ -478,6 +491,7 @@ public class EntityCreator implements Editor {
         loadCreaturesInTemplate();
     }
 
+    @SuppressWarnings("unchecked")
     public void createUIComponents() {
 
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("");
@@ -487,6 +501,12 @@ public class EntityCreator implements Editor {
 
         mobTypeComboBox = new JComboBox(MOB_TYPES);
         combobox_Projectile = new JComboBox(new String[] {"Arrow", "Wither Skull","Snowball", "Large Fireball", "Small Fireball"});
+
+        horseType_comboBox = new JComboBox(new HorseTypeItem().getTypes());
+        variant_comboBox = new JComboBox(new VariantItem().getVariants());
+        catType_comboBox = new JComboBox(new CatTypeItem().getTypes());
+        color_comboBox = new JComboBox(new ColorItem().getColors());
+        profession_comboBox = new JComboBox(new ProfessionItem().getProfessions());
 
         //deactivateAllTemplatePanel();
     }
@@ -544,7 +564,6 @@ public class EntityCreator implements Editor {
     }
 
     public void editTemplate(EntityTemplate template) {
-        editMode = true;
         editTemplate = template;
         deactivateAllTemplatePanel();
         activateWalkSpeed(true, template);
@@ -720,7 +739,12 @@ public class EntityCreator implements Editor {
         if (editMode) {
             for (IComponent c : template.getComponents()) {
                 if (c instanceof VariantComponent) {
-                    combobox_Projectile.setSelectedItem(c.getValue());
+                    for (int i = 0; i < variant_comboBox.getItemCount(); i++) {
+                        if (((VariantItem)variant_comboBox.getItemAt(i)).getVariant() == ((VariantComponent)c).getValue()) {
+                            variant_comboBox.setSelectedIndex(i);
+                            break;
+                        }
+                    }
                     break;
                 }
             }
@@ -770,12 +794,12 @@ public class EntityCreator implements Editor {
     }
 
     public void activateSize(boolean editMode, EntityTemplate template) {
-        size_comboBox.setEnabled(true);
-
+        field_Size.setEnabled(true);
+        field_Size.setText("");
         if (editMode) {
             for (IComponent c : template.getComponents()) {
                 if (c instanceof SizeComponent) {
-                    size_comboBox.setSelectedItem(c.getValue());
+                    field_Size.setText(c.getValue().toString());
                     break;
                 }
             }
@@ -802,7 +826,12 @@ public class EntityCreator implements Editor {
         if (editMode) {
             for (IComponent c : template.getComponents()) {
                 if (c instanceof CatTypeComponent) {
-                    catType_comboBox.setSelectedItem(Boolean.parseBoolean(c.getValue().toString()));
+                    for (int i = 0; i < catType_comboBox.getItemCount(); i++) {
+                        if (((CatTypeItem)catType_comboBox.getItemAt(i)).getType() == ((CatTypeComponent)c).getValue()) {
+                            catType_comboBox.setSelectedIndex(i);
+                            break;
+                        }
+                    }
                     break;
                 }
             }
@@ -830,7 +859,12 @@ public class EntityCreator implements Editor {
         if (editMode) {
             for (IComponent c : template.getComponents()) {
                 if (c instanceof ColorComponent) {
-                    color_comboBox.setSelectedItem(c.getValue());
+                    for (int i = 0; i < color_comboBox.getItemCount(); i++) {
+                        if (((ColorItem)color_comboBox.getItemAt(i)).getColor_id() == ((ColorComponent)c).getValue()) {
+                            color_comboBox.setSelectedIndex(i);
+                            break;
+                        }
+                    }
                     break;
                 }
             }
@@ -857,7 +891,12 @@ public class EntityCreator implements Editor {
         if (editMode) {
             for (IComponent c : template.getComponents()) {
                 if (c instanceof ProfessionComponent) {
-                    profession_comboBox.setSelectedItem(c.getValue());
+                    for (int i = 0; i < profession_comboBox.getItemCount(); i++) {
+                        if (((ProfessionItem)profession_comboBox.getItemAt(i)).getProfession() == ((ProfessionComponent)c).getValue()) {
+                            profession_comboBox.setSelectedIndex(i);
+                            break;
+                        }
+                    }
                     break;
                 }
             }
@@ -898,7 +937,12 @@ public class EntityCreator implements Editor {
         if (editMode) {
             for (IComponent c : template.getComponents()) {
                 if (c instanceof HorseTypeComponent) {
-                    horseType_comboBox.setSelectedItem(c.getValue());
+                    for (int i = 0; i < horseType_comboBox.getItemCount(); i++) {
+                        if (((HorseTypeItem)horseType_comboBox.getItemAt(i)).getType() == ((HorseTypeComponent)c).getValue()) {
+                            horseType_comboBox.setSelectedIndex(i);
+                            break;
+                        }
+                    }
                     break;
                 }
             }
@@ -952,7 +996,7 @@ public class EntityCreator implements Editor {
         hasChestCheckBox.setEnabled(false);
         hasSaddleCheckBox.setEnabled(false);
         isBabyCheckBox.setEnabled(false);
-        size_comboBox.setEnabled(false);
+        field_Size.setEnabled(false);
         isSittingCheckBox.setEnabled(false);
         catType_comboBox.setEnabled(false);
         helmet_comboBox.setEnabled(false);

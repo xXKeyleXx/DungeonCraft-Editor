@@ -259,7 +259,7 @@
                   <text value="Horse type"/>
                 </properties>
               </component>
-              <component id="fc268" class="javax.swing.JComboBox" binding="horseType_comboBox">
+              <component id="fc268" class="javax.swing.JComboBox" binding="horseType_comboBox" custom-create="true">
                 <constraints>
                   <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -275,7 +275,7 @@
                   <text value="Variant"/>
                 </properties>
               </component>
-              <component id="f00d" class="javax.swing.JComboBox" binding="variant_comboBox">
+              <component id="f00d" class="javax.swing.JComboBox" binding="variant_comboBox" custom-create="true">
                 <constraints>
                   <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -319,7 +319,7 @@
                   <text value="Cat type"/>
                 </properties>
               </component>
-              <component id="76a3" class="javax.swing.JComboBox" binding="catType_comboBox">
+              <component id="76a3" class="javax.swing.JComboBox" binding="catType_comboBox" custom-create="true">
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -335,7 +335,7 @@
                   <text value="Color"/>
                 </properties>
               </component>
-              <component id="24ed5" class="javax.swing.JComboBox" binding="color_comboBox">
+              <component id="24ed5" class="javax.swing.JComboBox" binding="color_comboBox" custom-create="true">
                 <constraints>
                   <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -351,7 +351,7 @@
                   <text value="Profession"/>
                 </properties>
               </component>
-              <component id="3b3f0" class="javax.swing.JComboBox" binding="profession_comboBox">
+              <component id="3b3f0" class="javax.swing.JComboBox" binding="profession_comboBox" custom-create="true">
                 <constraints>
                   <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -365,14 +365,6 @@
                 </constraints>
                 <properties>
                   <text value="Size"/>
-                </properties>
-              </component>
-              <component id="d4c76" class="javax.swing.JComboBox" binding="size_comboBox">
-                <constraints>
-                  <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <enabled value="false"/>
                 </properties>
               </component>
               <component id="8d4d" class="javax.swing.JLabel">
@@ -407,6 +399,14 @@
                   <enabled value="false"/>
                 </properties>
               </component>
+              <component id="162d0" class="javax.swing.JTextField" binding="field_Size">
+                <constraints>
+                  <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
             </children>
           </grid>
           <component id="8214c" class="javax.swing.JCheckBox" binding="hasChestCheckBox" default-binding="true">
@@ -432,14 +432,6 @@
                 </constraints>
                 <properties>
                   <text value="Helmet"/>
-                </properties>
-              </component>
-              <component id="e58c8" class="javax.swing.JComboBox" binding="helmet_comboBox">
-                <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <enabled value="false"/>
                 </properties>
               </component>
               <component id="c0db7" class="javax.swing.JLabel">
@@ -550,6 +542,14 @@
               <component id="91433" class="javax.swing.JComboBox" binding="boots_enchant_comboBox">
                 <constraints>
                   <grid row="15" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <enabled value="false"/>
+                </properties>
+              </component>
+              <component id="e58c8" class="javax.swing.JComboBox" binding="helmet_comboBox">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <enabled value="false"/>
