@@ -20,6 +20,8 @@
 
 package de.keyle.dungeoncraft.editor.editors;
 
+import de.keyle.dungeoncraft.editor.util.DungeonCraftEditorVersion;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -39,6 +41,7 @@ public class About extends JDialog {
     private JLabel oxygenWebsiteLabel;
     private JLabel rsyntaxtextareaWebsiteLabel;
     private JLabel rsyntaxtextareaLicenseLabel;
+    private JLabel buildLabel;
 
     public About() {
         setContentPane(mainPanel);
@@ -50,6 +53,9 @@ public class About extends JDialog {
                 dispose();
             }
         });
+
+        buildLabel.setText(DungeonCraftEditorVersion.getBuild());
+        versionLabel.setText(DungeonCraftEditorVersion.getVersion());
     }
 
     public static void main(String[] args) {
