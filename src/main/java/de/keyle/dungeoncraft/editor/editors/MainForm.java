@@ -20,8 +20,6 @@
 
 package de.keyle.dungeoncraft.editor.editors;
 
-import de.keyle.dungeoncraft.editor.About;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

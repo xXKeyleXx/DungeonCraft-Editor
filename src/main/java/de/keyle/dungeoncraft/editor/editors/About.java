@@ -18,7 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.keyle.dungeoncraft.editor;
+package de.keyle.dungeoncraft.editor.editors;
 
 import javax.swing.*;
 import java.awt.*;
