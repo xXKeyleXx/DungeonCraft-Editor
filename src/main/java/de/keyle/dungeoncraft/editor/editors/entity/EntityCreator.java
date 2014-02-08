@@ -24,6 +24,7 @@ package de.keyle.dungeoncraft.editor.editors.entity;
 import de.keyle.dungeoncraft.editor.editors.Editor;
 import de.keyle.dungeoncraft.editor.editors.entity.ComboBoxItems.*;
 import de.keyle.dungeoncraft.editor.editors.entity.Components.*;
+import de.keyle.dungeoncraft.editor.util.DisabledPanel;
 import de.keyle.dungeoncraft.editor.util.Util;
 import org.json.simple.JSONObject;
 
@@ -695,6 +696,7 @@ public class EntityCreator implements Editor {
 
     @SuppressWarnings("unchecked")
     public void createUIComponents() {
+        entityCreatorPanel = new DisabledPanel();
 
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("");
         entityTemplateTreeModel = new DefaultTreeModel(root);

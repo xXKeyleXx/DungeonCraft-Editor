@@ -53,6 +53,7 @@
           <component id="213d1" class="javax.swing.JButton" binding="saveButton">
             <constraints/>
             <properties>
+              <enabled value="false"/>
               <icon value="images/save.png"/>
               <text value=""/>
               <toolTipText value="Save Dungeon"/>

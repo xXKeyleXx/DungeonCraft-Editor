@@ -20,6 +20,8 @@
 
 package de.keyle.dungeoncraft.editor.editors;
 
+import de.keyle.dungeoncraft.editor.util.DisabledPanel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -82,6 +84,7 @@ public class MainForm {
                 int result = chooser.showOpenDialog(editorFrame);
                 if(result == JFileChooser.APPROVE_OPTION) {
                     openDungeon(chooser.getSelectedFile());
+                    saveButton.setEnabled(true);
                 }
             }
         });
@@ -92,6 +95,9 @@ public class MainForm {
             if(dungeonFolder.exists() && dungeonFolder.isDirectory()) {
                 this.dungeonFolder = dungeonFolder;
                 for(Editor panel : editorList) {
+                    if(panel.getPanel() instanceof DisabledPanel) {
+                        panel.getPanel().setEnabled(true);
+                    }
                     panel.openDungeon(this.dungeonFolder);
                 }
             }
@@ -101,6 +107,9 @@ public class MainForm {
     public void registerNewEditor(Editor editor) {
         editorList.add(editor);
         editorsTabbedPane.add(editor.getName(), editor.getPanel());
+        if(dungeonFolder == null && editor instanceof DisabledPanel) {
+            editor.getPanel().setEnabled(false);
+        }
     }
 
     public JFrame showFrame() {

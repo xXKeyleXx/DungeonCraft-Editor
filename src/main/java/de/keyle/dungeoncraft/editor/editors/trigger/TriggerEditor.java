@@ -22,6 +22,7 @@ package de.keyle.dungeoncraft.editor.editors.trigger;
 
 import com.google.common.io.PatternFilenameFilter;
 import de.keyle.dungeoncraft.editor.editors.Editor;
+import de.keyle.dungeoncraft.editor.util.DisabledPanel;
 import de.keyle.dungeoncraft.editor.util.Util;
 
 import javax.swing.*;
@@ -194,5 +195,9 @@ public class TriggerEditor implements Editor {
     @Override
     public String getName() {
         return "Trigger Editor";
+    }
+
+    private void createUIComponents() {
+        mainPanel = new DisabledPanel();
     }
 }

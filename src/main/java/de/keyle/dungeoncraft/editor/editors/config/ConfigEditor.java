@@ -21,6 +21,7 @@
 package de.keyle.dungeoncraft.editor.editors.config;
 
 import de.keyle.dungeoncraft.editor.editors.Editor;
+import de.keyle.dungeoncraft.editor.util.DisabledPanel;
 import de.keyle.dungeoncraft.editor.util.Util;
 import de.keyle.dungeoncraft.editor.util.config.ConfigurationSnakeYAML;
 
@@ -51,15 +52,16 @@ public class ConfigEditor implements Editor {
     private JSpinner ySpinner;
     private JTextArea commandsTextArea;
     private JTable customOptionsTable;
-    private JScrollPane mainPanel;
+    private JPanel mainPanel;
     private JButton addCutomOptionButton;
     private JButton deleteCutomOptionButton;
+    private JScrollPane configScrollPane;
 
     DefaultTableModel customOptionsTabelModel;
     File configFile = null;
 
     public ConfigEditor() {
-        mainPanel.getVerticalScrollBar().setUnitIncrement(20);
+        configScrollPane.getVerticalScrollBar().setUnitIncrement(20);
         addCutomOptionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -85,6 +87,8 @@ public class ConfigEditor implements Editor {
     }
 
     private void createUIComponents() {
+        mainPanel = new DisabledPanel();
+
         SpinnerNumberModel timeSpinnerModel = new SpinnerNumberModel(0,0,24000,1000);
         timeSpinner = new JSpinner(timeSpinnerModel);
 
