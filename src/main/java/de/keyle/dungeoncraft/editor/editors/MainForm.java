@@ -28,6 +28,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainForm {
     private JFrame editorFrame;
@@ -39,6 +42,9 @@ public class MainForm {
     private JButton aboutButton;
     private JPanel mainPanel;
 
+    private File dungeonFolder = null;
+    private List<Editor> editorList = new ArrayList<Editor>();
+
 
     public MainForm() {
         aboutButton.addActionListener(new ActionListener() {
@@ -49,7 +55,13 @@ public class MainForm {
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                if(dungeonFolder != null) {
+                    if(dungeonFolder.exists() && dungeonFolder.isDirectory()) {
+                        for(Editor panel : editorList) {
+                            panel.saveDungeon();
+                        }
+                    }
+                }
             }
         });
         saveAsButton.addActionListener(new ActionListener() {
@@ -67,12 +79,29 @@ public class MainForm {
         openFromFolderButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                JFileChooser chooser = new JFileChooser();
+                chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                int result = chooser.showOpenDialog(editorFrame);
+                if(result == JFileChooser.APPROVE_OPTION) {
+                    openDungeon(chooser.getSelectedFile());
+                }
             }
         });
     }
 
+    public void openDungeon(File dungeonFolder) {
+        if(dungeonFolder != null) {
+            if(dungeonFolder.exists() && dungeonFolder.isDirectory()) {
+                this.dungeonFolder = dungeonFolder;
+                for(Editor panel : editorList) {
+                    panel.openDungeon(this.dungeonFolder);
+                }
+            }
+        }
+    }
+
     public void registerNewEditor(Editor editor) {
+        editorList.add(editor);
         editorsTabbedPane.add(editor.getName(), editor.getPanel());
     }
 

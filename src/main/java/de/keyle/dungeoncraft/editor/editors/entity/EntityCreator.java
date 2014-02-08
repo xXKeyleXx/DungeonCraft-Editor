@@ -31,15 +31,15 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
-import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class EntityCreator implements Editor {
-    private JButton loadButton;
-    private JButton saveFileButton;
     private JTree entityTemplateTree;
     private JButton createButton;
     private JButton editButton;
@@ -87,12 +87,13 @@ public class EntityCreator implements Editor {
     private JTextField field_boots_id;
     private JTextField field_boots_data;
     private JTextField field_boots_tag;
+    private JButton deleteButton;
 
     String selectedMobtype;
     boolean createMode = false;
     EntityTemplate editTemplate;
     List<EntityTemplate> templateList;
-    JFileChooser fileChooser;
+    File templateFile;
 
     public static String[] MOB_TYPES = new String[]{"Bat", "Blaze", "CaveSpider", "Chicken", "Cow", "Creeper", "Enderman", "Ghast", "Giant", "Horse", "IronGolem", "MagmaCube", "Mooshroom", "Ocelot", "Pig", "PigZombie", "Sheep", "Silverfish", "Skeleton", "Slime", "Snowman", "Spider", "Squid", "Witch", "Wither", "Wolf", "Villager", "Zombie"};
 
@@ -154,27 +155,6 @@ public class EntityCreator implements Editor {
                         activateArmorEquip(false, null);
                         activateWeapon(false, null);
                     }
-                }
-            }
-        });
-        saveFileButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int returnVal = fileChooser.showOpenDialog(entityCreatorPanel);
-
-                if(returnVal == JFileChooser.APPROVE_OPTION) {
-                    loader.saveAsJson(templateList, fileChooser.getSelectedFile());
-                }
-            }
-        });
-        loadButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int returnVal = fileChooser.showOpenDialog(entityCreatorPanel);
-
-                if(returnVal == JFileChooser.APPROVE_OPTION) {
-                    templateList = loader.loadCreaturesInTemplate(fileChooser.getSelectedFile());
-                    loadCreaturesInTemplate();
                 }
             }
         });
@@ -709,9 +689,7 @@ public class EntityCreator implements Editor {
             }
         });
         loader = new EntityTemplateLoader();
-        fileChooser = new JFileChooser();
         templateList = new ArrayList<EntityTemplate>();
-
         loadCreaturesInTemplate();
     }
 
@@ -744,6 +722,20 @@ public class EntityCreator implements Editor {
     @Override
     public JPanel getPanel() {
         return entityCreatorPanel;
+    }
+
+    @Override
+    public void openDungeon(File dungeonFolder) {
+        templateFile = new File(dungeonFolder, "entity-templates.json");
+        if(templateFile.exists()) {
+            templateList = loader.loadCreaturesInTemplate(templateFile);
+            loadCreaturesInTemplate();
+        }
+    }
+
+    @Override
+    public void saveDungeon() {
+        loader.saveAsJson(templateList, templateFile);
     }
 
     public void loadCreaturesInTemplate() {

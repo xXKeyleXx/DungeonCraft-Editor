@@ -21,9 +21,14 @@
 package de.keyle.dungeoncraft.editor.editors;
 
 import java.awt.*;
+import java.io.File;
 
 public interface Editor {
     public String getName();
 
     public Component getPanel();
+
+    public void openDungeon(File dungeonFolder);
+
+    public void saveDungeon();
 }

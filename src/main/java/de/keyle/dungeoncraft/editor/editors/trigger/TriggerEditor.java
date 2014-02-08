@@ -20,13 +20,17 @@
 
 package de.keyle.dungeoncraft.editor.editors.trigger;
 
+import com.google.common.io.PatternFilenameFilter;
 import de.keyle.dungeoncraft.editor.editors.Editor;
+import de.keyle.dungeoncraft.editor.util.Util;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class TriggerEditor implements Editor {
     private JPanel mainPanel;
@@ -37,6 +41,8 @@ public class TriggerEditor implements Editor {
     private JComboBox themeComboBox;
 
     private List<TriggerPanel> triggerPanels = new ArrayList<TriggerPanel>();
+    private File triggerFolder = null;
+    private List<String> deletedTriggerFiles = new ArrayList<String>();
 
     public TriggerEditor() {
         addTriggerButton.addActionListener(new ActionListener() {
@@ -53,9 +59,13 @@ public class TriggerEditor implements Editor {
                         }
                         Trigger newTrigger = new Trigger(response, "function init() {\n\n}");
                         TriggerPanel panel = new TriggerPanel(newTrigger);
+                        deletedTriggerFiles.remove(response);
                         triggerPanels.add(panel);
                         triggerFilesTabbedPane.add(panel);
                         panel.loadTheme(getTextAreaTheme());
+                        triggerFilesTabbedPane.setVisible(true);
+                        deleteTriggerButton.setEnabled(true);
+                        renameTriggerButton.setEnabled(true);
                     } else {
                         JOptionPane.showMessageDialog(null, "This is not a valid trigger name!\n\na-z\nA-Z\n0-9\n_ -", "Create new Trigger", JOptionPane.ERROR_MESSAGE);
                     }
@@ -77,7 +87,9 @@ public class TriggerEditor implements Editor {
                                 }
                             }
                             triggerFilesTabbedPane.setTitleAt(triggerFilesTabbedPane.getSelectedIndex(),response);
+                            deletedTriggerFiles.add(renamedPanel.getTrigger().getName());
                             renamedPanel.setName(response);
+                            renamedPanel.save();
                         } else {
                             JOptionPane.showMessageDialog(null, "This is not a valid trigger name!\n\na-z\nA-Z\n0-9\n_ -", "Create new Trigger", JOptionPane.ERROR_MESSAGE);
                         }
@@ -92,6 +104,12 @@ public class TriggerEditor implements Editor {
                     TriggerPanel panel = (TriggerPanel) triggerFilesTabbedPane.getSelectedComponent();
                     triggerPanels.remove(panel);
                     triggerFilesTabbedPane.remove(panel);
+                    deletedTriggerFiles.remove(panel.getTrigger().getName());
+                    if(triggerPanels.size() == 0) {
+                        triggerFilesTabbedPane.setVisible(false);
+                        deleteTriggerButton.setEnabled(false);
+                        renameTriggerButton.setEnabled(false);
+                    }
                 }
             }
         });
@@ -128,17 +146,49 @@ public class TriggerEditor implements Editor {
         return mainPanel;
     }
 
-    public void save() {
+    @Override
+    public void openDungeon(File dungeonFolder) {
+        triggerFolder = new File(dungeonFolder, "trigger");
+        if(triggerFolder.exists() && triggerFolder.isDirectory()) {
+            File[] triggerFiles = triggerFolder.listFiles(new PatternFilenameFilter(Pattern.compile("[.-_a-z0-9]+\\.js", Pattern.CASE_INSENSITIVE)));
+            if (triggerFiles != null) {
+                for(File triggerFile : triggerFiles) {
+                    String triggerName = triggerFile.getName().substring(0,triggerFile.getName().length()-3);
+                    String triggerContent = Util.readFile(triggerFile);
+                    Trigger trigger = new Trigger(triggerName, triggerContent);
+                    TriggerPanel panel = new TriggerPanel(trigger);
+                    triggerPanels.add(panel);
+                    triggerFilesTabbedPane.add(panel);
+                }
+                if(triggerPanels.size() > 0) {
+                    triggerFilesTabbedPane.setVisible(true);
+                    deleteTriggerButton.setEnabled(true);
+                    renameTriggerButton.setEnabled(true);
+                } else {
+                    deleteTriggerButton.setEnabled(false);
+                    renameTriggerButton.setEnabled(false);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void saveDungeon() {
+        System.out.println("saveDungeon");
+
+        triggerFolder.mkdirs();
+
+        for(String deletedFileName:deletedTriggerFiles) {
+            new File(triggerFolder, deletedFileName + ".js").delete();
+        }
         for(TriggerPanel panel : triggerPanels) {
             panel.save();
             Trigger trigger = panel.getTrigger();
 
-            //ToDo Save triggers
-        }
-    }
+            File triggerFile = new File(triggerFolder, trigger.getName() + ".js");
 
-    public void load() {
-        //ToDo Load triggers
+            Util.writeFile(triggerFile, trigger.getContent());
+        }
     }
 
     @Override

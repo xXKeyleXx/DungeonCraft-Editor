@@ -26,8 +26,12 @@ import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 import java.awt.*;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class TriggerPanel extends JPanel {
     private RSyntaxTextArea triggerTextArea;
@@ -44,15 +48,37 @@ public class TriggerPanel extends JPanel {
 
         triggerTextArea = new RSyntaxTextArea(20, 60);
         triggerTextArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
-        triggerTextArea.setCodeFoldingEnabled(false);
+        triggerTextArea.setCodeFoldingEnabled(true);
         triggerTextArea.setAntiAliasingEnabled(true);
+        triggerTextArea.setAutoIndentEnabled(true);
+        triggerTextArea.setCloseCurlyBraces(true);
+        triggerTextArea.setMarkOccurrences(true);
+        triggerTextArea.setPaintMarkOccurrencesBorder(true);
+        triggerTextArea.setHyperlinksEnabled(true);
+        triggerTextArea.addHyperlinkListener(new HyperlinkListener() {
+            @Override
+            public void hyperlinkUpdate(HyperlinkEvent e) {
+                if (Desktop.isDesktopSupported()) {
+                    try {
+                        Desktop.getDesktop().browse(e.getURL().toURI());
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (URISyntaxException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
 
         if(trigger.getContent() != null || !trigger.getContent().equals("")) {
             triggerTextArea.setText(trigger.getContent());
         }
+        triggerTextArea.setCaretPosition(0);
 
         RTextScrollPane sp = new RTextScrollPane(triggerTextArea);
+        sp.setBorder(new EmptyBorder(0, 0, 0, 0));
         sp.setFoldIndicatorEnabled(true);
+        sp.setAutoscrolls(true);
 
         this.add(sp, BorderLayout.CENTER);
     }

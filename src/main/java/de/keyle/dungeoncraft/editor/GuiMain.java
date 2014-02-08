@@ -24,13 +24,23 @@ import de.keyle.dungeoncraft.editor.editors.MainForm;
 import de.keyle.dungeoncraft.editor.editors.entity.EntityCreator;
 import de.keyle.dungeoncraft.editor.editors.trigger.TriggerEditor;
 
+import javax.swing.*;
+
 public class GuiMain {
     public static void main(String[] args) {
-        MainForm entityCreator = new MainForm();
+        try
+        {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }
+        catch (Exception ignored)
+        {
+        }
 
-        entityCreator.registerNewEditor(new EntityCreator());
-        entityCreator.registerNewEditor(new TriggerEditor());
+        MainForm mainForm = new MainForm();
 
-        entityCreator.showFrame();
+        mainForm.registerNewEditor(new EntityCreator());
+        mainForm.registerNewEditor(new TriggerEditor());
+
+        mainForm.showFrame();
     }
 }

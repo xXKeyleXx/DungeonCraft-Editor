@@ -8,19 +8,9 @@
     <properties/>
     <border type="none"/>
     <children>
-      <tabbedpane id="ad973" binding="triggerFilesTabbedPane">
-        <constraints>
-          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
-            <preferred-size width="200" height="200"/>
-          </grid>
-        </constraints>
-        <properties/>
-        <border type="none"/>
-        <children/>
-      </tabbedpane>
       <toolbar id="f599">
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="1" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="-1" height="20"/>
           </grid>
         </constraints>
@@ -40,6 +30,7 @@
           <component id="743af" class="javax.swing.JButton" binding="deleteTriggerButton">
             <constraints/>
             <properties>
+              <enabled value="false"/>
               <icon value="images/delete.png"/>
               <text value=""/>
               <toolTipText value="Delete Trigger"/>
@@ -48,19 +39,15 @@
           <component id="ba613" class="javax.swing.JButton" binding="renameTriggerButton">
             <constraints/>
             <properties>
+              <enabled value="false"/>
               <icon value="images/rename.png"/>
               <text value=""/>
               <toolTipText value="Rename Trigger"/>
             </properties>
           </component>
-          <component id="1713d" class="javax.swing.JToolBar$Separator">
+          <hspacer id="aa1d9">
             <constraints/>
-            <properties/>
-          </component>
-          <component id="e6bf1" class="javax.swing.JToolBar$Separator">
-            <constraints/>
-            <properties/>
-          </component>
+          </hspacer>
           <component id="8de2f" class="javax.swing.JLabel">
             <constraints/>
             <properties>
@@ -84,6 +71,29 @@
           </component>
         </children>
       </toolbar>
+      <grid id="dd8f7" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="5" left="5" bottom="5" right="5"/>
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <tabbedpane id="ad973" binding="triggerFilesTabbedPane">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                <preferred-size width="200" height="200"/>
+              </grid>
+            </constraints>
+            <properties>
+              <tabLayoutPolicy value="1"/>
+              <visible value="false"/>
+            </properties>
+            <border type="none"/>
+            <children/>
+          </tabbedpane>
+        </children>
+      </grid>
     </children>
   </grid>
 </form>
