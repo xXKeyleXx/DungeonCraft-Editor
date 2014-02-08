@@ -22,7 +22,7 @@ package de.keyle.dungeoncraft.editor.editors.entity;
 
 
 import de.keyle.dungeoncraft.editor.editors.entity.Components.*;
-import de.keyle.dungeoncraft.editor.util.ConfigurationJson;
+import de.keyle.dungeoncraft.editor.util.config.ConfigurationJson;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 

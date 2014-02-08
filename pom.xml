@@ -32,7 +32,10 @@
     <url>http://dev.bukkit.org/bukkit-plugins/dungeoncraft/</url>
 
     <properties>
+        <json-simple.version>1.1.1</json-simple.version>
+        <snakeyaml.version>1.12</snakeyaml.version>
         <forms_rt.version>7.0.3</forms_rt.version>
+        <rsyntaxtextarea.version>2.5.0</rsyntaxtextarea.version>
     </properties>
 
     <pluginRepositories>
@@ -53,7 +56,7 @@
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
-            <version>1.1.1</version>
+            <version>${json-simple.version}</version>
             <scope>compile</scope>
             <optional>true</optional>
         </dependency>
@@ -65,9 +68,18 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>${snakeyaml.version}</version>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
             <groupId>com.fifesoft</groupId>
             <artifactId>rsyntaxtextarea</artifactId>
-            <version>2.5.0</version>
+            <version>${rsyntaxtextarea.version}</version>
+            <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 
@@ -154,6 +166,7 @@
                                     <include>com.googlecode.json-simple:json-simple</include>
                                     <include>com.google.guava:guava</include>
                                     <include>com.fifesoft:rsyntaxtextarea</include>
+                                    <include>org.yaml:snakeyaml</include>
                                 </includes>
                             </artifactSet>
                             <relocations>
@@ -176,5 +189,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

@@ -18,7 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.keyle.dungeoncraft.editor.util;
+package de.keyle.dungeoncraft.editor.util.config;
 
 
 import org.json.simple.JSONObject;
