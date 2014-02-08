@@ -107,7 +107,7 @@ public class MainForm {
     public void registerNewEditor(Editor editor) {
         editorList.add(editor);
         editorsTabbedPane.add(editor.getName(), editor.getPanel());
-        if(dungeonFolder == null && editor instanceof DisabledPanel) {
+        if(dungeonFolder == null && editor.getPanel() instanceof DisabledPanel) {
             editor.getPanel().setEnabled(false);
         }
     }
