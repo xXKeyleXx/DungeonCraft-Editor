@@ -338,4 +338,8 @@ public class ConfigEditor implements Editor {
 
         config.save();
     }
+
+    @Override
+    public void init() {
+    }
 }

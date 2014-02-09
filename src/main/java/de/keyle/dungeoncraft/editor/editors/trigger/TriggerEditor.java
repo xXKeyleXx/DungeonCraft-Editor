@@ -193,6 +193,10 @@ public class TriggerEditor implements Editor {
     }
 
     @Override
+    public void init() {
+    }
+
+    @Override
     public String getName() {
         return "Trigger Editor";
     }

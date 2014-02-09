@@ -18,19 +18,42 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.keyle.dungeoncraft.editor.editors;
+package de.keyle.dungeoncraft.editor.editors.world;
 
-import java.awt.*;
-import java.io.File;
+public class Block {
+    private boolean isActive;
+    private BlockType blockType;
 
-public interface Editor {
-    public String getName();
+    public enum BlockType {
+        BlockType_Default(0),
+        BlockType_Grass(1),
+        BlockType_Dirt(2),
+        BlockType_Water(3),
+        BlockType_Stone(4),
+        BlockType_Wood(5),
+        BlockType_Sand(6),
+        BlockType_NumTypes(7);
+        private int BlockID;
+        BlockType(int i) {
+            BlockID=i;
+        }
+        public int getID(){
+            return BlockID;
+        }
+    }
 
-    public Component getPanel();
+    public Block(BlockType blockType){
+        this.blockType = blockType;
+    }
 
-    public void openDungeon(File dungeonFolder);
+    public boolean isActive() {
+        return isActive;
+    }
 
-    public void saveDungeon();
-
-    public void init();
+    public void setActive(boolean active) {
+        isActive =active;
+    }
+    public int getID(){
+        return blockType.getID();
+    }
 }

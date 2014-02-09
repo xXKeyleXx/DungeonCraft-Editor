@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainForm {
-    private JFrame editorFrame;
+    public static JFrame editorFrame;
     private JTabbedPane editorsTabbedPane;
     private JButton openFromFolderButton;
     private JButton saveButton;
@@ -107,8 +107,12 @@ public class MainForm {
     public void registerNewEditor(Editor editor) {
         editorList.add(editor);
         editorsTabbedPane.add(editor.getName(), editor.getPanel());
-        if(dungeonFolder == null && editor.getPanel() instanceof DisabledPanel) {
-            editor.getPanel().setEnabled(false);
+        if(dungeonFolder == null) {
+            if(editor.getPanel() instanceof DisabledPanel) {
+                editor.getPanel().setEnabled(false);
+            } else if(editor.getPanel() instanceof Container) {
+                DisabledPanel.disableContainer((Container) editor.getPanel());
+            }
         }
     }
 
@@ -117,7 +121,7 @@ public class MainForm {
             editorFrame = new JFrame("DungeonCraft - Editor");
 
             editorFrame.setContentPane(mainPanel);
-            editorFrame.setMinimumSize(new Dimension(600, 500));
+            editorFrame.setMinimumSize(new Dimension(890, 730));
             editorFrame.pack();
             editorFrame.setVisible(true);
             editorFrame.setLocationRelativeTo(null);
@@ -144,6 +148,11 @@ public class MainForm {
                 public void windowDeactivated(WindowEvent e) {
                 }
             });
+
+            for(Editor panel : editorList) {
+                panel.init();
+            }
+
         }
         return editorFrame;
     }

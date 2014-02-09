@@ -740,6 +740,10 @@ public class EntityCreator implements Editor {
         loader.saveAsJson(templateList, templateFile);
     }
 
+    @Override
+    public void init() {
+    }
+
     public void loadCreaturesInTemplate() {
 
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Templates");

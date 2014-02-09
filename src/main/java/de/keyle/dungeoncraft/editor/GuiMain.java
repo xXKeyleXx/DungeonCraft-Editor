@@ -40,6 +40,7 @@ public class GuiMain {
         MainForm mainForm = new MainForm();
 
         mainForm.registerNewEditor(new ConfigEditor());
+        //mainForm.registerNewEditor(new WorldOverview());
         mainForm.registerNewEditor(new EntityCreator());
         mainForm.registerNewEditor(new TriggerEditor());
 
