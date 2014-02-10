@@ -90,7 +90,6 @@ public class EntityCreator implements Editor {
     private JTextField field_boots_tag;
     private JButton deleteButton;
 
-    String selectedMobtype;
     boolean createMode = false;
     EntityTemplate editTemplate;
     List<EntityTemplate> templateList;
@@ -102,60 +101,7 @@ public class EntityCreator implements Editor {
         mobTypeComboBox.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
-                    selectedMobtype = mobTypeComboBox.getSelectedItem().toString();
-                    deactivateAllTemplatePanel();
-                    activateMaxHealth(false, null);
-                    activateWalkSpeed(false, null);
-                    activeEntityTemplatID(false, null);
-                    activateDisplayName(false,null);
-                    activateMeeleDamage(false, null);
-                    activateRangeDamage(false, null);
-                    activateArmor(false, null);
-                    activateSaveButton();
-                    if (selectedMobtype.equals("Blaze")) {
-                        activateFire(false, null);
-                    } else if (selectedMobtype.equals("Creeper")) {
-                        activatePowered(false, null);
-                    } else if (selectedMobtype.equals("Enderman")) {
-                        activateAngry(false, null);
-                        activateWeapon(false, null);
-                    } else if (selectedMobtype.equals("Horse")) {
-                        activateAge(false, null);
-                        activateBaby(false, null);
-                        activateTamed(false, null);
-                        activateVariant(false, null);
-                        activateChest(false, null);
-                        activateSaddle(false, null);
-                        activateHorseType(false, null);
-                    } else if (selectedMobtype.equals("MagmaCube") || selectedMobtype.equals("Slime")) {
-                        activateSize(false, null);
-                    } else if (selectedMobtype.equals("Ocelot")) {
-                        activateCatType(false, null);
-                        activateSit(false, null);
-                    } else if (selectedMobtype.equals("Pig") && !selectedMobtype.contains("Zombie")) {
-                        activateSaddle(false, null);
-                    } else if (selectedMobtype.equals("PigZombie")) {
-                        activateArmorEquip(false, null);
-                        activateWeapon(false, null);
-                    } else if (selectedMobtype.equals("Sheep")) {
-                        activateColor(false, null);
-                    } else if (selectedMobtype.equals("Skeleton")) {
-                        activateArmorEquip(false, null);
-                        activateWeapon(false, null);
-                        activateWither(false, null);
-                    } else if (selectedMobtype.equals("Villager")) {
-                        activateProfession(false, null);
-                    } else if (selectedMobtype.equals("Wither")) {
-                        activateWither(false, null);
-                    } else if (selectedMobtype.equals("Wolf")) {
-                        activateColor(false, null);
-                        activateSit(false, null);
-                        activateTamed(false, null);
-                        activateAngry(false, null);
-                    } else if (selectedMobtype.equals("Zombie") && !selectedMobtype.contains("Pig")) {
-                        activateArmorEquip(false, null);
-                        activateWeapon(false, null);
-                    }
+                    activateFields(false, null);
                 }
             }
         });
@@ -167,7 +113,8 @@ public class EntityCreator implements Editor {
                     if (entityTemplateTree.getSelectionPath().getPath().length == 2) {
                         if (entityTemplateTree.getSelectionPath().getPathComponent(1) instanceof TemplateNode) {
                             EntityTemplate template = ((TemplateNode) entityTemplateTree.getSelectionPath().getPathComponent(1)).getEntityTemplate();
-                            editTemplate(template);
+                            createMode = false;
+                            activateFields(true, template);
                         }
                     }
                 }
@@ -188,10 +135,9 @@ public class EntityCreator implements Editor {
             public void actionPerformed(ActionEvent e) {
                 boolean save = true;
 
-                if(createMode) {
+                if (createMode) {
                     editTemplate = new EntityTemplate();
                 }
-                //EntityTemplate toDelete = editTemplate;
                 if (createMode) {
                     editTemplate.setEntityType((String) mobTypeComboBox.getSelectedItem());
                 }
@@ -219,7 +165,7 @@ public class EntityCreator implements Editor {
                     field_Range_Damage.setText("This has to be a number");
                     save = false;
                 }
-                if(!Util.isInt(field_Size.getText()) && !field_Size.getText().equals("")) {
+                if (!Util.isInt(field_Size.getText()) && !field_Size.getText().equals("")) {
                     field_Size.setText("This has to be a number");
                     save = false;
                 }
@@ -234,11 +180,7 @@ public class EntityCreator implements Editor {
                     //Update or create components
                     for (IComponent iComponent : editTemplate.getComponents()) {
                         if (iComponent instanceof MeeleDamageComponent) {
-                            if (field_Meele_Damage.isEnabled() && field_Meele_Damage.getText().equals("")) {
-                                editTemplate.getComponents().remove(iComponent);
-                            } else if (field_Meele_Damage.isEnabled()) {
-                                ((MeeleDamageComponent) iComponent).setValue(Double.parseDouble(field_Meele_Damage.getText()));
-                            }
+                            saveTextField(editTemplate, iComponent, MeeleDamageComponent.class, field_Meele_Damage);
                         } else if (iComponent instanceof RangeDamageComponent) {
                             if (field_Range_Damage.isEnabled() && field_Range_Damage.getText().equals("")) {
                                 editTemplate.getComponents().remove(iComponent);
@@ -248,195 +190,75 @@ public class EntityCreator implements Editor {
                                 ((RangeDamageComponent) iComponent).setValue(tmpMap);
                             }
                         } else if (iComponent instanceof ArmorComponent) {
-                            if (field_Armor.isEnabled() && field_Armor.getText().equals("")) {
-                                editTemplate.getComponents().remove(iComponent);
-                            } else if (field_Armor.isEnabled()) {
-                                ((ArmorComponent) iComponent).setValue(Integer.parseInt(field_Armor.getText()));
-                            }
+                            saveTextField(editTemplate, iComponent, ArmorComponent.class, field_Armor);
                         } else if (iComponent instanceof AgeComponent) {
-                            if (field_Age.isEnabled() && field_Age.getText().equals("")) {
-                                editTemplate.getComponents().remove(iComponent);
-                            } else if (field_Age.isEnabled()) {
-                                ((AgeComponent) iComponent).setValue(Integer.parseInt(field_Age.getText()));
-                            }
+                            saveTextField(editTemplate, iComponent, AgeComponent.class, field_Age);
                         } else if (iComponent instanceof BabyComponent) {
-                            if (isBabyCheckBox.isEnabled()) {
-                                ((BabyComponent) iComponent).setValue(isBabyCheckBox.isSelected());
-                            }
+                            saveCheckboxe(iComponent, BabyComponent.class, isBabyCheckBox);
                         } else if (iComponent instanceof AngryComponent) {
-                            if (isAngryCheckBox.isEnabled()) {
-                                ((AngryComponent) iComponent).setValue(isAngryCheckBox.isSelected());
-                            }
+                            saveCheckboxe(iComponent, AngryComponent.class, isAngryCheckBox);
                         } else if (iComponent instanceof FireComponent) {
-                            if (onFireCheckBox.isEnabled()) {
-                                ((FireComponent) iComponent).setValue(onFireCheckBox.isSelected());
-                            }
+                            saveCheckboxe(iComponent, FireComponent.class, onFireCheckBox);
                         } else if (iComponent instanceof ChestComponent) {
-                            if (hasChestCheckBox.isEnabled()) {
-                                ((ChestComponent) iComponent).setValue(hasChestCheckBox.isSelected());
-                            }
+                            saveCheckboxe(iComponent, ChestComponent.class, hasChestCheckBox);
                         } else if (iComponent instanceof PoweredComponent) {
-                            if (isPoweredCheckBox.isEnabled()) {
-                                ((PoweredComponent) iComponent).setValue(isPoweredCheckBox.isSelected());
-                            }
+                            saveCheckboxe(iComponent, PoweredComponent.class, isPoweredCheckBox);
                         } else if (iComponent instanceof SaddleComponent) {
-                            if (hasSaddleCheckBox.isEnabled()) {
-                                ((SaddleComponent) iComponent).setValue(hasSaddleCheckBox.isSelected());
-                            }
+                            saveCheckboxe(iComponent, SaddleComponent.class, hasSaddleCheckBox);
                         } else if (iComponent instanceof SittingComponent) {
-                            if (isSittingCheckBox.isEnabled()) {
-                                ((SittingComponent) iComponent).setValue(isSittingCheckBox.isSelected());
-                            }
+                            saveCheckboxe(iComponent, SittingComponent.class, isSittingCheckBox);
                         } else if (iComponent instanceof TamedComponent) {
-                            if (isTamedCheckBox.isEnabled()) {
-                                ((TamedComponent) iComponent).setValue(isTamedCheckBox.isSelected());
-                            }
+                            saveCheckboxe(iComponent, TamedComponent.class, isTamedCheckBox);
                         } else if (iComponent instanceof WitherComponent) {
-                            if (isWitherCheckBox.isEnabled()) {
-                                ((WitherComponent) iComponent).setValue(isWitherCheckBox.isSelected());
-                            }
+                            saveCheckboxe(iComponent, WitherComponent.class, isWitherCheckBox);
                         } else if (iComponent instanceof HorseTypeComponent) {
-                            if (horseType_comboBox.isEnabled()) {
-                                ((HorseTypeComponent) iComponent).setValue(((HorseTypeItem)horseType_comboBox.getSelectedItem()).getType());
-                            }
+                            saveComboboxItem(iComponent, HorseTypeComponent.class, horseType_comboBox, HorseTypeItem.class);
                         } else if (iComponent instanceof VariantComponent) {
-                            if (variant_comboBox.isEnabled()) {
-                                ((VariantComponent) iComponent).setValue(((VariantItem)variant_comboBox.getSelectedItem()).getVariant());
-                            }
+                            saveComboboxItem(iComponent, VariantComponent.class, variant_comboBox, VariantItem.class);
                         } else if (iComponent instanceof CatTypeComponent) {
-                            if (catType_comboBox.isEnabled()) {
-                                ((CatTypeComponent) iComponent).setValue(((CatTypeItem)catType_comboBox.getSelectedItem()).getType());
-                            }
+                            saveComboboxItem(iComponent, CatTypeComponent.class, catType_comboBox, CatTypeItem.class);
                         } else if (iComponent instanceof ColorComponent) {
-                            if (color_comboBox.isEnabled()) {
-                                ((ColorComponent) iComponent).setValue(((ColorItem) color_comboBox.getSelectedItem()).getColor_id());
-                            }
+                            saveComboboxItem(iComponent, ColorComponent.class, color_comboBox, ColorItem.class);
                         } else if (iComponent instanceof ProfessionComponent) {
-                            if (profession_comboBox.isEnabled()) {
-                                ((ProfessionComponent) iComponent).setValue(((ProfessionItem) profession_comboBox.getSelectedItem()).getProfession());
-                            }
+                            saveComboboxItem(iComponent, ProfessionComponent.class, profession_comboBox, ProfessionItem.class);
                         } else if (iComponent instanceof SizeComponent) {
-                            if (field_Size.isEnabled()) {
-                                ((SizeComponent) iComponent).setValue(Integer.parseInt(field_Size.getText()));
-                            }
+                            ((SizeComponent) iComponent).setValue(Integer.parseInt(field_Size.getText()));
                         } else if (iComponent instanceof EquipmentWeaponComponent) {
                             if (field_weapon_id.isEnabled() && field_weapon_id.getText().equals("")) {
                                 editTemplate.getComponents().remove(iComponent);
                             } else if (field_Range_Damage.isEnabled()) {
-                                JSONObject weaponObj = new JSONObject();
-                                if(Util.isInt(field_weapon_id.getText())) {
-                                    weaponObj.put("material",Integer.parseInt(field_weapon_id.getText()));
-                                } else {
-                                    weaponObj.put("material",field_weapon_id.getText());
-                                }
-                                if(!field_weapon_data.getText().equals("")) {
-                                    if(Util.isInt(field_weapon_data.getText())) {
-                                        weaponObj.put("data",Integer.parseInt(field_weapon_data.getText()));
-                                    } else {
-                                        weaponObj.put("data",field_weapon_data.getText());
-                                    }
-                                }
-                                if(!field_weapon_tag.getText().equals("")) {
-                                    weaponObj.put("tag",field_weapon_tag.getText());
-                                }
-                                ((EquipmentWeaponComponent) iComponent).setValue(weaponObj);
+                                ((EquipmentWeaponComponent) iComponent).setValue(getEquipmentObjcet(field_weapon_id, field_weapon_data, field_weapon_tag));
                             }
-                        } else if(iComponent instanceof EquipmentArmorComponent) {
-                            if(field_helmet_id.isEnabled() && field_helmet_id.getText().equals("")
-                               && field_chest_id.isEnabled() && field_chest_id.getText().equals("")
-                               && field_leggins_id.isEnabled() && field_leggins_id.getText().equals("")
-                               && field_boots_id.isEnabled() && field_boots_id.getText().equals("")) {
-                                  editTemplate.getComponents().remove(iComponent);
+                        } else if (iComponent instanceof EquipmentArmorComponent) {
+                            if (field_helmet_id.isEnabled() && field_helmet_id.getText().equals("")
+                                    && field_chest_id.isEnabled() && field_chest_id.getText().equals("")
+                                    && field_leggins_id.isEnabled() && field_leggins_id.getText().equals("")
+                                    && field_boots_id.isEnabled() && field_boots_id.getText().equals("")) {
+                                editTemplate.getComponents().remove(iComponent);
                             } else {
                                 if (field_helmet_id.isEnabled() && field_helmet_id.getText().equals("")) {
                                     ((EquipmentArmorComponent) iComponent).getValue().remove("helmet");
-                                } else if(field_helmet_id.isEnabled()){
-                                    JSONObject helmetObj = new JSONObject();
-                                    if(Util.isInt(field_helmet_id.getText())) {
-                                        helmetObj.put("material",Integer.parseInt(field_helmet_id.getText()));
-                                    } else {
-                                        helmetObj.put("material",field_helmet_id.getText());
-                                    }
-                                    if(!field_helmet_data.getText().equals("")) {
-                                        if(Util.isInt(field_helmet_data.getText())) {
-                                            helmetObj.put("data",Integer.parseInt(field_helmet_data.getText()));
-                                        } else {
-                                            helmetObj.put("data",field_helmet_data.getText());
-                                        }
-                                    }
-                                    if(!field_helmet_tag.getText().equals("")) {
-                                        helmetObj.put("tag",field_helmet_tag.getText());
-                                    }
-                                    ((EquipmentArmorComponent) iComponent).getValue().put("helmet",helmetObj);
+                                } else if (field_helmet_id.isEnabled()) {
+                                    ((EquipmentArmorComponent) iComponent).getValue().put("helmet", getEquipmentObjcet(field_helmet_id, field_helmet_data, field_helmet_tag));
                                 }
                                 if (field_chest_id.isEnabled() && field_chest_id.getText().equals("")) {
                                     ((EquipmentArmorComponent) iComponent).getValue().remove("chestplate");
-                                } else if(field_chest_id.isEnabled()){
-                                    JSONObject chestObj = new JSONObject();
-                                    if(Util.isInt(field_chest_id.getText())) {
-                                        chestObj.put("material", Integer.parseInt(field_chest_id.getText()));
-                                    } else {
-                                        chestObj.put("material", field_chest_id.getText());
-                                    }
-                                    if(!field_chest_data.getText().equals("")) {
-                                        if(Util.isInt(field_chest_data.getText())) {
-                                            chestObj.put("data", Integer.parseInt(field_chest_data.getText()));
-                                        } else {
-                                            chestObj.put("data", field_chest_data.getText());
-                                        }
-                                    }
-                                    if(!field_chest_tag.getText().equals("")) {
-                                        chestObj.put("tag", field_chest_tag.getText());
-                                    }
-                                    ((EquipmentArmorComponent) iComponent).getValue().put("chestplate",chestObj);
+                                } else if (field_chest_id.isEnabled()) {
+                                    ((EquipmentArmorComponent) iComponent).getValue().put("chestplate", getEquipmentObjcet(field_chest_id, field_chest_data, field_chest_tag));
                                 }
                                 if (field_leggins_id.isEnabled() && field_leggins_id.getText().equals("")) {
                                     ((EquipmentArmorComponent) iComponent).getValue().remove("leggins");
-                                } else if(field_leggins_id.isEnabled()){
-                                    JSONObject legginsObj = new JSONObject();
-                                    if(Util.isInt(field_leggins_id.getText())) {
-                                        legginsObj.put("material", Integer.parseInt(field_leggins_id.getText()));
-                                    } else {
-                                        legginsObj.put("material", field_leggins_id.getText());
-                                    }
-                                    if(!field_leggins_data.getText().equals("")) {
-                                        if(Util.isInt(field_leggins_data.getText())) {
-                                            legginsObj.put("data", Integer.parseInt(field_leggins_data.getText()));
-                                        } else {
-                                            legginsObj.put("data", field_leggins_data.getText());
-                                        }
-                                    }
-                                    if(!field_leggins_tag.getText().equals("")) {
-                                        legginsObj.put("tag", field_leggins_tag.getText());
-                                    }
-                                    ((EquipmentArmorComponent) iComponent).getValue().put("leggins",legginsObj);
+                                } else if (field_leggins_id.isEnabled()) {
+                                    ((EquipmentArmorComponent) iComponent).getValue().put("leggins", getEquipmentObjcet(field_leggins_id, field_leggins_data, field_leggins_tag));
                                 }
                                 if (field_boots_id.isEnabled() && field_boots_id.getText().equals("")) {
                                     ((EquipmentArmorComponent) iComponent).getValue().remove("boots");
-                                } else if(field_boots_id.isEnabled()){
-                                    JSONObject bootsObj = new JSONObject();
-                                    if(Util.isInt(field_boots_id.getText())) {
-                                        bootsObj.put("material", Integer.parseInt(field_boots_id.getText()));
-                                    } else {
-                                        bootsObj.put("material", field_boots_id.getText());
-                                    }
-                                    if(!field_boots_data.getText().equals("")) {
-                                        if(Util.isInt(field_boots_data.getText())) {
-                                            bootsObj.put("data", Integer.parseInt(field_boots_data.getText()));
-                                        } else {
-                                            bootsObj.put("data", field_boots_data.getText());
-                                        }
-                                    }
-                                    if(!field_boots_id.getText().equals("")) {
-                                        bootsObj.put("tag", field_boots_tag.getText());
-                                    }
-                                    ((EquipmentArmorComponent) iComponent).getValue().put("boots",bootsObj);
+                                } else if (field_boots_id.isEnabled()) {
+                                    ((EquipmentArmorComponent) iComponent).getValue().put("boots", getEquipmentObjcet(field_boots_id, field_boots_data, field_boots_tag));
                                 }
                             }
                         }
-
                     }
-
 
                     //Create Components if they don't exist
                     if (field_Meele_Damage.isEnabled() && !field_Meele_Damage.getText().equals("")) {
@@ -508,27 +330,27 @@ public class EntityCreator implements Editor {
                     }
                     if (horseType_comboBox.isEnabled()) {
                         if (!componentExists(editTemplate, HorseTypeComponent.class)) {
-                            editTemplate.getComponents().add(new HorseTypeComponent(((HorseTypeItem)horseType_comboBox.getSelectedItem()).getType()));
+                            editTemplate.getComponents().add(new HorseTypeComponent(((HorseTypeItem) horseType_comboBox.getSelectedItem()).getValue()));
                         }
                     }
                     if (variant_comboBox.isEnabled()) {
                         if (!componentExists(editTemplate, VariantComponent.class)) {
-                            editTemplate.getComponents().add(new VariantComponent(((VariantItem)variant_comboBox.getSelectedItem()).getVariant()));
+                            editTemplate.getComponents().add(new VariantComponent(((VariantItem) variant_comboBox.getSelectedItem()).getValue()));
                         }
                     }
                     if (catType_comboBox.isEnabled()) {
                         if (!componentExists(editTemplate, CatTypeComponent.class)) {
-                            editTemplate.getComponents().add(new CatTypeComponent(((CatTypeItem)catType_comboBox.getSelectedItem()).getType()));
+                            editTemplate.getComponents().add(new CatTypeComponent(((CatTypeItem) catType_comboBox.getSelectedItem()).getValue()));
                         }
                     }
                     if (color_comboBox.isEnabled()) {
                         if (!componentExists(editTemplate, ColorComponent.class)) {
-                            editTemplate.getComponents().add(new ColorComponent(((ColorItem) color_comboBox.getSelectedItem()).getColor_id()));
+                            editTemplate.getComponents().add(new ColorComponent(((ColorItem) color_comboBox.getSelectedItem()).getValue()));
                         }
                     }
                     if (profession_comboBox.isEnabled()) {
                         if (!componentExists(editTemplate, ProfessionComponent.class)) {
-                            editTemplate.getComponents().add(new ProfessionComponent(((ProfessionItem) profession_comboBox.getSelectedItem()).getProfession()));
+                            editTemplate.getComponents().add(new ProfessionComponent(((ProfessionItem) profession_comboBox.getSelectedItem()).getValue()));
                         }
                     }
                     if (field_Size.isEnabled() && !field_Size.getText().equals("")) {
@@ -537,117 +359,34 @@ public class EntityCreator implements Editor {
                         }
                     }
                     if (field_weapon_id.isEnabled() && !field_weapon_id.getText().equals("")) {
-                        if(!componentExists(editTemplate, EquipmentWeaponComponent.class)) {
-                            JSONObject weaponObj = new JSONObject();
-                            if(Util.isInt(field_weapon_id.getText())) {
-                                weaponObj.put("material",Integer.parseInt(field_weapon_id.getText()));
-                            } else {
-                                weaponObj.put("material",field_weapon_id.getText());
-                            }
-                            if(!field_weapon_data.getText().equals("")) {
-                                if(Util.isInt(field_weapon_data.getText())) {
-                                    weaponObj.put("data",Integer.parseInt(field_weapon_data.getText()));
-                                } else {
-                                    weaponObj.put("data",field_weapon_data.getText());
-                                }
-                            }
-                            if(!field_weapon_tag.getText().equals("")) {
-                                weaponObj.put("tag",field_weapon_tag.getText());
-                            }
-                            editTemplate.getComponents().add(new EquipmentWeaponComponent(weaponObj));
+                        if (!componentExists(editTemplate, EquipmentWeaponComponent.class)) {
+                            editTemplate.getComponents().add(new EquipmentWeaponComponent(getEquipmentObjcet(field_weapon_id, field_weapon_data, field_weapon_tag)));
                         }
                     }
-                    if(field_helmet_id.isEnabled() && !field_helmet_id.getText().equals("")
+                    if (field_helmet_id.isEnabled() && !field_helmet_id.getText().equals("")
                             || field_chest_id.isEnabled() && !field_chest_id.getText().equals("")
                             || field_leggins_id.isEnabled() && !field_leggins_id.getText().equals("")
                             || field_boots_id.isEnabled() && !field_boots_id.getText().equals("")) {
                         Map<String, JSONObject> newMap = new HashMap<String, JSONObject>();
-                        if(field_helmet_id.isEnabled()){
-                            JSONObject helmetObj = new JSONObject();
-                            if(Util.isInt(field_helmet_id.getText())) {
-                                helmetObj.put("material",Integer.parseInt(field_helmet_id.getText()));
-                            } else {
-                                helmetObj.put("material",field_helmet_id.getText());
-                            }
-                            if(!field_helmet_data.getText().equals("")) {
-                                if(Util.isInt(field_helmet_data.getText())) {
-                                    helmetObj.put("data",Integer.parseInt(field_helmet_data.getText()));
-                                } else {
-                                    helmetObj.put("data",field_helmet_data.getText());
-                                }
-                            }
-                            if(!field_helmet_tag.getText().equals("")) {
-                                helmetObj.put("tag",field_helmet_tag.getText());
-                            }
-                            newMap.put("helmet", helmetObj);
+                        if (field_helmet_id.isEnabled()) {
+                            newMap.put("helmet", getEquipmentObjcet(field_helmet_id, field_helmet_data, field_helmet_tag));
                         }
-                        if(field_chest_id.isEnabled()){
-                            JSONObject chestObj = new JSONObject();
-                            if(Util.isInt(field_chest_id.getText())) {
-                                chestObj.put("material", Integer.parseInt(field_chest_id.getText()));
-                            } else {
-                                chestObj.put("material", field_chest_id.getText());
-                            }
-                            if(!field_chest_data.getText().equals("")) {
-                                if(Util.isInt(field_chest_data.getText())) {
-                                    chestObj.put("data", Integer.parseInt(field_chest_data.getText()));
-                                } else {
-                                    chestObj.put("data", field_chest_data.getText());
-                                }
-                            }
-                            if(!field_chest_tag.getText().equals("")) {
-                                chestObj.put("tag", field_chest_tag.getText());
-                            }
-                            newMap.put("chestplate", chestObj);
+                        if (field_chest_id.isEnabled()) {
+                            newMap.put("chestplate", getEquipmentObjcet(field_chest_id, field_chest_data, field_chest_tag));
                         }
-                        if(field_leggins_id.isEnabled()){
-                            JSONObject legginsObj = new JSONObject();
-                            if(Util.isInt(field_leggins_id.getText())) {
-                                legginsObj.put("material", Integer.parseInt(field_leggins_id.getText()));
-                            } else {
-                                legginsObj.put("material", field_leggins_id.getText());
-                            }
-                            if(!field_leggins_data.getText().equals("")) {
-                                if(Util.isInt(field_leggins_data.getText())) {
-                                    legginsObj.put("data", Integer.parseInt(field_leggins_data.getText()));
-                                } else {
-                                    legginsObj.put("data", field_leggins_data.getText());
-                                }
-                            }
-                            if(!field_leggins_tag.getText().equals("")) {
-                                legginsObj.put("tag", field_leggins_tag.getText());
-                            }
-                            newMap.put("leggins", legginsObj);
+                        if (field_leggins_id.isEnabled()) {
+                            newMap.put("leggins", getEquipmentObjcet(field_leggins_id, field_leggins_data, field_leggins_tag));
                         }
-                        if(field_boots_id.isEnabled()){
-                            JSONObject bootsObj = new JSONObject();
-                            if(Util.isInt(field_boots_id.getText())) {
-                                bootsObj.put("material", Integer.parseInt(field_boots_id.getText()));
-                            } else {
-                                bootsObj.put("material", field_boots_id.getText());
-                            }
-                            if(!field_boots_data.getText().equals("")) {
-                                if(Util.isInt(field_boots_data.getText())) {
-                                    bootsObj.put("data", Integer.parseInt(field_boots_data.getText()));
-                                } else {
-                                    bootsObj.put("data", field_boots_data.getText());
-                                }
-                            }
-                            if(!field_boots_tag.getText().equals("")) {
-                                bootsObj.put("tag", field_boots_tag.getText());
-                            }
-                            newMap.put("boots", bootsObj);
+                        if (field_boots_id.isEnabled()) {
+                            newMap.put("boots", getEquipmentObjcet(field_boots_id, field_boots_data, field_boots_tag));
                         }
                         editTemplate.getComponents().add(new EquipmentArmorComponent(newMap));
                     }
-                    if(createMode) {
-                        //templateList.remove(toDelete);
+                    if (createMode) {
                         templateList.add(editTemplate);
                     }
-
                     loadCreaturesInTemplate();
                 }
-
             }
         });
 
@@ -661,7 +400,7 @@ public class EntityCreator implements Editor {
                             EntityTemplate template = ((TemplateNode) entityTemplateTree.getSelectionPath().getPathComponent(1)).getEntityTemplate();
                             mobTypeComboBox.setEnabled(false);
                             createMode = false;
-                            editTemplate(template);
+                            activateFields(true, template);
                         }
                     }
                 }
@@ -677,7 +416,7 @@ public class EntityCreator implements Editor {
                             case KeyEvent.VK_ENTER:
                                 mobTypeComboBox.setEnabled(false);
                                 createMode = false;
-                                editTemplate(template);
+                                activateFields(true, template);
                                 break;
                             case KeyEvent.VK_DELETE:
                                /* selectedMobtype.removeSkillTree(template.getClassName());
@@ -704,15 +443,13 @@ public class EntityCreator implements Editor {
         entityTemplateTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
         mobTypeComboBox = new JComboBox(MOB_TYPES);
-        combobox_Projectile = new JComboBox(new String[] {"Arrow", "Wither Skull","Snowball", "Large Fireball", "Small Fireball"});
+        combobox_Projectile = new JComboBox(new String[]{"Arrow", "Wither Skull", "Snowball", "Large Fireball", "Small Fireball"});
 
         horseType_comboBox = new JComboBox(new HorseTypeItem().getTypes());
         variant_comboBox = new JComboBox(new VariantItem().getVariants());
         catType_comboBox = new JComboBox(new CatTypeItem().getTypes());
         color_comboBox = new JComboBox(new ColorItem().getColors());
         profession_comboBox = new JComboBox(new ProfessionItem().getProfessions());
-
-        //deactivateAllTemplatePanel();
     }
 
     public void templateTreeExpandAll() {
@@ -729,7 +466,7 @@ public class EntityCreator implements Editor {
     @Override
     public void openDungeon(File dungeonFolder) {
         templateFile = new File(dungeonFolder, "entity-templates.json");
-        if(templateFile.exists()) {
+        if (templateFile.exists()) {
             templateList = loader.loadCreaturesInTemplate(templateFile);
             loadCreaturesInTemplate();
         }
@@ -785,60 +522,67 @@ public class EntityCreator implements Editor {
         return false;
     }
 
-    public void editTemplate(EntityTemplate template) {
-        editTemplate = template;
+    public void activateFields(boolean editMode, EntityTemplate template) {
+        String mobType;
+
+        if (editMode) {
+            editTemplate = template;
+            mobType = template.getEntityType();
+        } else {
+            mobType = mobTypeComboBox.getSelectedItem().toString();
+        }
         deactivateAllTemplatePanel();
-        activateWalkSpeed(true, template);
-        activateMaxHealth(true, template);
-        activeEntityTemplatID(true, template);
-        activateDisplayName(true,template);
-        activateMeeleDamage(true, template);
-        activateRangeDamage(true, template);
-        activateArmor(true, template);
+        activateWalkSpeed(editMode, template);
+        activateMaxHealth(editMode, template);
+        activeEntityTemplatID(editMode, template);
+        activateDisplayName(editMode, template);
+        activateMeeleDamage(editMode, template);
+        activateRangeDamage(editMode, template);
+        activateArmor(editMode, template);
         activateSaveButton();
-        if (template.getEntityType().equals("Blaze")) {
-            activateFire(true, template);
-        } else if (template.getEntityType().equals("Creeper")) {
-            activatePowered(true, template);
-        } else if (template.getEntityType().equals("Enderman")) {
-            activateAngry(true, template);
-            activateWeapon(true, template);
-        } else if (template.getEntityType().equals("Horse")) {
-            activateAge(true, template);
-            activateBaby(true, template);
-            activateTamed(true, template);
-            activateVariant(true, template);
-            activateChest(true, template);
-            activateSaddle(true, template);
-            activateHorseType(true, template);
-        } else if (template.getEntityType().equals("MagmaCube") || template.getEntityType().equals("Slime")) {
-            activateSize(true, template);
-        } else if (template.getEntityType().equals("Ocelot")) {
-            activateCatType(true, template);
-            activateSit(true, template);
-        } else if (template.getEntityType().equals("Pig") && !template.getEntityType().contains("Zombie")) {
-            activateSaddle(true, template);
-        } else if (template.getEntityType().equals("PigZombie")) {
-            activateArmorEquip(true, template);
-            activateWeapon(true, template);
-        } else if (template.getEntityType().equals("Sheep")) {
-            activateColor(true, template);
-        } else if (template.getEntityType().equals("Skeleton")) {
-            activateArmorEquip(false, template);
-            activateWeapon(true, template);
-            activateWither(true, template);
-        } else if (template.getEntityType().equals("Villager")) {
-            activateProfession(true, template);
-        } else if (template.getEntityType().equals("Wither")) {
-            activateWither(true, template);
-        } else if (template.getEntityType().equals("Wolf")) {
-            activateColor(true, template);
-            activateSit(true, template);
-            activateTamed(true, template);
-            activateAngry(true, template);
-        } else if (template.getEntityType().equals("Zombie") && !template.getEntityType().contains("Pig")) {
-            activateArmorEquip(true, template);
-            activateWeapon(true, template);
+        if (mobType.equals("Blaze")) {
+            activateFire(editMode, template);
+        } else if (mobType.equals("Creeper")) {
+            activatePowered(editMode, template);
+        } else if (mobType.equals("Enderman")) {
+            activateAngry(editMode, template);
+            activateWeapon(editMode, template);
+        } else if (mobType.equals("Horse")) {
+            activateAge(editMode, template);
+            activateBaby(editMode, template);
+            activateTamed(editMode, template);
+            activateVariant(editMode, template);
+            activateChest(editMode, template);
+            activateSaddle(editMode, template);
+            activateHorseType(editMode, template);
+        } else if (mobType.equals("MagmaCube") || mobType.equals("Slime")) {
+            activateSize(editMode, template);
+        } else if (mobType.equals("Ocelot")) {
+            activateCatType(editMode, template);
+            activateSit(editMode, template);
+        } else if (mobType.equals("Pig") && !mobType.contains("Zombie")) {
+            activateSaddle(editMode, template);
+        } else if (mobType.equals("PigZombie")) {
+            activateArmorEquip(editMode, template);
+            activateWeapon(editMode, template);
+        } else if (mobType.equals("Sheep")) {
+            activateColor(editMode, template);
+        } else if (mobType.equals("Skeleton")) {
+            activateArmorEquip(editMode, template);
+            activateWeapon(editMode, template);
+            activateWither(editMode, template);
+        } else if (mobType.equals("Villager")) {
+            activateProfession(editMode, template);
+        } else if (mobType.equals("Wither")) {
+            activateWither(editMode, template);
+        } else if (mobType.equals("Wolf")) {
+            activateColor(editMode, template);
+            activateSit(editMode, template);
+            activateTamed(editMode, template);
+            activateAngry(editMode, template);
+        } else if (mobType.equals("Zombie") && !mobType.contains("Pig")) {
+            activateArmorEquip(editMode, template);
+            activateWeapon(editMode, template);
         }
     }
 
@@ -927,16 +671,16 @@ public class EntityCreator implements Editor {
         field_weapon_tag.setText("");
 
         if (editMode) {
-            for(IComponent c : template.getComponents()) {
-                if(c instanceof EquipmentWeaponComponent) {
+            for (IComponent c : template.getComponents()) {
+                if (c instanceof EquipmentWeaponComponent) {
                     JSONObject weaponObj = ((EquipmentWeaponComponent) c).getValue();
-                    if(weaponObj.containsKey("material")) {
+                    if (weaponObj.containsKey("material")) {
                         field_weapon_id.setText(weaponObj.get("material").toString());
                     }
-                    if(weaponObj.containsKey("data")) {
+                    if (weaponObj.containsKey("data")) {
                         field_weapon_data.setText(weaponObj.get("data").toString());
                     }
-                    if(weaponObj.containsKey("tag")) {
+                    if (weaponObj.containsKey("tag")) {
                         field_weapon_tag.setText(weaponObj.get("tag").toString());
                     }
                 }
@@ -979,7 +723,7 @@ public class EntityCreator implements Editor {
             for (IComponent c : template.getComponents()) {
                 if (c instanceof VariantComponent) {
                     for (int i = 0; i < variant_comboBox.getItemCount(); i++) {
-                        if (((VariantItem)variant_comboBox.getItemAt(i)).getVariant() == ((VariantComponent)c).getValue()) {
+                        if (((VariantItem) variant_comboBox.getItemAt(i)).getValue() == ((VariantComponent) c).getValue()) {
                             variant_comboBox.setSelectedIndex(i);
                             break;
                         }
@@ -1066,7 +810,7 @@ public class EntityCreator implements Editor {
             for (IComponent c : template.getComponents()) {
                 if (c instanceof CatTypeComponent) {
                     for (int i = 0; i < catType_comboBox.getItemCount(); i++) {
-                        if (((CatTypeItem)catType_comboBox.getItemAt(i)).getType() == ((CatTypeComponent)c).getValue()) {
+                        if (((CatTypeItem) catType_comboBox.getItemAt(i)).getValue() == ((CatTypeComponent) c).getValue()) {
                             catType_comboBox.setSelectedIndex(i);
                             break;
                         }
@@ -1105,49 +849,49 @@ public class EntityCreator implements Editor {
         field_boots_tag.setText("");
 
         if (editMode) {
-            for(IComponent c : template.getComponents()) {
-                if(c instanceof EquipmentArmorComponent) {
-                    Map<String,JSONObject> jsonObjectMap = ((EquipmentArmorComponent)c).getValue();
+            for (IComponent c : template.getComponents()) {
+                if (c instanceof EquipmentArmorComponent) {
+                    Map<String, JSONObject> jsonObjectMap = ((EquipmentArmorComponent) c).getValue();
 
-                    for(String key : jsonObjectMap.keySet()) {
-                        if(key.equals("helmet")) {
-                            if(jsonObjectMap.get(key).containsKey("material")) {
+                    for (String key : jsonObjectMap.keySet()) {
+                        if (key.equals("helmet")) {
+                            if (jsonObjectMap.get(key).containsKey("material")) {
                                 field_helmet_id.setText(jsonObjectMap.get(key).get("material").toString());
                             }
-                            if(jsonObjectMap.get(key).containsKey("data")) {
+                            if (jsonObjectMap.get(key).containsKey("data")) {
                                 field_helmet_data.setText(jsonObjectMap.get(key).get("data").toString());
                             }
-                            if(jsonObjectMap.get(key).containsKey("tag")) {
+                            if (jsonObjectMap.get(key).containsKey("tag")) {
                                 field_helmet_tag.setText(jsonObjectMap.get(key).get("tag").toString());
                             }
-                        } else if(key.equals("chestplate")) {
-                            if(jsonObjectMap.get(key).containsKey("material")) {
+                        } else if (key.equals("chestplate")) {
+                            if (jsonObjectMap.get(key).containsKey("material")) {
                                 field_chest_id.setText(jsonObjectMap.get(key).get("material").toString());
                             }
-                            if(jsonObjectMap.get(key).containsKey("data")) {
+                            if (jsonObjectMap.get(key).containsKey("data")) {
                                 field_chest_data.setText(jsonObjectMap.get(key).get("data").toString());
                             }
-                            if(jsonObjectMap.get(key).containsKey("tag")) {
+                            if (jsonObjectMap.get(key).containsKey("tag")) {
                                 field_chest_tag.setText(jsonObjectMap.get(key).get("tag").toString());
                             }
-                        } else if(key.equals("leggins")) {
-                            if(jsonObjectMap.get(key).containsKey("material")) {
+                        } else if (key.equals("leggins")) {
+                            if (jsonObjectMap.get(key).containsKey("material")) {
                                 field_leggins_id.setText(jsonObjectMap.get(key).get("material").toString());
                             }
-                            if(jsonObjectMap.get(key).containsKey("data")) {
+                            if (jsonObjectMap.get(key).containsKey("data")) {
                                 field_leggins_data.setText(jsonObjectMap.get(key).get("data").toString());
                             }
-                            if(jsonObjectMap.get(key).containsKey("tag")) {
+                            if (jsonObjectMap.get(key).containsKey("tag")) {
                                 field_leggins_tag.setText(jsonObjectMap.get(key).get("tag").toString());
                             }
-                        } else if(key.equals("boots")) {
-                            if(jsonObjectMap.get(key).containsKey("material")) {
+                        } else if (key.equals("boots")) {
+                            if (jsonObjectMap.get(key).containsKey("material")) {
                                 field_boots_id.setText(jsonObjectMap.get(key).get("material").toString());
                             }
-                            if(jsonObjectMap.get(key).containsKey("data")) {
+                            if (jsonObjectMap.get(key).containsKey("data")) {
                                 field_boots_data.setText(jsonObjectMap.get(key).get("data").toString());
                             }
-                            if(jsonObjectMap.get(key).containsKey("tag")) {
+                            if (jsonObjectMap.get(key).containsKey("tag")) {
                                 field_boots_tag.setText(jsonObjectMap.get(key).get("tag").toString());
                             }
                         }
@@ -1164,7 +908,7 @@ public class EntityCreator implements Editor {
             for (IComponent c : template.getComponents()) {
                 if (c instanceof ColorComponent) {
                     for (int i = 0; i < color_comboBox.getItemCount(); i++) {
-                        if (((ColorItem)color_comboBox.getItemAt(i)).getColor_id() == ((ColorComponent)c).getValue()) {
+                        if (((ColorItem) color_comboBox.getItemAt(i)).getValue() == ((ColorComponent) c).getValue()) {
                             color_comboBox.setSelectedIndex(i);
                             break;
                         }
@@ -1196,7 +940,7 @@ public class EntityCreator implements Editor {
             for (IComponent c : template.getComponents()) {
                 if (c instanceof ProfessionComponent) {
                     for (int i = 0; i < profession_comboBox.getItemCount(); i++) {
-                        if (((ProfessionItem)profession_comboBox.getItemAt(i)).getProfession() == ((ProfessionComponent)c).getValue()) {
+                        if (((ProfessionItem) profession_comboBox.getItemAt(i)).getValue() == ((ProfessionComponent) c).getValue()) {
                             profession_comboBox.setSelectedIndex(i);
                             break;
                         }
@@ -1242,7 +986,7 @@ public class EntityCreator implements Editor {
             for (IComponent c : template.getComponents()) {
                 if (c instanceof HorseTypeComponent) {
                     for (int i = 0; i < horseType_comboBox.getItemCount(); i++) {
-                        if (((HorseTypeItem)horseType_comboBox.getItemAt(i)).getType() == ((HorseTypeComponent)c).getValue()) {
+                        if (((HorseTypeItem) horseType_comboBox.getItemAt(i)).getValue() == ((HorseTypeComponent) c).getValue()) {
                             horseType_comboBox.setSelectedIndex(i);
                             break;
                         }
@@ -1275,7 +1019,7 @@ public class EntityCreator implements Editor {
         field_Display_Name.setEnabled(true);
         field_Display_Name.setText("");
 
-        if(editMode) {
+        if (editMode) {
             field_Display_Name.setText(template.getDisplayName());
         }
     }
@@ -1324,5 +1068,57 @@ public class EntityCreator implements Editor {
         field_Walk_Speed.setEnabled(false);
         field_Max_Health.setEnabled(false);
         field_Display_Name.setEnabled(false);
+    }
+
+    @SuppressWarnings("unchecked")
+    public void saveComboboxItem(IComponent iComponent, Class<? extends IComponent> clazzComponent, JComboBox box, Class<? extends IComponentItem> clazzItem) {
+        if (box.isEnabled()) {
+            clazzComponent.cast(iComponent).setValue(clazzItem.cast(box).getValue());
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public void saveCheckboxe(IComponent iComponent, Class<? extends IComponent> clazz, JCheckBox box) {
+        if (box.isEnabled()) {
+            clazz.cast(iComponent).setValue(box.isSelected());
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public JSONObject getEquipmentObjcet(JTextField id, JTextField data, JTextField tag) {
+        JSONObject retObj = new JSONObject();
+
+        if (Util.isInt(id.getText())) {
+            retObj.put("material", Integer.parseInt(id.getText()));
+        } else {
+            retObj.put("material", id.getText());
+        }
+        if (!data.getText().equals("")) {
+            if (Util.isInt(data.getText())) {
+                retObj.put("data", Integer.parseInt(data.getText()));
+            } else {
+                retObj.put("data", data.getText());
+            }
+        }
+        if (!tag.getText().equals("")) {
+            retObj.put("tag", tag.getText());
+        }
+
+        return retObj;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void saveTextField(EntityTemplate template, IComponent iComponent, Class<? extends IComponent> clazz, JTextField field) {
+        if (field.isEnabled() && field.getText().equals("")) {
+            template.getComponents().remove(iComponent);
+        } else if (field.isEnabled()) {
+            if (Util.isInt(field.getText())) {
+                clazz.cast(iComponent).setValue(Integer.parseInt(field.getText()));
+            } else if (Util.isDouble(field.getText())) {
+                clazz.cast(iComponent).setValue(Double.parseDouble(field.getText()));
+            } else {
+                clazz.cast(iComponent).setValue(field.getText());
+            }
+        }
     }
 }

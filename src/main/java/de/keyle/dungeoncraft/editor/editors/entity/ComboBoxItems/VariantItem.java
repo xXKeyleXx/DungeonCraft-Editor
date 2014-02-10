@@ -2,7 +2,7 @@ package de.keyle.dungeoncraft.editor.editors.entity.ComboBoxItems;
 
 import java.util.Vector;
 
-public class VariantItem {
+public class VariantItem implements IComponentItem<Integer>{
 
     int variant;
     String description;
@@ -53,9 +53,6 @@ public class VariantItem {
         variants.add(new VariantItem(1030,"Black Dots - Dark Brown"));
     }
 
-    public int getVariant() {
-        return variant;
-    }
 
     public String getDescription() {
         return description;
@@ -67,5 +64,11 @@ public class VariantItem {
 
     public String toString() {
         return description;
+    }
+
+    @Override
+    public Integer getValue()
+    {
+        return variant;
     }
 }

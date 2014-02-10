@@ -2,7 +2,7 @@ package de.keyle.dungeoncraft.editor.editors.entity.ComboBoxItems;
 
 import java.util.Vector;
 
-public class CatTypeItem {
+public class CatTypeItem implements IComponentItem<Integer>{
 
     int type;
     String description;
@@ -23,10 +23,6 @@ public class CatTypeItem {
     }
 
 
-    public int getType() {
-        return type;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -39,4 +35,9 @@ public class CatTypeItem {
         return description;
     }
 
+    @Override
+    public Integer getValue()
+    {
+        return type;
+    }
 }

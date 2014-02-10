@@ -1,9 +1,8 @@
 package de.keyle.dungeoncraft.editor.editors.entity.ComboBoxItems;
 
-import java.awt.*;
 import java.util.Vector;
 
-public class ColorItem {
+public class ColorItem implements IComponentItem<Byte>{
 
     byte color_id;
     String color;
@@ -35,15 +34,17 @@ public class ColorItem {
         colors.add(new ColorItem((byte)15,"White"));
     }
 
-    public byte getColor_id() {
-        return color_id;
-    }
-
     public Vector getColors() {
         return colors;
     }
 
     public String toString() {
         return color;
+    }
+
+    @Override
+    public Byte getValue()
+    {
+        return color_id;
     }
 }
