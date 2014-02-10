@@ -53,7 +53,7 @@ public class Renderer extends Thread {
                     processInput();
                     GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
                     GL11.glLoadIdentity();
-                    GL11.glTranslatef(-30f + PX, -40f + PY, -160f+PZ); // Move Right
+                    GL11.glTranslatef(-30f + PX, -40f + PY, -160f + PZ); // Move Right
                     GL11.glRotatef(45f, 0.4f, 1.0f, 0.1f);
                     GL11.glRotatef(45f, 0f, 1.0f, 0f);
                     chunk.Render();
@@ -116,7 +116,7 @@ public class Renderer extends Thread {
         int VBOColorHandle = GL15.glGenBuffers();
         int VBOVertexHandle = GL15.glGenBuffers();
         FloatBuffer VertexPositionData = BufferUtils.createFloatBuffer(24 * 3);
-        VertexPositionData.put(new float[] { 1.0f, 1.0f, -1.0f, -1.0f, 1.0f,
+        VertexPositionData.put(new float[]{1.0f, 1.0f, -1.0f, -1.0f, 1.0f,
                 -1.0f, -1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
 
                 1.0f, -1.0f, 1.0f, -1.0f, -1.0f, 1.0f, -1.0f, -1.0f, -1.0f,
@@ -132,13 +132,13 @@ public class Renderer extends Thread {
                 -1.0f, -1.0f, 1.0f,
 
                 1.0f, 1.0f, -1.0f, 1.0f, 1.0f, 1.0f, 1.0f, -1.0f, 1.0f, 1.0f,
-                -1.0f, -1.0f });
+                -1.0f, -1.0f});
         VertexPositionData.flip();
         FloatBuffer VertexColorData = BufferUtils.createFloatBuffer(24 * 3);
-        VertexColorData.put(new float[] { 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,
+        VertexColorData.put(new float[]{1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,
                 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1,
                 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1,
-                0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, });
+                0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,});
         VertexColorData.flip();
 
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBOVertexHandle);

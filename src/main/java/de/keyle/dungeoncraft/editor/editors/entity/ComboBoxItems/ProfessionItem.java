@@ -2,7 +2,7 @@ package de.keyle.dungeoncraft.editor.editors.entity.ComboBoxItems;
 
 import java.util.Vector;
 
-public class ProfessionItem implements IComponentItem<Integer>{
+public class ProfessionItem implements IComponentItem<Integer> {
 
     int profession;
     String description;
@@ -16,12 +16,12 @@ public class ProfessionItem implements IComponentItem<Integer>{
     @SuppressWarnings("unchecked")
     public ProfessionItem() {
         professions = new Vector();
-        professions.add(new ProfessionItem(0,"Farmer"));
-        professions.add(new ProfessionItem(1,"Librarian"));
-        professions.add(new ProfessionItem(2,"Priest"));
-        professions.add(new ProfessionItem(3,"Blacksmith"));
-        professions.add(new ProfessionItem(4,"Butcher"));
-        professions.add(new ProfessionItem(5,"Generic Villager"));
+        professions.add(new ProfessionItem(0, "Farmer"));
+        professions.add(new ProfessionItem(1, "Librarian"));
+        professions.add(new ProfessionItem(2, "Priest"));
+        professions.add(new ProfessionItem(3, "Blacksmith"));
+        professions.add(new ProfessionItem(4, "Butcher"));
+        professions.add(new ProfessionItem(5, "Generic Villager"));
     }
 
     public Vector getProfessions() {
@@ -33,8 +33,7 @@ public class ProfessionItem implements IComponentItem<Integer>{
     }
 
     @Override
-    public Integer getValue()
-    {
+    public Integer getValue() {
         return profession;
     }
 }

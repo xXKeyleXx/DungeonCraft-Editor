@@ -55,9 +55,9 @@ public class MainForm {
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(dungeonFolder != null) {
-                    if(dungeonFolder.exists() && dungeonFolder.isDirectory()) {
-                        for(Editor panel : editorList) {
+                if (dungeonFolder != null) {
+                    if (dungeonFolder.exists() && dungeonFolder.isDirectory()) {
+                        for (Editor panel : editorList) {
                             panel.saveDungeon();
                         }
                     }
@@ -82,7 +82,7 @@ public class MainForm {
                 JFileChooser chooser = new JFileChooser();
                 chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                 int result = chooser.showOpenDialog(editorFrame);
-                if(result == JFileChooser.APPROVE_OPTION) {
+                if (result == JFileChooser.APPROVE_OPTION) {
                     openDungeon(chooser.getSelectedFile());
                     saveButton.setEnabled(true);
                 }
@@ -95,11 +95,11 @@ public class MainForm {
     }
 
     public void openDungeon(File dungeonFolder) {
-        if(dungeonFolder != null) {
-            if(dungeonFolder.exists() && dungeonFolder.isDirectory()) {
+        if (dungeonFolder != null) {
+            if (dungeonFolder.exists() && dungeonFolder.isDirectory()) {
                 this.dungeonFolder = dungeonFolder;
-                for(Editor panel : editorList) {
-                    if(panel.getPanel() instanceof DisabledPanel) {
+                for (Editor panel : editorList) {
+                    if (panel.getPanel() instanceof DisabledPanel) {
                         panel.getPanel().setEnabled(true);
                     }
                     panel.openDungeon(this.dungeonFolder);
@@ -111,10 +111,10 @@ public class MainForm {
     public void registerNewEditor(Editor editor) {
         editorList.add(editor);
         editorsTabbedPane.add(editor.getName(), editor.getPanel());
-        if(dungeonFolder == null) {
-            if(editor.getPanel() instanceof DisabledPanel) {
+        if (dungeonFolder == null) {
+            if (editor.getPanel() instanceof DisabledPanel) {
                 editor.getPanel().setEnabled(false);
-            } else if(editor.getPanel() instanceof Container) {
+            } else if (editor.getPanel() instanceof Container) {
                 DisabledPanel.disableContainer((Container) editor.getPanel());
             }
         }
@@ -153,7 +153,7 @@ public class MainForm {
                 }
             });
 
-            for(Editor panel : editorList) {
+            for (Editor panel : editorList) {
                 panel.init();
             }
 

@@ -34,15 +34,17 @@ public class Block {
         BlockType_Sand(6),
         BlockType_NumTypes(7);
         private int BlockID;
+
         BlockType(int i) {
-            BlockID=i;
+            BlockID = i;
         }
-        public int getID(){
+
+        public int getID() {
             return BlockID;
         }
     }
 
-    public Block(BlockType blockType){
+    public Block(BlockType blockType) {
         this.blockType = blockType;
     }
 
@@ -51,9 +53,10 @@ public class Block {
     }
 
     public void setActive(boolean active) {
-        isActive =active;
+        isActive = active;
     }
-    public int getID(){
+
+    public int getID() {
         return blockType.getID();
     }
 }

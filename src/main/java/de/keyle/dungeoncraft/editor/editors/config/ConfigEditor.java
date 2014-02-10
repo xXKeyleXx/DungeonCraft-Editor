@@ -65,7 +65,7 @@ public class ConfigEditor implements Editor {
         addCutomOptionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String[] rowContent = {"",""};
+                String[] rowContent = {"", ""};
                 customOptionsTabelModel.addRow(rowContent);
                 deleteCutomOptionButton.setEnabled(true);
             }
@@ -74,10 +74,10 @@ public class ConfigEditor implements Editor {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = customOptionsTable.getSelectedRow();
-                if(selectedRow != -1) {
+                if (selectedRow != -1) {
                     customOptionsTabelModel.removeRow(selectedRow);
-                    if(customOptionsTable.getRowCount() > 0) {
-                        customOptionsTable.setRowSelectionInterval(Math.min(selectedRow,customOptionsTable.getRowCount()-1),Math.min(selectedRow,customOptionsTable.getRowCount()-1));
+                    if (customOptionsTable.getRowCount() > 0) {
+                        customOptionsTable.setRowSelectionInterval(Math.min(selectedRow, customOptionsTable.getRowCount() - 1), Math.min(selectedRow, customOptionsTable.getRowCount() - 1));
                     } else {
                         deleteCutomOptionButton.setEnabled(false);
                     }
@@ -89,26 +89,26 @@ public class ConfigEditor implements Editor {
     private void createUIComponents() {
         mainPanel = new DisabledPanel();
 
-        SpinnerNumberModel timeSpinnerModel = new SpinnerNumberModel(0,0,24000,1000);
+        SpinnerNumberModel timeSpinnerModel = new SpinnerNumberModel(0, 0, 24000, 1000);
         timeSpinner = new JSpinner(timeSpinnerModel);
 
-        SpinnerNumberModel playerMinSpinnerModel = new SpinnerNumberModel(1,1,Integer.MAX_VALUE,1);
+        SpinnerNumberModel playerMinSpinnerModel = new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1);
         playerMinSpinner = new JSpinner(playerMinSpinnerModel);
 
-        SpinnerNumberModel playerMaxSpinnerModel = new SpinnerNumberModel(0,0,Integer.MAX_VALUE,1);
+        SpinnerNumberModel playerMaxSpinnerModel = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1);
         playerMaxSpinner = new JSpinner(playerMaxSpinnerModel);
 
         customOptionsTabelModel = new DefaultTableModel(new String[0][0], new String[]{"Key", "Value"}) {
             public void setValueAt(Object aValue, int row, int column) {
-                if(column == 1) {
+                if (column == 1) {
                     super.setValueAt(aValue, row, column);
                     return;
                 }
-                for(int i = 0; i < customOptionsTabelModel.getRowCount();i++) {
-                    if(i == row) {
+                for (int i = 0; i < customOptionsTabelModel.getRowCount(); i++) {
+                    if (i == row) {
                         continue;
                     }
-                    if(aValue.toString().equalsIgnoreCase(customOptionsTabelModel.getValueAt(i,0).toString())) {
+                    if (aValue.toString().equalsIgnoreCase(customOptionsTabelModel.getValueAt(i, 0).toString())) {
                         return;
                     }
                 }
@@ -117,8 +117,7 @@ public class ConfigEditor implements Editor {
         };
         customOptionsTable = new JTable(customOptionsTabelModel) {
             @Override
-            public boolean isCellEditable(int rowIndex, int colIndex)
-            {
+            public boolean isCellEditable(int rowIndex, int colIndex) {
                 return true;
             }
         };
@@ -158,124 +157,124 @@ public class ConfigEditor implements Editor {
     public void openDungeon(File dungeonFolder) {
         resetFields();
         configFile = new File(dungeonFolder, "config.yml");
-        if(configFile.exists()) {
+        if (configFile.exists()) {
             ConfigurationSnakeYAML config = new ConfigurationSnakeYAML(configFile);
             config.load();
             Map<String, Object> configMap = config.getConfig();
 
-            if(configMap.containsKey("spawn")) {
+            if (configMap.containsKey("spawn")) {
                 Map<String, Object> spawnMap = (Map<String, Object>) configMap.get("spawn");
-                if(spawnMap.containsKey("location")) {
+                if (spawnMap.containsKey("location")) {
                     Map<String, Object> spawnLocationMap = (Map<String, Object>) spawnMap.get("location");
-                    if(spawnLocationMap.containsKey("x")) {
+                    if (spawnLocationMap.containsKey("x")) {
                         String xValue = spawnLocationMap.get("x").toString();
-                        if(Util.isDouble(xValue)) {
+                        if (Util.isDouble(xValue)) {
                             xSpinner.setValue(Double.parseDouble(xValue));
                         }
                     }
-                    if(spawnLocationMap.containsKey("y")) {
+                    if (spawnLocationMap.containsKey("y")) {
                         String yValue = spawnLocationMap.get("y").toString();
-                        if(Util.isDouble(yValue)) {
+                        if (Util.isDouble(yValue)) {
                             ySpinner.setValue(Double.parseDouble(yValue));
                         }
                     }
-                    if(spawnLocationMap.containsKey("z")) {
+                    if (spawnLocationMap.containsKey("z")) {
                         String zValue = spawnLocationMap.get("z").toString();
-                        if(Util.isDouble(zValue)) {
+                        if (Util.isDouble(zValue)) {
                             zSpinner.setValue(Double.parseDouble(zValue));
                         }
                     }
-                    if(spawnLocationMap.containsKey("yaw")) {
+                    if (spawnLocationMap.containsKey("yaw")) {
                         String yawValue = spawnLocationMap.get("yaw").toString();
-                        if(Util.isDouble(yawValue)) {
+                        if (Util.isDouble(yawValue)) {
                             yawSpinner.setValue(Double.parseDouble(yawValue));
                         }
                     }
-                    if(spawnLocationMap.containsKey("pitch")) {
+                    if (spawnLocationMap.containsKey("pitch")) {
                         String pitchValue = spawnLocationMap.get("pitch").toString();
-                        if(Util.isDouble(pitchValue)) {
+                        if (Util.isDouble(pitchValue)) {
                             pitchSpinner.setValue(Double.parseDouble(pitchValue));
                         }
                     }
                 }
             }
 
-            if(configMap.containsKey("time")) {
+            if (configMap.containsKey("time")) {
                 Map<String, Object> timeMap = (Map<String, Object>) configMap.get("time");
-                if(timeMap.containsKey("limit")) {
+                if (timeMap.containsKey("limit")) {
                     String limitValue = timeMap.get("limit").toString();
-                    if(Util.isInt(limitValue)) {
+                    if (Util.isInt(limitValue)) {
                         timeLimitSpinner.setValue(Integer.parseInt(limitValue));
                     }
                 }
-                if(timeMap.containsKey("start")) {
+                if (timeMap.containsKey("start")) {
                     String timeStartValue = timeMap.get("start").toString();
-                    if(Util.isInt(timeStartValue)) {
+                    if (Util.isInt(timeStartValue)) {
                         timeSpinner.setValue(Integer.parseInt(timeStartValue));
                     }
                 }
-                if(timeMap.containsKey("lock")) {
+                if (timeMap.containsKey("lock")) {
                     timeLockedCheckBox.setSelected(timeMap.get("lock").toString().equalsIgnoreCase("true"));
                 }
-                if(timeMap.containsKey("lockout")) {
+                if (timeMap.containsKey("lockout")) {
                     String lockoutValue = timeMap.get("lockout").toString();
-                    if(Util.isInt(lockoutValue)) {
+                    if (Util.isInt(lockoutValue)) {
                         lockoutSpinner.setValue(Integer.parseInt(lockoutValue));
                     }
                 }
             }
 
-            if(configMap.containsKey("player")) {
+            if (configMap.containsKey("player")) {
                 Map<String, Object> playerMap = (Map<String, Object>) configMap.get("player");
-                if(playerMap.containsKey("count")) {
+                if (playerMap.containsKey("count")) {
                     Map<String, Object> playerCountMap = (Map<String, Object>) playerMap.get("count");
-                    if(playerCountMap.containsKey("min")) {
+                    if (playerCountMap.containsKey("min")) {
                         String minValue = playerCountMap.get("min").toString();
-                        if(Util.isInt(minValue)) {
+                        if (Util.isInt(minValue)) {
                             playerMinSpinner.setValue(Integer.parseInt(minValue));
                         }
                     }
-                    if(playerCountMap.containsKey("max")) {
+                    if (playerCountMap.containsKey("max")) {
                         String maxValue = playerCountMap.get("max").toString();
-                        if(Util.isInt(maxValue)) {
+                        if (Util.isInt(maxValue)) {
                             playerMaxSpinner.setValue(Integer.parseInt(maxValue));
                         }
                     }
                 }
             }
 
-            if(configMap.containsKey("world")) {
+            if (configMap.containsKey("world")) {
                 Map<String, Object> worldMap = (Map<String, Object>) configMap.get("world");
-                if(worldMap.containsKey("environment")) {
+                if (worldMap.containsKey("environment")) {
                     String environmentValue = worldMap.get("environment").toString();
-                    for(int i = 0; i < environmentComboBox.getItemCount();i++) {
-                        if(environmentComboBox.getItemAt(i).toString().equalsIgnoreCase(environmentValue)) {
+                    for (int i = 0; i < environmentComboBox.getItemCount(); i++) {
+                        if (environmentComboBox.getItemAt(i).toString().equalsIgnoreCase(environmentValue)) {
                             environmentComboBox.setSelectedIndex(i);
                             break;
                         }
                     }
                 }
-                if(worldMap.containsKey("weather")) {
+                if (worldMap.containsKey("weather")) {
                     rainCheckBox.setSelected(worldMap.get("weather").toString().equalsIgnoreCase("true"));
                 }
             }
 
-            if(configMap.containsKey("commands")) {
+            if (configMap.containsKey("commands")) {
                 Map<String, Object> commandsMap = (Map<String, Object>) configMap.get("commands");
-                if(commandsMap.containsKey("allowed")) {
+                if (commandsMap.containsKey("allowed")) {
                     List<Object> allowedList = (List<Object>) commandsMap.get("allowed");
                     String allowedCommands = "";
-                    for(Object command : allowedList) {
+                    for (Object command : allowedList) {
                         allowedCommands += command.toString() + "\n";
                     }
                     commandsTextArea.setText(allowedCommands);
                 }
             }
 
-            if(configMap.containsKey("options")) {
+            if (configMap.containsKey("options")) {
                 Map<String, Object> optionsMap = (Map<String, Object>) configMap.get("options");
-                for(String key : optionsMap.keySet()) {
-                    customOptionsTabelModel.addRow(new Object[] {key, optionsMap.get(key)});
+                for (String key : optionsMap.keySet()) {
+                    customOptionsTabelModel.addRow(new Object[]{key, optionsMap.get(key)});
                 }
             }
         }
@@ -317,9 +316,9 @@ public class ConfigEditor implements Editor {
 
         Map<String, Object> commandsMap = new HashMap<String, Object>();
         List<String> commandsAllowedList = new ArrayList<String>();
-        for(String line : commandsTextArea.getText().split("\\n")) {
+        for (String line : commandsTextArea.getText().split("\\n")) {
             line = line.trim();
-            if(line.equals("")) {
+            if (line.equals("")) {
                 continue;
             }
             commandsAllowedList.add(line);
@@ -328,11 +327,11 @@ public class ConfigEditor implements Editor {
         configMap.put("commands", commandsMap);
 
         Map<String, Object> optionsMap = new HashMap<String, Object>();
-        for(int i = 0; i < customOptionsTabelModel.getRowCount();i++) {
-            String key = customOptionsTabelModel.getValueAt(i,0).toString().trim();
-            Object value = customOptionsTabelModel.getValueAt(i,1);
+        for (int i = 0; i < customOptionsTabelModel.getRowCount(); i++) {
+            String key = customOptionsTabelModel.getValueAt(i, 0).toString().trim();
+            Object value = customOptionsTabelModel.getValueAt(i, 1);
 
-            optionsMap.put(key,value);
+            optionsMap.put(key, value);
         }
         configMap.put("options", optionsMap);
 

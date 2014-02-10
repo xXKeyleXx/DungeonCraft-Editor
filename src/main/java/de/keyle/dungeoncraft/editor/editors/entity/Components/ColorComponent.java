@@ -1,6 +1,6 @@
 package de.keyle.dungeoncraft.editor.editors.entity.Components;
 
-public class ColorComponent implements IComponent<Byte>{
+public class ColorComponent implements IComponent<Byte> {
 
     Byte value;
 

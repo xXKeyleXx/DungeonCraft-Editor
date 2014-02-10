@@ -108,8 +108,8 @@ public class EntityTemplateLoader {
                                         if (className.contains("MeeleDamage")) {
                                             comp = new MeeleDamageComponent(Double.parseDouble(parameter.get("damage").toString()));
                                         } else if (className.contains("RangedDamage")) {
-                                            Map<String,Double> tmpMap = new HashMap<String, Double>();
-                                            tmpMap.put(parameter.get("projectile").toString(),Double.parseDouble(parameter.get("damage").toString()));
+                                            Map<String, Double> tmpMap = new HashMap<String, Double>();
+                                            tmpMap.put(parameter.get("projectile").toString(), Double.parseDouble(parameter.get("damage").toString()));
                                             comp = new RangeDamageComponent(tmpMap);
                                         } else if (className.contains("AgeCom")) {
                                             comp = new AgeComponent(Integer.parseInt(parameter.get("age").toString()));
@@ -126,11 +126,11 @@ public class EntityTemplateLoader {
                                         } else if (className.contains("ColorCom")) {
                                             comp = new ColorComponent(Byte.parseByte(parameter.get("color").toString()));
                                         } else if (className.contains("EquipmentArmorCom")) {
-                                            Map<String,JSONObject> tmpmap = new HashMap<String, JSONObject>();
+                                            Map<String, JSONObject> tmpmap = new HashMap<String, JSONObject>();
                                             tmpmap.put("helmet", (JSONObject) parameter.get("helmet"));
-                                            tmpmap.put("chestplate",(JSONObject) parameter.get("chestplate"));
+                                            tmpmap.put("chestplate", (JSONObject) parameter.get("chestplate"));
                                             tmpmap.put("leggins", (JSONObject) parameter.get("leggins"));
-                                            tmpmap.put("boots",(JSONObject) parameter.get("boots"));
+                                            tmpmap.put("boots", (JSONObject) parameter.get("boots"));
                                             comp = new EquipmentArmorComponent(tmpmap);
                                         } else if (className.contains("EquipmentWeaponCom")) {
                                             comp = new EquipmentWeaponComponent((JSONObject) parameter.get("weapon"));
@@ -180,7 +180,7 @@ public class EntityTemplateLoader {
         JSONObject rootObj = new JSONObject();
         JSONArray templatesArray = new JSONArray();
 
-        for(EntityTemplate template : templates) {
+        for (EntityTemplate template : templates) {
             JSONObject templateObj = new JSONObject();
             templateObj.put("template-id", template.getTemplateId());
             templateObj.put("entity-type", template.getEntityType());
@@ -188,29 +188,29 @@ public class EntityTemplateLoader {
             templateObj.put("walk-speed", template.getWalkSpeed());
             templateObj.put("max-health", template.getMaxHealth());
             JSONArray componentsArray = new JSONArray();
-            for(IComponent iComponent : template.getComponents()) {
+            for (IComponent iComponent : template.getComponents()) {
                 JSONObject componentsObj = new JSONObject();
                 componentsObj.put("class", iComponent.getClassName());
                 JSONObject parameterObj = new JSONObject();
-                if(iComponent instanceof RangeDamageComponent) {
-                    for(String s : ((RangeDamageComponent)iComponent).getValue().keySet()) {
-                        parameterObj.put("damage",((RangeDamageComponent)iComponent).getValue().get(s));
-                        parameterObj.put("projectile",s);
+                if (iComponent instanceof RangeDamageComponent) {
+                    for (String s : ((RangeDamageComponent) iComponent).getValue().keySet()) {
+                        parameterObj.put("damage", ((RangeDamageComponent) iComponent).getValue().get(s));
+                        parameterObj.put("projectile", s);
                     }
-                } else if(iComponent instanceof EquipmentArmorComponent) {
-                    for(String s : ((EquipmentArmorComponent)iComponent).getValue().keySet()) {
-                        parameterObj.put(s,((EquipmentArmorComponent)iComponent).getValue().get(s));
+                } else if (iComponent instanceof EquipmentArmorComponent) {
+                    for (String s : ((EquipmentArmorComponent) iComponent).getValue().keySet()) {
+                        parameterObj.put(s, ((EquipmentArmorComponent) iComponent).getValue().get(s));
                     }
                 } else {
-                    parameterObj.put(iComponent.getParameterName(),iComponent.getValue());
+                    parameterObj.put(iComponent.getParameterName(), iComponent.getValue());
                 }
-                componentsObj.put("parameter",parameterObj);
+                componentsObj.put("parameter", parameterObj);
                 componentsArray.add(componentsObj);
             }
-            templateObj.put("components",componentsArray);
+            templateObj.put("components", componentsArray);
             templatesArray.add(templateObj);
         }
-        rootObj.put("templates",templatesArray);
+        rootObj.put("templates", templatesArray);
 
 
         try {

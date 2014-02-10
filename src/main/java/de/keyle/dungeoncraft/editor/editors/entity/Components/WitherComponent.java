@@ -20,7 +20,7 @@ public class WitherComponent implements IComponent<Boolean> {
 
     @Override
     public void setValue(Boolean value) {
-         this.value = value;
+        this.value = value;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package de.keyle.dungeoncraft.editor.editors.entity.Components;
 
-public class BabyComponent implements IComponent<Boolean>{
+public class BabyComponent implements IComponent<Boolean> {
 
     Boolean value;
 

@@ -4,11 +4,11 @@ import org.json.simple.JSONObject;
 
 import java.util.Map;
 
-public class EquipmentArmorComponent implements IComponent<Map<String,JSONObject>> {
+public class EquipmentArmorComponent implements IComponent<Map<String, JSONObject>> {
 
-    Map<String,JSONObject> value;
+    Map<String, JSONObject> value;
 
-    public EquipmentArmorComponent(Map<String,JSONObject> value) {
+    public EquipmentArmorComponent(Map<String, JSONObject> value) {
         this.value = value;
     }
 
@@ -18,13 +18,13 @@ public class EquipmentArmorComponent implements IComponent<Map<String,JSONObject
     }
 
     @Override
-    public Map<String,JSONObject> getValue() {
+    public Map<String, JSONObject> getValue() {
         return value;
     }
 
     @Override
-    public void setValue(Map<String,JSONObject> value) {
-         this.value = value;
+    public void setValue(Map<String, JSONObject> value) {
+        this.value = value;
     }
 
     @Override

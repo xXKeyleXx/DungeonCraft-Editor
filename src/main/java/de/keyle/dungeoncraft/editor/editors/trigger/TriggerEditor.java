@@ -52,8 +52,8 @@ public class TriggerEditor implements Editor {
                 String response = JOptionPane.showInputDialog(null, "Enter the name of the new trigger.", "Create new Trigger", JOptionPane.QUESTION_MESSAGE);
                 if (response != null) {
                     if (response.matches("[a-zA-Z0-9-_]+")) {
-                        for(TriggerPanel panel : triggerPanels) {
-                            if(panel.getName().equalsIgnoreCase(response)) {
+                        for (TriggerPanel panel : triggerPanels) {
+                            if (panel.getName().equalsIgnoreCase(response)) {
                                 JOptionPane.showMessageDialog(null, "There is already a trigger with this name", "Create new Trigger", JOptionPane.ERROR_MESSAGE);
                                 return;
                             }
@@ -76,18 +76,18 @@ public class TriggerEditor implements Editor {
         renameTriggerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(triggerFilesTabbedPane.getSelectedComponent() instanceof TriggerPanel) {
+                if (triggerFilesTabbedPane.getSelectedComponent() instanceof TriggerPanel) {
                     TriggerPanel renamedPanel = (TriggerPanel) triggerFilesTabbedPane.getSelectedComponent();
                     String response = (String) JOptionPane.showInputDialog(null, "Enter the new name of the trigger.", "Rename Trigger", JOptionPane.QUESTION_MESSAGE, null, null, renamedPanel.getName());
                     if (response != null) {
                         if (response.matches("[a-zA-Z0-9-_]+")) {
-                            for(TriggerPanel panel : triggerPanels) {
-                                if(panel.getName().equalsIgnoreCase(response)) {
+                            for (TriggerPanel panel : triggerPanels) {
+                                if (panel.getName().equalsIgnoreCase(response)) {
                                     JOptionPane.showMessageDialog(null, "There is already a trigger with this name", "Create new Trigger", JOptionPane.ERROR_MESSAGE);
                                     return;
                                 }
                             }
-                            triggerFilesTabbedPane.setTitleAt(triggerFilesTabbedPane.getSelectedIndex(),response);
+                            triggerFilesTabbedPane.setTitleAt(triggerFilesTabbedPane.getSelectedIndex(), response);
                             deletedTriggerFiles.add(renamedPanel.getTrigger().getName());
                             renamedPanel.setName(response);
                             renamedPanel.save();
@@ -101,12 +101,12 @@ public class TriggerEditor implements Editor {
         deleteTriggerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(triggerFilesTabbedPane.getSelectedComponent() instanceof TriggerPanel) {
+                if (triggerFilesTabbedPane.getSelectedComponent() instanceof TriggerPanel) {
                     TriggerPanel panel = (TriggerPanel) triggerFilesTabbedPane.getSelectedComponent();
                     triggerPanels.remove(panel);
                     triggerFilesTabbedPane.remove(panel);
                     deletedTriggerFiles.remove(panel.getTrigger().getName());
-                    if(triggerPanels.size() == 0) {
+                    if (triggerPanels.size() == 0) {
                         triggerFilesTabbedPane.setVisible(false);
                         deleteTriggerButton.setEnabled(false);
                         renameTriggerButton.setEnabled(false);
@@ -118,7 +118,7 @@ public class TriggerEditor implements Editor {
             @Override
             public void actionPerformed(ActionEvent e) {
                 TriggerPanel.Themes selectedTheme = getTextAreaTheme();
-                for(TriggerPanel panel : triggerPanels) {
+                for (TriggerPanel panel : triggerPanels) {
                     panel.loadTheme(selectedTheme);
                 }
             }
@@ -128,13 +128,13 @@ public class TriggerEditor implements Editor {
     private TriggerPanel.Themes getTextAreaTheme() {
         String selectedThemeName = themeComboBox.getSelectedItem().toString();
         TriggerPanel.Themes selectedTheme;
-        if(selectedThemeName.equals("Dark")) {
+        if (selectedThemeName.equals("Dark")) {
             selectedTheme = TriggerPanel.Themes.Dark;
-        } else if(selectedThemeName.equals("Eclipse")) {
+        } else if (selectedThemeName.equals("Eclipse")) {
             selectedTheme = TriggerPanel.Themes.Eclipse;
-        } else if(selectedThemeName.equals("Idea")) {
+        } else if (selectedThemeName.equals("Idea")) {
             selectedTheme = TriggerPanel.Themes.Idea;
-        } else if(selectedThemeName.equals("VS")) {
+        } else if (selectedThemeName.equals("VS")) {
             selectedTheme = TriggerPanel.Themes.VS;
         } else {
             selectedTheme = TriggerPanel.Themes.Default;
@@ -150,18 +150,18 @@ public class TriggerEditor implements Editor {
     @Override
     public void openDungeon(File dungeonFolder) {
         triggerFolder = new File(dungeonFolder, "trigger");
-        if(triggerFolder.exists() && triggerFolder.isDirectory()) {
+        if (triggerFolder.exists() && triggerFolder.isDirectory()) {
             File[] triggerFiles = triggerFolder.listFiles(new PatternFilenameFilter(Pattern.compile("[.-_a-z0-9]+\\.js", Pattern.CASE_INSENSITIVE)));
             if (triggerFiles != null) {
-                for(File triggerFile : triggerFiles) {
-                    String triggerName = triggerFile.getName().substring(0,triggerFile.getName().length()-3);
+                for (File triggerFile : triggerFiles) {
+                    String triggerName = triggerFile.getName().substring(0, triggerFile.getName().length() - 3);
                     String triggerContent = Util.readFile(triggerFile);
                     Trigger trigger = new Trigger(triggerName, triggerContent);
                     TriggerPanel panel = new TriggerPanel(trigger);
                     triggerPanels.add(panel);
                     triggerFilesTabbedPane.add(panel);
                 }
-                if(triggerPanels.size() > 0) {
+                if (triggerPanels.size() > 0) {
                     triggerFilesTabbedPane.setVisible(true);
                     deleteTriggerButton.setEnabled(true);
                     renameTriggerButton.setEnabled(true);
@@ -179,10 +179,10 @@ public class TriggerEditor implements Editor {
 
         triggerFolder.mkdirs();
 
-        for(String deletedFileName:deletedTriggerFiles) {
+        for (String deletedFileName : deletedTriggerFiles) {
             new File(triggerFolder, deletedFileName + ".js").delete();
         }
-        for(TriggerPanel panel : triggerPanels) {
+        for (TriggerPanel panel : triggerPanels) {
             panel.save();
             Trigger trigger = panel.getTrigger();
 

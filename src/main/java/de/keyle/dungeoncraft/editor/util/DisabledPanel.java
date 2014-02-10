@@ -53,7 +53,7 @@ public class DisabledPanel extends JPanel {
     }
 
     public static void disableContainer(Container container) {
-        if(!containers.containsKey(container)) {
+        if (!containers.containsKey(container)) {
             List<JComponent> components = getDescendantsOfType(JComponent.class, container, true);
             for (JComponent component : components) {
                 if (component.isEnabled()) {
@@ -67,7 +67,7 @@ public class DisabledPanel extends JPanel {
     }
 
     public static void enableContainer(Container container) {
-        if(containers.containsKey(container)) {
+        if (containers.containsKey(container)) {
             for (JComponent component : containers.get(container)) {
                 component.setEnabled(true);
             }

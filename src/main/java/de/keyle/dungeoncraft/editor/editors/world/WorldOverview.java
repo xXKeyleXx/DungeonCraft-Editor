@@ -81,7 +81,7 @@ public class WorldOverview implements Editor {
 
             @Override
             public void componentResized(ComponentEvent e) {
-                if(!isResized) {
+                if (!isResized) {
                     canvas.setVisible(false);
                     isResized = true;
                     SwingUtilities.invokeLater(new Runnable() {

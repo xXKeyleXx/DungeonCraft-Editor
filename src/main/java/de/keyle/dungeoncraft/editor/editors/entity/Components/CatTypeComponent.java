@@ -1,6 +1,6 @@
 package de.keyle.dungeoncraft.editor.editors.entity.Components;
 
-public class CatTypeComponent implements IComponent<Integer>{
+public class CatTypeComponent implements IComponent<Integer> {
 
     Integer value;
 

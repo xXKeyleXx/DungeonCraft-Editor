@@ -1,6 +1,6 @@
 package de.keyle.dungeoncraft.editor.editors.entity.Components;
 
-public class ArmorComponent implements IComponent<Integer>{
+public class ArmorComponent implements IComponent<Integer> {
 
     Integer value;
 

@@ -1,11 +1,11 @@
 package de.keyle.dungeoncraft.editor.editors.entity.Components;
 
-public class VariantComponent implements IComponent<Integer>{
+public class VariantComponent implements IComponent<Integer> {
 
     Integer value;
 
     public VariantComponent(Integer value) {
-         this.value = value;
+        this.value = value;
     }
 
     @Override
@@ -20,7 +20,7 @@ public class VariantComponent implements IComponent<Integer>{
 
     @Override
     public void setValue(Integer value) {
-          this.value = value;
+        this.value = value;
     }
 
     @Override

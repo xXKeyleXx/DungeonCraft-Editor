@@ -1,6 +1,6 @@
 package de.keyle.dungeoncraft.editor.editors.entity.Components;
 
-public class ChestComponent implements IComponent<Boolean>{
+public class ChestComponent implements IComponent<Boolean> {
 
     Boolean value;
 
@@ -20,7 +20,7 @@ public class ChestComponent implements IComponent<Boolean>{
 
     @Override
     public void setValue(Boolean value) {
-         this.value = value;
+        this.value = value;
     }
 
     @Override

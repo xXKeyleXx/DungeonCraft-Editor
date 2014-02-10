@@ -2,7 +2,7 @@ package de.keyle.dungeoncraft.editor.editors.entity.ComboBoxItems;
 
 import java.util.Vector;
 
-public class HorseTypeItem implements IComponentItem<Byte>{
+public class HorseTypeItem implements IComponentItem<Byte> {
 
     private byte type;
     private String description;
@@ -16,11 +16,11 @@ public class HorseTypeItem implements IComponentItem<Byte>{
     @SuppressWarnings("unchecked")
     public HorseTypeItem() {
         types = new Vector();
-        types.add(new HorseTypeItem((byte)0,"Horse"));
-        types.add(new HorseTypeItem((byte)1,"Donkey"));
-        types.add(new HorseTypeItem((byte)2,"Mule"));
-        types.add(new HorseTypeItem((byte)3,"Undead horse"));
-        types.add(new HorseTypeItem((byte)4,"Skeleton horse"));
+        types.add(new HorseTypeItem((byte) 0, "Horse"));
+        types.add(new HorseTypeItem((byte) 1, "Donkey"));
+        types.add(new HorseTypeItem((byte) 2, "Mule"));
+        types.add(new HorseTypeItem((byte) 3, "Undead horse"));
+        types.add(new HorseTypeItem((byte) 4, "Skeleton horse"));
     }
 
     public String getDescription() {
@@ -36,8 +36,7 @@ public class HorseTypeItem implements IComponentItem<Byte>{
     }
 
     @Override
-    public Byte getValue()
-    {
+    public Byte getValue() {
         return type;
     }
 }

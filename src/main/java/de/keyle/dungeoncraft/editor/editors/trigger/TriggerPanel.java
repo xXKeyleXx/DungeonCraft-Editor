@@ -70,7 +70,7 @@ public class TriggerPanel extends JPanel {
             }
         });
 
-        if(trigger.getContent() != null || !trigger.getContent().equals("")) {
+        if (trigger.getContent() != null || !trigger.getContent().equals("")) {
             triggerTextArea.setText(trigger.getContent());
         }
         triggerTextArea.setCaretPosition(0);
@@ -115,7 +115,7 @@ public class TriggerPanel extends JPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if(theme != null) {
+        if (theme != null) {
             theme.apply(triggerTextArea);
         }
     }

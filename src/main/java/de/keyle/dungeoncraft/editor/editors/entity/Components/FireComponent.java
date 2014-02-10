@@ -1,6 +1,6 @@
 package de.keyle.dungeoncraft.editor.editors.entity.Components;
 
-public class FireComponent implements IComponent<Boolean>{
+public class FireComponent implements IComponent<Boolean> {
 
     Boolean value;
 

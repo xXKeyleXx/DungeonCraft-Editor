@@ -2,11 +2,11 @@ package de.keyle.dungeoncraft.editor.editors.entity.Components;
 
 import java.util.Map;
 
-public class RangeDamageComponent implements IComponent<Map<String,Double>> {
+public class RangeDamageComponent implements IComponent<Map<String, Double>> {
 
-    Map<String,Double> value;
+    Map<String, Double> value;
 
-    public RangeDamageComponent(Map<String,Double> value) {
+    public RangeDamageComponent(Map<String, Double> value) {
         this.value = value;
     }
 

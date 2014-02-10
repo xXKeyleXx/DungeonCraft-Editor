@@ -1,6 +1,6 @@
 package de.keyle.dungeoncraft.editor.editors.entity.Components;
 
-public class AngryComponent implements IComponent<Boolean>{
+public class AngryComponent implements IComponent<Boolean> {
 
     Boolean value;
 

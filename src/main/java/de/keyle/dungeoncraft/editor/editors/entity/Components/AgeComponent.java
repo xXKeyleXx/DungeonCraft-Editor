@@ -1,6 +1,6 @@
 package de.keyle.dungeoncraft.editor.editors.entity.Components;
 
-public class AgeComponent implements IComponent<Integer>{
+public class AgeComponent implements IComponent<Integer> {
 
     Integer value;
 
