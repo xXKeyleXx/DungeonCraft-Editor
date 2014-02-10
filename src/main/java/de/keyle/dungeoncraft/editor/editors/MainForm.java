@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainForm {
-    public static JFrame editorFrame;
+    private JFrame editorFrame;
     private JTabbedPane editorsTabbedPane;
     private JButton openFromFolderButton;
     private JButton saveButton;
@@ -88,6 +88,10 @@ public class MainForm {
                 }
             }
         });
+    }
+
+    public JFrame getFrame() {
+        return editorFrame;
     }
 
     public void openDungeon(File dungeonFolder) {

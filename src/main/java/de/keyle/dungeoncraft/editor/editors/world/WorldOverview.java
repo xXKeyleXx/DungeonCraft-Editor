@@ -20,8 +20,8 @@
 
 package de.keyle.dungeoncraft.editor.editors.world;
 
+import de.keyle.dungeoncraft.editor.GuiMain;
 import de.keyle.dungeoncraft.editor.editors.Editor;
-import de.keyle.dungeoncraft.editor.editors.MainForm;
 import de.keyle.dungeoncraft.editor.util.DisabledPanel;
 
 import javax.swing.*;
@@ -76,15 +76,15 @@ public class WorldOverview implements Editor {
 
     @Override
     public void init() {
-        MainForm.editorFrame.addComponentListener(new ComponentAdapter() {
+        GuiMain.getMainForm().getFrame().addComponentListener(new ComponentAdapter() {
             boolean isResized = false;
+
             @Override
             public void componentResized(ComponentEvent e) {
-                System.out.println("new Size: " + e.getComponent().getWidth() + " - " + e.getComponent().getHeight());
                 if(!isResized) {
                     canvas.setVisible(false);
                     isResized = true;
-                    javax.swing.SwingUtilities.invokeLater(new Runnable() {
+                    SwingUtilities.invokeLater(new Runnable() {
                         public void run() {
                             canvas.setSize(new Dimension(renderPanel.getWidth(), renderPanel.getHeight()));
                             canvas.setVisible(true);

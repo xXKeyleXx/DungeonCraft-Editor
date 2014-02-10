@@ -28,6 +28,8 @@ import de.keyle.dungeoncraft.editor.editors.trigger.TriggerEditor;
 import javax.swing.*;
 
 public class GuiMain {
+    private static MainForm mainForm;
+
     public static void main(String[] args) {
         try
         {
@@ -37,7 +39,7 @@ public class GuiMain {
         {
         }
 
-        MainForm mainForm = new MainForm();
+        mainForm = new MainForm();
 
         mainForm.registerNewEditor(new ConfigEditor());
         //mainForm.registerNewEditor(new WorldOverview());
@@ -45,5 +47,9 @@ public class GuiMain {
         mainForm.registerNewEditor(new TriggerEditor());
 
         mainForm.showFrame();
+    }
+
+    public static MainForm getMainForm() {
+        return mainForm;
     }
 }
