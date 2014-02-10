@@ -2,7 +2,7 @@ package de.keyle.dungeoncraft.editor.editors.entity.ComboBoxItems;
 
 import java.util.Vector;
 
-public class ProfessionItem implements IComponentItem<Integer> {
+public class ProfessionItem implements IComboBoxtItem<Integer> {
 
     int profession;
     String description;

@@ -2,7 +2,7 @@ package de.keyle.dungeoncraft.editor.editors.entity.ComboBoxItems;
 
 import java.util.Vector;
 
-public class HorseTypeItem implements IComponentItem<Byte> {
+public class HorseTypeItem implements IComboBoxtItem<Byte> {
 
     private byte type;
     private String description;

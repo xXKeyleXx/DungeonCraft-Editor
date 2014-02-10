@@ -194,23 +194,23 @@ public class EntityCreator implements Editor {
                         } else if (iComponent instanceof AgeComponent) {
                             saveTextField(editTemplate, iComponent, AgeComponent.class, field_Age);
                         } else if (iComponent instanceof BabyComponent) {
-                            saveCheckboxe(iComponent, BabyComponent.class, isBabyCheckBox);
+                            saveCheckbox(iComponent, BabyComponent.class, isBabyCheckBox);
                         } else if (iComponent instanceof AngryComponent) {
-                            saveCheckboxe(iComponent, AngryComponent.class, isAngryCheckBox);
+                            saveCheckbox(iComponent, AngryComponent.class, isAngryCheckBox);
                         } else if (iComponent instanceof FireComponent) {
-                            saveCheckboxe(iComponent, FireComponent.class, onFireCheckBox);
+                            saveCheckbox(iComponent, FireComponent.class, onFireCheckBox);
                         } else if (iComponent instanceof ChestComponent) {
-                            saveCheckboxe(iComponent, ChestComponent.class, hasChestCheckBox);
+                            saveCheckbox(iComponent, ChestComponent.class, hasChestCheckBox);
                         } else if (iComponent instanceof PoweredComponent) {
-                            saveCheckboxe(iComponent, PoweredComponent.class, isPoweredCheckBox);
+                            saveCheckbox(iComponent, PoweredComponent.class, isPoweredCheckBox);
                         } else if (iComponent instanceof SaddleComponent) {
-                            saveCheckboxe(iComponent, SaddleComponent.class, hasSaddleCheckBox);
+                            saveCheckbox(iComponent, SaddleComponent.class, hasSaddleCheckBox);
                         } else if (iComponent instanceof SittingComponent) {
-                            saveCheckboxe(iComponent, SittingComponent.class, isSittingCheckBox);
+                            saveCheckbox(iComponent, SittingComponent.class, isSittingCheckBox);
                         } else if (iComponent instanceof TamedComponent) {
-                            saveCheckboxe(iComponent, TamedComponent.class, isTamedCheckBox);
+                            saveCheckbox(iComponent, TamedComponent.class, isTamedCheckBox);
                         } else if (iComponent instanceof WitherComponent) {
-                            saveCheckboxe(iComponent, WitherComponent.class, isWitherCheckBox);
+                            saveCheckbox(iComponent, WitherComponent.class, isWitherCheckBox);
                         } else if (iComponent instanceof HorseTypeComponent) {
                             saveComboboxItem(iComponent, HorseTypeComponent.class, horseType_comboBox, HorseTypeItem.class);
                         } else if (iComponent instanceof VariantComponent) {
@@ -227,7 +227,7 @@ public class EntityCreator implements Editor {
                             if (field_weapon_id.isEnabled() && field_weapon_id.getText().equals("")) {
                                 editTemplate.getComponents().remove(iComponent);
                             } else if (field_Range_Damage.isEnabled()) {
-                                ((EquipmentWeaponComponent) iComponent).setValue(getEquipmentObjcet(field_weapon_id, field_weapon_data, field_weapon_tag));
+                                ((EquipmentWeaponComponent) iComponent).setValue(getEquipmentObject(field_weapon_id, field_weapon_data, field_weapon_tag));
                             }
                         } else if (iComponent instanceof EquipmentArmorComponent) {
                             if (field_helmet_id.isEnabled() && field_helmet_id.getText().equals("")
@@ -239,22 +239,22 @@ public class EntityCreator implements Editor {
                                 if (field_helmet_id.isEnabled() && field_helmet_id.getText().equals("")) {
                                     ((EquipmentArmorComponent) iComponent).getValue().remove("helmet");
                                 } else if (field_helmet_id.isEnabled()) {
-                                    ((EquipmentArmorComponent) iComponent).getValue().put("helmet", getEquipmentObjcet(field_helmet_id, field_helmet_data, field_helmet_tag));
+                                    ((EquipmentArmorComponent) iComponent).getValue().put("helmet", getEquipmentObject(field_helmet_id, field_helmet_data, field_helmet_tag));
                                 }
                                 if (field_chest_id.isEnabled() && field_chest_id.getText().equals("")) {
                                     ((EquipmentArmorComponent) iComponent).getValue().remove("chestplate");
                                 } else if (field_chest_id.isEnabled()) {
-                                    ((EquipmentArmorComponent) iComponent).getValue().put("chestplate", getEquipmentObjcet(field_chest_id, field_chest_data, field_chest_tag));
+                                    ((EquipmentArmorComponent) iComponent).getValue().put("chestplate", getEquipmentObject(field_chest_id, field_chest_data, field_chest_tag));
                                 }
                                 if (field_leggins_id.isEnabled() && field_leggins_id.getText().equals("")) {
                                     ((EquipmentArmorComponent) iComponent).getValue().remove("leggins");
                                 } else if (field_leggins_id.isEnabled()) {
-                                    ((EquipmentArmorComponent) iComponent).getValue().put("leggins", getEquipmentObjcet(field_leggins_id, field_leggins_data, field_leggins_tag));
+                                    ((EquipmentArmorComponent) iComponent).getValue().put("leggins", getEquipmentObject(field_leggins_id, field_leggins_data, field_leggins_tag));
                                 }
                                 if (field_boots_id.isEnabled() && field_boots_id.getText().equals("")) {
                                     ((EquipmentArmorComponent) iComponent).getValue().remove("boots");
                                 } else if (field_boots_id.isEnabled()) {
-                                    ((EquipmentArmorComponent) iComponent).getValue().put("boots", getEquipmentObjcet(field_boots_id, field_boots_data, field_boots_tag));
+                                    ((EquipmentArmorComponent) iComponent).getValue().put("boots", getEquipmentObject(field_boots_id, field_boots_data, field_boots_tag));
                                 }
                             }
                         }
@@ -360,7 +360,7 @@ public class EntityCreator implements Editor {
                     }
                     if (field_weapon_id.isEnabled() && !field_weapon_id.getText().equals("")) {
                         if (!componentExists(editTemplate, EquipmentWeaponComponent.class)) {
-                            editTemplate.getComponents().add(new EquipmentWeaponComponent(getEquipmentObjcet(field_weapon_id, field_weapon_data, field_weapon_tag)));
+                            editTemplate.getComponents().add(new EquipmentWeaponComponent(getEquipmentObject(field_weapon_id, field_weapon_data, field_weapon_tag)));
                         }
                     }
                     if (field_helmet_id.isEnabled() && !field_helmet_id.getText().equals("")
@@ -369,16 +369,16 @@ public class EntityCreator implements Editor {
                             || field_boots_id.isEnabled() && !field_boots_id.getText().equals("")) {
                         Map<String, JSONObject> newMap = new HashMap<String, JSONObject>();
                         if (field_helmet_id.isEnabled()) {
-                            newMap.put("helmet", getEquipmentObjcet(field_helmet_id, field_helmet_data, field_helmet_tag));
+                            newMap.put("helmet", getEquipmentObject(field_helmet_id, field_helmet_data, field_helmet_tag));
                         }
                         if (field_chest_id.isEnabled()) {
-                            newMap.put("chestplate", getEquipmentObjcet(field_chest_id, field_chest_data, field_chest_tag));
+                            newMap.put("chestplate", getEquipmentObject(field_chest_id, field_chest_data, field_chest_tag));
                         }
                         if (field_leggins_id.isEnabled()) {
-                            newMap.put("leggins", getEquipmentObjcet(field_leggins_id, field_leggins_data, field_leggins_tag));
+                            newMap.put("leggins", getEquipmentObject(field_leggins_id, field_leggins_data, field_leggins_tag));
                         }
                         if (field_boots_id.isEnabled()) {
-                            newMap.put("boots", getEquipmentObjcet(field_boots_id, field_boots_data, field_boots_tag));
+                            newMap.put("boots", getEquipmentObject(field_boots_id, field_boots_data, field_boots_tag));
                         }
                         editTemplate.getComponents().add(new EquipmentArmorComponent(newMap));
                     }
@@ -723,7 +723,7 @@ public class EntityCreator implements Editor {
             for (IComponent c : template.getComponents()) {
                 if (c instanceof VariantComponent) {
                     for (int i = 0; i < variant_comboBox.getItemCount(); i++) {
-                        if (((VariantItem) variant_comboBox.getItemAt(i)).getValue() == ((VariantComponent) c).getValue()) {
+                        if (((VariantItem) variant_comboBox.getItemAt(i)).getValue().equals(((VariantComponent) c).getValue())) {
                             variant_comboBox.setSelectedIndex(i);
                             break;
                         }
@@ -810,7 +810,7 @@ public class EntityCreator implements Editor {
             for (IComponent c : template.getComponents()) {
                 if (c instanceof CatTypeComponent) {
                     for (int i = 0; i < catType_comboBox.getItemCount(); i++) {
-                        if (((CatTypeItem) catType_comboBox.getItemAt(i)).getValue() == ((CatTypeComponent) c).getValue()) {
+                        if (((CatTypeItem) catType_comboBox.getItemAt(i)).getValue().equals(((CatTypeComponent) c).getValue())) {
                             catType_comboBox.setSelectedIndex(i);
                             break;
                         }
@@ -908,7 +908,7 @@ public class EntityCreator implements Editor {
             for (IComponent c : template.getComponents()) {
                 if (c instanceof ColorComponent) {
                     for (int i = 0; i < color_comboBox.getItemCount(); i++) {
-                        if (((ColorItem) color_comboBox.getItemAt(i)).getValue() == ((ColorComponent) c).getValue()) {
+                        if (((ColorItem) color_comboBox.getItemAt(i)).getValue().equals(((ColorComponent) c).getValue())) {
                             color_comboBox.setSelectedIndex(i);
                             break;
                         }
@@ -940,7 +940,7 @@ public class EntityCreator implements Editor {
             for (IComponent c : template.getComponents()) {
                 if (c instanceof ProfessionComponent) {
                     for (int i = 0; i < profession_comboBox.getItemCount(); i++) {
-                        if (((ProfessionItem) profession_comboBox.getItemAt(i)).getValue() == ((ProfessionComponent) c).getValue()) {
+                        if (((ProfessionItem) profession_comboBox.getItemAt(i)).getValue().equals(((ProfessionComponent) c).getValue())) {
                             profession_comboBox.setSelectedIndex(i);
                             break;
                         }
@@ -986,7 +986,7 @@ public class EntityCreator implements Editor {
             for (IComponent c : template.getComponents()) {
                 if (c instanceof HorseTypeComponent) {
                     for (int i = 0; i < horseType_comboBox.getItemCount(); i++) {
-                        if (((HorseTypeItem) horseType_comboBox.getItemAt(i)).getValue() == ((HorseTypeComponent) c).getValue()) {
+                        if (((HorseTypeItem) horseType_comboBox.getItemAt(i)).getValue().equals(((HorseTypeComponent) c).getValue())) {
                             horseType_comboBox.setSelectedIndex(i);
                             break;
                         }
@@ -1071,21 +1071,21 @@ public class EntityCreator implements Editor {
     }
 
     @SuppressWarnings("unchecked")
-    public void saveComboboxItem(IComponent iComponent, Class<? extends IComponent> clazzComponent, JComboBox box, Class<? extends IComponentItem> clazzItem) {
+    public void saveComboboxItem(IComponent iComponent, Class<? extends IComponent> clazzComponent, JComboBox box, Class<? extends IComboBoxtItem> clazzItem) {
         if (box.isEnabled()) {
             clazzComponent.cast(iComponent).setValue(clazzItem.cast(box).getValue());
         }
     }
 
     @SuppressWarnings("unchecked")
-    public void saveCheckboxe(IComponent iComponent, Class<? extends IComponent> clazz, JCheckBox box) {
+    public void saveCheckbox(IComponent iComponent, Class<? extends IComponent> clazz, JCheckBox box) {
         if (box.isEnabled()) {
             clazz.cast(iComponent).setValue(box.isSelected());
         }
     }
 
     @SuppressWarnings("unchecked")
-    public JSONObject getEquipmentObjcet(JTextField id, JTextField data, JTextField tag) {
+    public JSONObject getEquipmentObject(JTextField id, JTextField data, JTextField tag) {
         JSONObject retObj = new JSONObject();
 
         if (Util.isInt(id.getText())) {

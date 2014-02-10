@@ -2,7 +2,7 @@ package de.keyle.dungeoncraft.editor.editors.entity.ComboBoxItems;
 
 import java.util.Vector;
 
-public class CatTypeItem implements IComponentItem<Integer> {
+public class CatTypeItem implements IComboBoxtItem<Integer> {
 
     int type;
     String description;

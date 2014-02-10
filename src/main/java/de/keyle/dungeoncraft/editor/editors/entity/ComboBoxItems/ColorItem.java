@@ -2,7 +2,7 @@ package de.keyle.dungeoncraft.editor.editors.entity.ComboBoxItems;
 
 import java.util.Vector;
 
-public class ColorItem implements IComponentItem<Byte> {
+public class ColorItem implements IComboBoxtItem<Byte> {
 
     byte color_id;
     String color;

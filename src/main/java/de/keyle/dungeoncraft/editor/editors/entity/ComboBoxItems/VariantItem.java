@@ -2,7 +2,7 @@ package de.keyle.dungeoncraft.editor.editors.entity.ComboBoxItems;
 
 import java.util.Vector;
 
-public class VariantItem implements IComponentItem<Integer> {
+public class VariantItem implements IComboBoxtItem<Integer> {
 
     int variant;
     String description;
