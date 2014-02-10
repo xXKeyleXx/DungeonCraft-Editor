@@ -35,6 +35,8 @@
         <json-simple.version>1.1.1</json-simple.version>
         <snakeyaml.version>1.12</snakeyaml.version>
         <forms_rt.version>7.0.3</forms_rt.version>
+        <knbt.version>0.0.1-SNAPSHOT</knbt.version>
+        <guava.version>16.0.1</guava.version>
         <rsyntaxtextarea.version>2.5.0</rsyntaxtextarea.version>
     </properties>
 
@@ -73,6 +75,12 @@
             <version>${snakeyaml.version}</version>
             <scope>compile</scope>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>de.keyle</groupId>
+            <artifactId>knbt</artifactId>
+            <version>${knbt.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.fifesoft</groupId>
@@ -177,6 +185,7 @@
                                     <include>com.googlecode.json-simple:json-simple</include>
                                     <include>com.google.guava:guava</include>
                                     <include>com.fifesoft:rsyntaxtextarea</include>
+                                    <include>de.keyle:knbt</include>
                                     <include>org.yaml:snakeyaml</include>
                                 </includes>
                             </artifactSet>

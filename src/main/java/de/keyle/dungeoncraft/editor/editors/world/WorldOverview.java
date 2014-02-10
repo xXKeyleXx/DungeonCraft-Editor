@@ -22,6 +22,9 @@ package de.keyle.dungeoncraft.editor.editors.world;
 
 import de.keyle.dungeoncraft.editor.GuiMain;
 import de.keyle.dungeoncraft.editor.editors.Editor;
+import de.keyle.dungeoncraft.editor.editors.world.schematic.Schematic;
+import de.keyle.dungeoncraft.editor.editors.world.schematic.SchematicLoader;
+import de.keyle.dungeoncraft.editor.editors.world.schematic.SchematicReveiver;
 import de.keyle.dungeoncraft.editor.util.DisabledPanel;
 
 import javax.swing.*;
@@ -30,25 +33,24 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.File;
 
-public class WorldOverview implements Editor {
+public class WorldOverview implements Editor, SchematicReveiver {
     private JPanel mainPanel;
     private JPanel renderPanel;
+
     Canvas canvas;
+    File schematicFile;
+    Schematic schematic = null;
+    final Renderer renderThread;
 
     public WorldOverview() {
         renderPanel.getWidth();
-        canvas.setSize(200, 200);
-        //canvas.setSize(renderPanel.getWidth(),renderPanel.getHeight());
-        //canvas.setLocation(0, 0);
-        canvas.setBackground(Color.BLUE);
+        renderThread = new Renderer(canvas);
     }
 
     private void createUIComponents() {
-        mainPanel = new DisabledPanel(); //ToDo GridLayoutManager
-        //mainPanel.setLayout(new GridLayoutManager(1, 1));
+        mainPanel = new DisabledPanel();
         canvas = new Canvas();
         renderPanel = new JPanel(new BorderLayout());
-        //renderPanel.add(canvas);
         renderPanel.add(canvas, BorderLayout.CENTER);
     }
 
@@ -64,10 +66,11 @@ public class WorldOverview implements Editor {
 
     @Override
     public void openDungeon(File dungeonFolder) {
-        //canvas.setSize(mainPanel.getWidth(), mainPanel.getHeight());
-        renderPanel.updateUI();
-
-        new Renderer(canvas).start();
+        schematicFile = new File(dungeonFolder, dungeonFolder.getName() + ".schematic");
+        schematic = null;
+        if(schematicFile.exists()) {
+            new SchematicLoader(this).start();
+        }
     }
 
     @Override
@@ -76,6 +79,7 @@ public class WorldOverview implements Editor {
 
     @Override
     public void init() {
+        renderThread.start();
         GuiMain.getMainForm().getFrame().addComponentListener(new ComponentAdapter() {
             boolean isResized = false;
 
@@ -105,5 +109,16 @@ public class WorldOverview implements Editor {
             public void componentHidden(ComponentEvent e) {
             }
         });
+    }
+
+    @Override
+    public File getSchematicFile() {
+        return schematicFile;
+    }
+
+    @Override
+    public void setSchematic(Schematic schematic) {
+        this.schematic = schematic;
+        renderThread.setSchematic(schematic);
     }
 }
