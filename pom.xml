@@ -40,6 +40,13 @@
         <rsyntaxtextarea.version>2.5.0</rsyntaxtextarea.version>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>keyle-repo</id>
+            <url>http://repo.keyle.de</url>
+        </repository>
+    </repositories>
+
     <pluginRepositories>
         <pluginRepository>
             <id>keyle-plugins</id>
