@@ -1,0 +1,497 @@
+[
+  {
+    "name": "Block",
+    "entries": [
+      {
+        "menu": "getBlockAt(X, Y, Z)  >  Block",
+        "tooltip": "getBlockAt(int x, int y, int z)  >  Block",
+        "content": "Block.getBlockAt(/* int x */, /* int y */, /* int z */)"
+      },
+      {
+        "menu": "testForBlock(X, Y, Z, Block)  >  boolean",
+        "tooltip": "testForBlock(int x, int y, int z, Block block)  >  boolean",
+        "content": "Block.testForBlock(/* int x */, /* int y */, /* int z */, /* Block block */)"
+      },
+      {
+        "menu": "setBlock(X, Y, Z, MaterialName)",
+        "tooltip": "setBlock(int x, int y, int z, /* String materialName */)",
+        "content": "Block.setBlock(/* int x */, /* int y */, /* int z */, String materialName */)"
+      },
+      {
+        "menu": "setBlock(X, Y, Z, MaterialName, Data)",
+        "tooltip": "setBlock(int x, int y, int z, String materialName, byte data)",
+        "content": "Block.setBlock(/* int x */, /* int y */, /* int z */, /* String materialName */, /* byte data */)"
+      },
+      {
+        "menu": "setBlock(X, Y, Z, MaterialName, Data, JsonTag)",
+        "tooltip": "setBlock(int x, int y, int z, String materialName, byte data, String jsonTag)",
+        "content": "Block.setBlock(/* int x */, /* int y */, /* int z */, /* String materialName */, /* byte data */, /* String jsonTag */)"
+      },
+      {
+        "menu": "fill(FromX, FromY, FromZ, ToX, ToY, ToZ, MaterialName)",
+        "tooltip": "fill(int fromX, int fromY, int fromZ, int toX, int toY, int toZ, String materialName)",
+        "content": "Block.fill(/* int fromX */, /* int fromY */, /* int fromZ */, /* int toX */, /* int toY */, /* int toZ */, /* String materialName */)"
+      },
+      {
+        "menu": "fill(FromX, FromY, FromZ, ToX, ToY, ToZ, MaterialName, Data)",
+        "tooltip": "fill(int fromX, int fromY, int fromZ, int toX, int toY, int toZ, String materialName, byte data)",
+        "content": "Block.fill(/* int fromX */, /* int fromY */, /* int fromZ */, /* int toX */, /* int toY */, /* int toZ */, /* String materialName */, /* byte data */)"
+      },
+      {
+        "menu": "fill(FromX, FromY, FromZ, ToX, ToY, ToZ, MaterialName, Data, JsonTag)",
+        "tooltip": "fill(int fromX, int fromY, int fromZ, int toX, int toY, int toZ, String materialName, byte data, String jsonTag)",
+        "content": "Block.fill(/* int fromX */, /* int fromY */, /* int fromZ */, /* int toX */, /* int toY */, /* int toZ */, /* String materialName */, /* byte data */, /* String jsonTag */)"
+      }
+    ]
+  },
+  {
+    "name": "Dungeon",
+    "entries": [
+      {
+        "menu": "getSpawnPoint()  >  OrientationVector",
+        "tooltip": "getSpawnPoint()  >  OrientationVector",
+        "content": "Dungeon.getSpawnPoint()"
+      },
+      {
+        "menu": "getEndTime()  >  long",
+        "tooltip": "getEndTime()  >  long",
+        "content": "Dungeon.getEndTime()"
+      },
+      {
+        "menu": "getRemainingTime()  >  long",
+        "tooltip": "getRemainingTime()  >  long",
+        "content": "Dungeon.getRemainingTime()"
+      },
+      {
+        "menu": "isTimeLocked()  >  boolean",
+        "tooltip": "isTimeLocked()  >  boolean",
+        "content": "Dungeon.isTimeLocked()"
+      },
+      {
+        "menu": "completeDungeonSuccess()",
+        "tooltip": "completeDungeonSuccess()",
+        "content": "Dungeon.completeDungeonSuccess()"
+      },
+      {
+        "menu": "completeDungeonFailure()",
+        "tooltip": "completeDungeonFailure()",
+        "content": "Dungeon.completeDungeonFailure()"
+      },
+      {
+        "menu": "getPlayerCount()  >  int",
+        "tooltip": "getPlayerCount()  >  int",
+        "content": "Dungeon.getPlayerCount()"
+      },
+      {
+        "menu": "getMinPlayerCount()  >  int",
+        "tooltip": "getMinPlayerCount()  >  int",
+        "content": "Dungeon.getMinPlayerCount()"
+      },
+      {
+        "menu": "getEnvironmentName()  >  String",
+        "tooltip": "getEnvironmentName()  >  String",
+        "content": "Dungeon.getEnvironmentName()"
+      },
+      {
+        "menu": "getEntityTemplateNames()  >  String[]",
+        "tooltip": "getEntityTemplateNames()  >  String[]",
+        "content": "Dungeon.getEntityTemplateNames()"
+      },
+      {
+        "menu": "getAllowedCommand()  >  String[]",
+        "tooltip": "getAllowedCommand()  >  String[]",
+        "content": "Dungeon.getAllowedCommand()"
+      }
+    ]
+  },
+  {
+    "name": "Effect",
+    "entries": [
+      {
+        "menu": "playSoundEffect(SoundName, Position, Volume, Pitch)",
+        "tooltip": "playSoundEffect(String soundName, Vector position, float volume, byte pitch)",
+        "content": "Effect.playSoundEffect(/* String soundName */, /* Vector position */, /* float volume */, /* byte pitch */)"
+      },
+      {
+        "menu": "playSoundEffect(SoundName, X, Y, Z, Volume, Pitch)",
+        "tooltip": "playSoundEffect(String soundName, double posX, double posY, double posZ, float volume, byte pitch)",
+        "content": "Effect.playSoundEffect(/* String soundName */, /* double x */, /* double y */, /* double z */, /* float volume */, /* byte pitch */)"
+      },
+      {
+        "menu": "playParticleEffect(ParticelName, Position, Speed, Count)",
+        "tooltip": "playParticleEffect(String particelName, Vector position, float speed, int count)",
+        "content": "Effect.playParticleEffect(/* String particelName */, /* Vector position */, /* float speed */, /* int count */)"
+      },
+      {
+        "menu": "playParticleEffect(ParticelName, X, Y, Z, Speed, Count)",
+        "tooltip": "playParticleEffect(String particelName, double posX, double posY, double posZ, float speed, int count)",
+        "content": "Effect.playParticleEffect(/* String particelName */, /* double x */, /* double y */, /* double z */, /* float speed */, /* int count */)"
+      }
+    ]
+  },
+  {
+    "name": "Entity",
+    "entries": [
+      {
+        "menu": "createEntity(TemplateID, Position)",
+        "tooltip": "createEntity(String templateId, OrientationVector position)",
+        "content": "Entity.createEntity(/* String templateId */, /* OrientationVector position */)"
+      },
+      {
+        "menu": "createEntity(TemplateID, X, Y, Z)",
+        "tooltip": "createEntity(String templateId, double posX, double posY, double posZ)",
+        "content": "Entity.createEntity(/* String templateId */, /* double posX */, /* double posY */, /* double posZ */)"
+      },
+      {
+        "menu": "killEntity(Entity)",
+        "tooltip": "killEntity(LivingEntity entity)",
+        "content": "Entity.killEntity(/* LivingEntity entity */)"
+      },
+      {
+        "menu": "removeEntity(Entity)",
+        "tooltip": "removeEntity(LivingEntity entity)",
+        "content": "Entity.removeEntity(/* LivingEntity entity */)"
+      }
+    ]
+  },
+  {
+    "name": "Environment",
+    "entries": [
+      {
+        "menu": "setWeather(Weather)",
+        "tooltip": "setWeather(boolean weather)",
+        "content": "Environment.setWeather(/* boolean weather */)"
+      },
+      {
+        "menu": "getWeather()  >  boolean",
+        "tooltip": "getWeather()  >  boolean",
+        "content": "Environment.getWeather()"
+      },
+      {
+        "menu": "setTime(Time)",
+        "tooltip": "setTime(int time)",
+        "content": "Environment.setTime(/* int time */)"
+      },
+      {
+        "menu": "getTime()  >  int",
+        "tooltip": "getTime()  >  int",
+        "content": "Environment.getTime()"
+      },
+      {
+        "menu": "setTimeLock(TimeLock)",
+        "tooltip": "setTimeLock(boolean timeLock)",
+        "content": "Environment.setTimeLock(/* boolean timeLock */)"
+      },
+      {
+        "menu": "isTimeLocked()  >  boolean",
+        "tooltip": "isTimeLocked()  >  boolean",
+        "content": "Environment.isTimeLocked()"
+      }
+    ]
+  },
+  {
+    "name": "Item",
+    "entries": [
+      {
+        "menu": "giveItemToPlayer(Player, ItemID, Quantity)",
+        "tooltip": "giveItemToPlayer(String player, int itemID, int quantity)",
+        "content": "Item.giveItemToPlayer(/* String player */, /* int itemID */, /* int quantity */)"
+      },
+      {
+        "menu": "giveItemToPlayer(Player, ItemName, Quantity)",
+        "tooltip": "giveItemToPlayer(String player, String itemName, int quantity)",
+        "content": "Item.giveItemToPlayer(/* String player */, /* String itemName */, /* int quantity */)"
+      },
+      {
+        "menu": "dropItem(Player, ItemID, Quantity)",
+        "tooltip": "dropItem(String player, int itemID, int quantity)",
+        "content": "Item.dropItem(/* String player */, /* int itemID */, /* int quantity */)"
+      },
+      {
+        "menu": "dropItem(Player, ItemName, Quantity)",
+        "tooltip": "dropItem(String player, String itemName, int quantity)",
+        "content": "Item.dropItem(/* String player */, /* String itemName */, /* int quantity */)"
+      },
+      {
+        "menu": "dropItem(X, Y, Z, ItemID, Quantity)",
+        "tooltip": "dropItem(int x, int y, int z, int itemID, int quantity)",
+        "content": "Item.dropItem(/* int x */, /* int y */, /* int z */, /* int itemID */, /* int quantity */)"
+      },
+      {
+        "menu": "dropItem(X, Y, Z, ItemName, Quantity)",
+        "tooltip": "dropItem(int x, int y, int z, String itemName, int quantity)",
+        "content": "Item.dropItem(/* int x */, /* int y */, /* int z */, /* String itemName */, /* int quantity */)"
+      },
+      {
+        "menu": "giveDungeonCraftItemToPlayer(Player, ItemID, Quantity)",
+        "tooltip": "giveDungeonCraftItemToPlayer(String player, int itemID, int quantity)",
+        "content": "Item.giveDungeonCraftItemToPlayer(/* String player */, /* int itemID */, /* int quantity */)"
+      },
+      {
+        "menu": "giveDungeonCraftItemToPlayer(Player, ItemName, Quantity)",
+        "tooltip": "giveDungeonCraftItemToPlayer(String player, String itemName, int quantity)",
+        "content": "Item.giveDungeonCraftItemToPlayer(/* String player */, /* String itemName */, /* int quantity */)"
+      },
+      {
+        "menu": "giveDungeonCraftItemToPlayerUndroppable(Player, ItemID, Quantity)",
+        "tooltip": "giveDungeonCraftItemToPlayerUndroppable(String player, int itemID, int quantity)",
+        "content": "Item.giveDungeonCraftItemToPlayerUndroppable(/* String player */, /* int itemID */, /* int quantity */)"
+      },
+      {
+        "menu": "giveDungeonCraftItemToPlayerUndroppable(Player, ItemName, Quantity)",
+        "tooltip": "giveDungeonCraftItemToPlayerUndroppable(String player, String itemName, int quantity)",
+        "content": "Item.giveDungeonCraftItemToPlayerUndroppable(/* String player */, /* String itemName */, /* int quantity */)"
+      },
+      {
+        "menu": "dropDungeonCraftItem(Player, ItemID, Quantity)",
+        "tooltip": "dropDungeonCraftItem(String player, int itemID, int quantity)",
+        "content": "Item.dropDungeonCraftItem(/* String player */, /* int itemID */, /* int quantity */)"
+      },
+      {
+        "menu": "dropDungeonCraftItem(Player, ItemName, Quantity)",
+        "tooltip": "dropDungeonCraftItem(String player, String itemName, int quantity)",
+        "content": "Item.dropDungeonCraftItem(/* String player */, /* String itemName */, /* int quantity */)"
+      },
+      {
+        "menu": "dropDungeonCraftItem(X, Y, Z, ItemID, Quantity)",
+        "tooltip": "dropDungeonCraftItem(int x, int y, int z, int itemID, int quantity)",
+        "content": "Item.dropDungeonCraftItem(/* int x */, /* int y */, /* int z */, /* int itemID */, /* int quantity */)"
+      },
+      {
+        "menu": "dropDungeonCraftItem(X, Y, Z, ItemName, Quantity)",
+        "tooltip": "dropDungeonCraftItem(int x, int y, int z, String itemName, int quantity)",
+        "content": "Item.dropDungeonCraftItem(/* int x */, /* int y */, /* int z */, /* String itemName */, /* int quantity */)"
+      },
+      {
+        "menu": "dropDungeonCraftItemUndroppable(Player, ItemID, Quantity)",
+        "tooltip": "dropDungeonCraftItemUndroppable(String player, int itemID, int quantity)",
+        "content": "Item.dropDungeonCraftItemUndroppable(/* String player */, /* int itemID */, /* int quantity */)"
+      },
+      {
+        "menu": "dropDungeonCraftItemUndroppable(Player, ItemName, Quantity)",
+        "tooltip": "dropDungeonCraftItemUndroppable(String player, String itemName, int quantity)",
+        "content": "Item.dropDungeonCraftItemUndroppable(/* String player */, /* String itemName */, /* int quantity */)"
+      },
+      {
+        "menu": "dropDungeonCraftItemUndroppable(X, Y, Z, ItemID, Quantity)",
+        "tooltip": "dropDungeonCraftItemUndroppable(int x, int y, int z, int itemID, int quantity)",
+        "content": "Item.dropDungeonCraftItemUndroppable(/* int x */, /* int y */, /* int z */, /* int itemID */, /* int quantity */)"
+      },
+      {
+        "menu": "dropDungeonCraftItemUndroppable(X, Y, Z, ItemName, Quantity)",
+        "tooltip": "dropDungeonCraftItemUndroppable(int x, int y, int z, String itemName, int quantity)",
+        "content": "Item.dropDungeonCraftItemUndroppable(/* int x */, /* int y */, /* int z */, /* String itemName */, /* int quantity */)"
+      }
+    ]
+  },
+  {
+    "name": "Logger",
+    "entries": [
+      {
+        "menu": "info(Message)",
+        "tooltip": "info(String message)",
+        "content": "Logger.info(/* String message */)"
+      },
+      {
+        "menu": "warning(Message)",
+        "tooltip": "warning(String message)",
+        "content": "Logger.warning(/* String message */)"
+      },
+      {
+        "menu": "severe(Message)",
+        "tooltip": "severe(String message)",
+        "content": "Logger.severe(/* String message */)"
+      }
+    ]
+  },
+  {
+    "name": "Player",
+    "entries": [
+      {
+        "menu": "getPlayerCount()  >  int",
+        "tooltip": "getPlayerCount()  >  int",
+        "content": "Player.getPlayerCount()"
+      },
+      {
+        "menu": "getPlayerNames()  >  String[]",
+        "tooltip": "getPlayerNames()  >  String[]",
+        "content": "Player.getPlayerNames()"
+      },
+      {
+        "menu": "getPlayerDisplayName(Name)  >  String",
+        "tooltip": "getPlayerDisplayName(String name)  >  String",
+        "content": "Player.getPlayerDisplayName(/* String name */)"
+      },
+      {
+        "menu": "setPlayerSpawn(PlayerName, Position)",
+        "tooltip": "setPlayerSpawn(String playerName, OrientationVector pos)",
+        "content": "Player.setPlayerSpawn(/* String playerName */, /* OrientationVector pos */)"
+      },
+      {
+        "menu": "setPlayerSpawn(PlayerName, X, Y, Z, double yaw, double pitch)",
+        "tooltip": "setPlayerSpawn(String playerName, int x, int y, int z, double yaw, double pitch)",
+        "content": "Player.setPlayerSpawn(/* String playerName */, /* int x */, /* int y */, /* int z */, /* double yaw */, /* double pitch */)"
+      },
+      {
+        "menu": "getPlayerSpawn(PlayerName)  >  OrientationVector",
+        "tooltip": "getPlayerSpawn(String playerName)  >  OrientationVector",
+        "content": "Player.getPlayerSpawn(/* String playerName */)"
+      },
+      {
+        "menu": "sendMessageToAllPlayers(Message)",
+        "tooltip": "sendMessageToAllPlayers(String playerName)",
+        "content": "Player.sendMessageToAllPlayers(/* String message */)"
+      },
+      {
+        "menu": "sendMessage(PlayerName, Message)",
+        "tooltip": "sendMessage(String playerName, String message)",
+        "content": "Player.sendMessage(/* String playerName */, /* String message */)"
+      },
+      {
+        "menu": "sendMessageRaw(PlayerName, Message)",
+        "tooltip": "sendMessageRaw(String playerName, String message)",
+        "content": "Player.sendMessageRaw(/* String playerName */, /* String message */)"
+      }
+    ]
+  },
+  {
+    "name": "Region",
+    "entries": [
+      {
+        "menu": "getRegionsAt(X, Y, Z)  >  List<DungeonRegion>",
+        "tooltip": "getRegionsAt(int x, int y, int z)  >  List<DungeonRegion>",
+        "content": "Region.getRegionsAt(/* int x */, /* int y */, /* int z */)"
+      }
+    ]
+  },
+  {
+    "name": "Timer",
+    "entries": [
+      {
+        "menu": "delayedTask(Function, Delay)",
+        "tooltip": "delayedTask(Function function, long delay)",
+        "content": "Timer.delayedTask(/* Function function */, /* long delay */)"
+      },
+      {
+        "menu": "repeatingTask(Function, Interval)",
+        "tooltip": "repeatingTask(Function function, long interval)",
+        "content": "Timer.repeatingTask(/* Function function */, /* long interval */)"
+      },
+      {
+        "menu": "repeatingTask(Function, Interval, Delay)",
+        "tooltip": "repeatingTask(Function function, long interval, long delay)",
+        "content": "Timer.repeatingTask(/* Function function */, /* long interval */, /* long delay */)"
+      },
+      {
+        "menu": "cancelTask(Function)",
+        "tooltip": "cancelTask(Function function)",
+        "content": "Timer.cancelTask(/* Function function */)"
+      },
+      {
+        "menu": "cancelAllTasks()",
+        "tooltip": "cancelAllTasks()",
+        "content": "Timer.cancelAllTasks()"
+      }
+    ]
+  },
+  {
+    "name": "Scoreboard",
+    "entries": [
+      {
+        "menu": "createObjective(Name, Criteria)",
+        "tooltip": "createObjective(String name, String criteria)",
+        "content": "Scoreboard.createObjective(/* String name */, /* String criteria */)"
+      },
+      {
+        "menu": "setObjectiveDisplayName(Name, DisplayName)",
+        "tooltip": "setObjectiveDisplayName(String name, String displayName)",
+        "content": "Scoreboard.setObjectiveDisplayName(/* String name */, /* String displayName */)"
+      },
+      {
+        "menu": "setObjectiveDisplaySlot(Name, DisplaySlot)",
+        "tooltip": "setObjectiveDisplaySlot(String name, DisplaySlot displaySlot)",
+        "content": "Scoreboard.setObjectiveDisplaySlot(/* String name */, /* DisplaySlot displaySlot */)"
+      },
+      {
+        "menu": "setObjectiveScore(Name, Playername, Score)",
+        "tooltip": "setObjectiveScore(String name, String playername, int score)",
+        "content": "Scoreboard.setObjectiveScore(/* String name */, /* String playername */, /* int score */)"
+      },
+      {
+        "menu": "getObjectiveScore(Name, Playername)  >  int",
+        "tooltip": "getObjectiveScore(String name, String playername)  >  int",
+        "content": "Scoreboard.getObjectiveScore(/* String name */, /* String playername */)"
+      }
+    ]
+  },
+  {
+    "name": "Translation",
+    "entries": [
+      {
+        "menu": "get(Playername, Node)  >  String",
+        "tooltip": "get(String playername, String node)  >  String",
+        "content": "Translation.get(/* String playername */, /* String node */)"
+      }
+    ]
+  },
+  {
+    "name": "Trigger",
+    "entries": [
+      {
+        "menu": "registerTrigger(ID, Function)",
+        "tooltip": "registerTrigger(int ID, Function function)",
+        "content": "Trigger.registerTrigger(/* int ID */, /* Function function */)"
+      },
+      {
+        "menu": "enableTrigger(ID)",
+        "tooltip": "enableTrigger(int ID)",
+        "content": "Trigger.enableTrigger(/* int ID */)"
+      },
+      {
+        "menu": "enableTrigger(ID, Filename)",
+        "tooltip": "enableTrigger(int ID, String filename)",
+        "content": "Trigger.enableTrigger(/* int ID */, /* String filename */)"
+      },
+      {
+        "menu": "disableTrigger(ID)",
+        "tooltip": "disableTrigger(int ID)",
+        "content": "Trigger.disableTrigger(/* int ID */)"
+      },
+      {
+        "menu": "disableTrigger(ID, Filename)",
+        "tooltip": "disableTrigger(int ID, String filename)",
+        "content": "Trigger.disableTrigger(/* int ID */, /* String filename */)"
+      }
+    ]
+  },
+  {
+    "name": "Variables",
+    "entries": [
+      {
+        "menu": "setVariable(Key, Value)  >  boolean",
+        "tooltip": "setVariable(String key, Object value)  >  boolean",
+        "content": "Variables.setVariable(/* String key */, /* Object value */)"
+      },
+      {
+        "menu": "updateVariable(Key, Value)  >  boolean",
+        "tooltip": "updateVariable(String key, Object value)  >  boolean",
+        "content": "Variables.updateVariable(/* String key */, /* Object value */)"
+      },
+      {
+        "menu": "getVariable(Key)  >  Object",
+        "tooltip": "getVariable(String key)  >  Object",
+        "content": "Variables.getVariable(/* String key */)"
+      },
+      {
+        "menu": "removeVariable(Key)  >  boolean",
+        "tooltip": "removeVariable(String key)  >  boolean",
+        "content": "Variables.removeVariable(/* String key */)"
+      },
+      {
+        "menu": "getVariablesKeys()  >  Set<String>",
+        "tooltip": "getVariablesKeys()  >  Set<String>",
+        "content": "Variables.getVariablesKeys()"
+      }
+    ]
+  }
+]

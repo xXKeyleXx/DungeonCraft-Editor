@@ -21,6 +21,7 @@
 package de.keyle.dungeoncraft.editor.util.config;
 
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -29,7 +30,7 @@ import java.io.*;
 
 public class ConfigurationJson {
     public File jsonFile;
-    private JSONObject config;
+    private Object config;
 
     public ConfigurationJson(String path) {
         this(new File(path));
@@ -39,7 +40,7 @@ public class ConfigurationJson {
         jsonFile = file;
     }
 
-    public JSONObject getJSONObject() {
+    public Object getObject() {
         if (config == null) {
             config = new JSONObject();
         }
@@ -52,8 +53,7 @@ public class ConfigurationJson {
         try {
             reader = new BufferedReader(new FileReader(jsonFile));
             JSONParser parser = new JSONParser();
-            Object obj = parser.parse(reader);
-            config = (JSONObject) obj;
+            config = parser.parse(reader);
         } catch (ParseException e) {
             return false;
         } catch (Exception e) {
@@ -71,21 +71,57 @@ public class ConfigurationJson {
     }
 
     public boolean save() {
+        BufferedWriter writer = null;
         try {
             // http://jsonformatter.curiousconcept.com/
             // http://jsoneditoronline.org/
-            BufferedWriter writer = new BufferedWriter(new FileWriter(jsonFile));
-            writer.write(config.toJSONString());
-            writer.close();
+            writer = new BufferedWriter(new FileWriter(jsonFile));
+            if(config instanceof JSONObject) {
+                writer.write(((JSONObject)config).toJSONString());
+            } else if(config instanceof JSONArray) {
+                writer.write(((JSONArray)config).toJSONString());
+            } else {
+                return false;
+            }
             return true;
         } catch (IOException e) {
             e.printStackTrace();
             //DebugLogger.printThrowable(e);
             return false;
+        } finally {
+            if(writer != null) {
+                try {
+                    writer.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
     public void clearConfig() {
         config = new JSONObject();
+    }
+
+    public static Object load(InputStream is) {
+        Object config = new JSONObject();
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new InputStreamReader(is));
+            JSONParser parser = new JSONParser();
+            config = parser.parse(reader);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException ignored) {
+                }
+            }
+        }
+        return config;
     }
 }

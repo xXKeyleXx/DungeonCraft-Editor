@@ -47,7 +47,7 @@ public class EntityTemplateLoader {
             ConfigurationJson jsonConfig = new ConfigurationJson(templateFile);
             jsonConfig.load();
 
-            JSONObject root = jsonConfig.getJSONObject();
+            JSONObject root = (JSONObject) jsonConfig.getObject();
             List<EntityTemplate> templates_list = new ArrayList<EntityTemplate>();
             if (root.containsKey("templates")) {
                 JSONArray templates = (JSONArray) root.get("templates");
