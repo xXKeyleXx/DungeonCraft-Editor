@@ -74,8 +74,6 @@ public class WorldViewer extends Thread {
 
     // set to true when the program is finished
     private boolean done = false;
-    // are we inverting the mouse
-    private boolean invertMouse = false;
 
     // current display mode
     private DisplayMode displayMode;
@@ -199,14 +197,6 @@ public class WorldViewer extends Thread {
 
     // Chunk border rendering status
     private boolean renderChunkBorders = false;
-
-    // vars to keep track of our current chunk coordinates
-    private int cur_chunk_x = 0;
-    private int cur_chunk_z = 0;
-
-    // The current camera position that we're at
-    private OrientationVector currentPosition;
-    private String cameraTextOverride = null;
 
     private HashMap<KEY_ACTION, Integer> key_mapping;
     private WorldViewerProperties xray_properties;
@@ -856,12 +846,10 @@ public class WorldViewer extends Thread {
         }
     }
 
-    //private void moveCameraToPosition(CameraPreset playerPos) {
     private void moveCameraToPosition(OrientationVector playerPos) {
         this.takeLoadingBoxScreenshot();
         this.camera.getPosition().set((float) playerPos.getX(), (float) playerPos.getY(), (float) playerPos.getZ());
         this.camera.setYawAndPitch(180 + (float) playerPos.getYaw(), (float) playerPos.getPitch());
-        this.currentPosition = playerPos;
     }
 
     public void openNewSchematic() {
@@ -923,11 +911,7 @@ public class WorldViewer extends Thread {
         // we are on the main world screen or the level loading screen update the camera (but only if the mouse is grabbed)
         if (Mouse.isGrabbed()) {
             camera.incYaw(mouseX * MOUSE_SENSITIVITY);
-            if (invertMouse) {
-                camera.incPitch(mouseY * MOUSE_SENSITIVITY);
-            } else {
-                camera.incPitch(-mouseY * MOUSE_SENSITIVITY);
-            }
+            camera.incPitch(-mouseY * MOUSE_SENSITIVITY);
         }
 
         //

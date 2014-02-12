@@ -97,7 +97,6 @@ public class BlockType
     public String aka;
     public BLOCK_TYPE type;
     private ArrayList<Integer> mapcolor;
-    private String texpath;
     private HashMap<Integer, String> tex_direction_data;
     private int tex_data_bits;
     private boolean override; // This is not at all tested yet
@@ -328,9 +327,9 @@ public class BlockType
             throws BlockTypeLoadException {
         if (blockTypeExtraTexturesReq.containsKey(this.type)) {
             if (this.texture_extra_map == null) {
-                StringBuffer sb = new StringBuffer(this.type.toString() + " blocks must contain the following in tex_extra: ");
+                StringBuilder sb = new StringBuilder(this.type.toString() + " blocks must contain the following in tex_extra: ");
                 for (String key : blockTypeExtraTexturesReq.get(this.type)) {
-                    sb.append("'" + key + "', ");
+                    sb.append("'").append(key).append("', ");
                 }
                 sb.delete(sb.length() - 2, sb.length());
                 throw new BlockTypeLoadException(sb.toString());

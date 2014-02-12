@@ -154,7 +154,6 @@ public class MinecraftConstants {
     public static BlockType BLOCK_IRON_BARS;
     public static BlockType BLOCK_PISTON_HEAD;
     public static BlockType BLOCK_PISTON_STICKY_BODY;
-    public static BlockType BLOCK_SILVERFISH;
 
     // A HashMap to define blocks that the "explored" highlight will use
     public static HashMap<Short, Boolean> exploredBlocks;
@@ -242,7 +241,6 @@ public class MinecraftConstants {
         CHUNK_RANGE_6(ACTION_CAT.RENDERING, Keyboard.KEY_NUMPAD6, "Visibility Range 6"),
         TOGGLE_ACCURATE_GRASS(ACTION_CAT.RENDERING, Keyboard.KEY_G, "Toggle Accurate Grass"),
         TOGGLE_BETA19_FENCES(ACTION_CAT.RENDERING, Keyboard.KEY_C, "Toggle Beta 1.9 Fences"),
-        TOGGLE_SILVERFISH(ACTION_CAT.RENDERING, Keyboard.KEY_V, "Toggle Silverfish Highlighting"),
         TOGGLE_CHUNK_BORDERS(ACTION_CAT.RENDERING, Keyboard.KEY_U, "Toggle Chunk Borders"),
 
         TOGGLE_POSITION_INFO(ACTION_CAT.OTHER, Keyboard.KEY_K, "Toggle Level Info"),
@@ -374,13 +372,6 @@ public class MinecraftConstants {
         if (BLOCK_PISTON_STICKY_BODY == null) {
             throw new BlockTypeLoadException("PISTON_STICKY_BODY block definition not found");
         }
-        BLOCK_SILVERFISH = blockCollection.getByName("SILVERFISH");
-        if (BLOCK_SILVERFISH == null) {
-            throw new BlockTypeLoadException("SILVERFISH block definition not found");
-        }
-        if (BLOCK_SILVERFISH.texture_data_map == null || !BLOCK_SILVERFISH.texture_data_map.containsKey((byte) 0)) {
-            throw new BlockTypeLoadException("SILVERFISH block definition must include at least one data value of 0");
-        }
 
         // We also define a "special" block for unknown block types, so that instead
         // of empty space, they'll show up as purple blocks.
@@ -444,8 +435,8 @@ public class MinecraftConstants {
         precalcSpriteSheetToTextureX = new float[512];
         precalcSpriteSheetToTextureY = new float[512];
         for (int i = 0; i < 512; i++) {
-            float texYy = ((int) (i / 16)) / 32.0f;
-            float texXx = ((int) (i % 16)) / 16.0f;
+            float texYy = i / 16 / 32.0f;
+            float texXx = i % 16 / 16.0f;
             precalcSpriteSheetToTextureX[i] = texXx;
             precalcSpriteSheetToTextureY[i] = texYy;
         }
@@ -494,7 +485,7 @@ public class MinecraftConstants {
      *
      * @return The text to display for the key
      */
-    public static String getKeyEnglish(KEY_ACTION action, int bound_key) {
+    public static String getKeyEnglish(int bound_key) {
         if (Keyboard.getKeyName(bound_key).equals("GRAVE")) {
             return "`";
         } else if (Keyboard.getKeyName(bound_key).equals("SYSRQ")) {
@@ -543,7 +534,7 @@ public class MinecraftConstants {
      *
      * @return Text
      */
-    public static String getKeyExtraBefore(KEY_ACTION action, int bound_key) {
+    public static String getKeyExtraBefore(KEY_ACTION action) {
         switch (action) {
             case QUIT:
                 return "CTRL-";
@@ -555,8 +546,6 @@ public class MinecraftConstants {
      * Returns a full text description of the given key
      */
     public static String getKeyFullText(KEY_ACTION action, int bound_key) {
-        return getKeyExtraBefore(action, bound_key) +
-                getKeyEnglish(action, bound_key) +
-                getKeyExtraAfter(action, bound_key);
+        return getKeyExtraBefore(action) + getKeyEnglish(bound_key) + getKeyExtraAfter(action, bound_key);
     }
 }

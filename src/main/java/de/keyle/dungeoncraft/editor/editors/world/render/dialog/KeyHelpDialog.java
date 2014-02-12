@@ -71,7 +71,7 @@ public class KeyHelpDialog
     private ArrayList<KeyPanel> keyPanels;
     private KeyPanel curKeyPanel;
 
-    private WorldViewer xrayInstance;
+    private WorldViewer worldViewerInstance;
 
     private enum STATE {
         DISPLAY,
@@ -270,7 +270,6 @@ public class KeyHelpDialog
         this.getContentPane().setLayout(gridBagLayoutManager);
         GridBagConstraints c = new GridBagConstraints();
 
-        float flabel = 0.1f;
         float flist = 1.9f;
 
         JLabel titleLabel = new JLabel(window_title);
@@ -280,18 +279,14 @@ public class KeyHelpDialog
         Font descFont = new Font("Arial", Font.PLAIN, 12);
         Font keyFont = new Font("Arial", Font.BOLD, 12);
         Font buttonFont = new Font("Arial", Font.PLAIN, 10);
-        Font noteFont = new Font("Arial", Font.ITALIC, 10);
         this.defaultStatusText = "Use the \"Edit Bindings\" button to change bindings.";
         this.statusLabel = new JLabel(defaultStatusText);
         JLabel sectionLabel;
         JLabel descLabel;
-        JLabel keyLabel;
-        JLabel keyLabelBefore;
-        JLabel keyLabelAfter;
 
         Insets standardInsets = new Insets(5, 5, 5, 5);
         Insets categoryInsets = new Insets(20, 5, 5, 5);
-        Insets noBottomInsets = new Insets(5, 5, 0, 5);
+        new Insets(5, 5, 0, 5);
         Insets noTopInsets = new Insets(0, 5, 5, 5);
         c.insets = standardInsets;
         c.weighty = .1f;
@@ -626,7 +621,7 @@ public class KeyHelpDialog
      * Called by one of our KeyPanels, this notifies the main dialog that
      * the "unbind" button for the current key was clicked.
      */
-    public void notifyUnbindClicked(KeyPanel keypanel) {
+    public void notifyUnbindClicked() {
         if (this.curKeyPanel != null) {
             this.curKeyPanel.setBoundKey(Keyboard.KEY_NONE);
             this.setEnterKey = false;
@@ -670,20 +665,20 @@ public class KeyHelpDialog
         }
 
         if (changed) {
-            this.xrayInstance.updateKeyMapping();
+            this.worldViewerInstance.updateKeyMapping();
         }
     }
 
     /**
      * Creates a new KeyHelpDialog
      *
-     * @param key_mapping  the current keymap
-     * @param xrayInstance the title of the dialog
+     * @param key_mapping         the current keymap
+     * @param worldViewerInstance the title of the dialog
      */
-    protected KeyHelpDialog(HashMap<KEY_ACTION, Integer> key_mapping, WorldViewer xrayInstance) {
+    protected KeyHelpDialog(HashMap<KEY_ACTION, Integer> key_mapping, WorldViewer worldViewerInstance) {
         super(window_title);
         this.key_mapping = key_mapping;
-        this.xrayInstance = xrayInstance;
+        this.worldViewerInstance = worldViewerInstance;
 
         if (KeyHelpDialog.iconImage != null) {
             this.setIconImage(KeyHelpDialog.iconImage);
@@ -729,16 +724,16 @@ public class KeyHelpDialog
     /**
      * Pops up the dialog window
      *
-     * @param key_mapping  the current key map
-     * @param xrayInstance the title of the dialog
+     * @param key_mapping         the current key map
+     * @param worldViewerInstance the title of the dialog
      */
-    public static void presentDialog(HashMap<KEY_ACTION, Integer> key_mapping, WorldViewer xrayInstance) {
+    public static void presentDialog(HashMap<KEY_ACTION, Integer> key_mapping, WorldViewer worldViewerInstance) {
         if (dialog_showing) {
             KeyHelpDialog.keyhelp_dialog.toFront();
             KeyHelpDialog.keyhelp_dialog.requestFocus();
         } else {
             KeyHelpDialog.dialog_showing = true;
-            KeyHelpDialog.keyhelp_dialog = new KeyHelpDialog(key_mapping, xrayInstance);
+            KeyHelpDialog.keyhelp_dialog = new KeyHelpDialog(key_mapping, worldViewerInstance);
         }
     }
 

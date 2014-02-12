@@ -39,12 +39,8 @@ public class JumpDialog extends JFrame {
     private static final int FRAMEWIDTH = 420;
     private static final int FRAMEHEIGHT = 220;
 
-    private JSpinner xSpinner;
-    private JSpinner zSpinner;
     private SpinnerNumberModel xSpinnerModel;
     private SpinnerNumberModel zSpinnerModel;
-    private ButtonGroup positionSelectGroup;
-    private JRadioButton positionButton;
     private JRadioButton chunkButton;
 
     private JButton runButton;
@@ -52,7 +48,6 @@ public class JumpDialog extends JFrame {
     private JButton syncButton;
 
     private GridBagLayout gridBagLayoutManager;
-    private JPanel basicPanel;
 
     private static WorldViewer xray_obj;
     private static boolean dialog_showing = false;
@@ -84,7 +79,7 @@ public class JumpDialog extends JFrame {
      * Layouts all the controls and labels on the dialog using a gridbaglayout
      */
     private void layoutControlsOnDialog() {
-        basicPanel = new JPanel();
+        JPanel basicPanel = new JPanel();
 
         this.getContentPane().setLayout(gridBagLayoutManager);
         basicPanel.setLayout(gridBagLayoutManager);
@@ -102,8 +97,8 @@ public class JumpDialog extends JFrame {
         c.weighty = .1f;
 
         // Radio buttons to determine whether we're zooming to a position or a chunk
-        positionSelectGroup = new ButtonGroup();
-        positionButton = new JRadioButton("Jump to position");
+        ButtonGroup positionSelectGroup = new ButtonGroup();
+        JRadioButton positionButton = new JRadioButton("Jump to position");
         positionButton.setSelected(true);
         chunkButton = new JRadioButton("Jump to chunk");
         positionSelectGroup.add(positionButton);
@@ -158,7 +153,7 @@ public class JumpDialog extends JFrame {
         // X-Ray only supports up to Integer values, and Minecraft itself bugs way out long before
         // then anyway.  So we should be okay regardless.
         xSpinnerModel = new SpinnerNumberModel(0, Integer.MIN_VALUE, Integer.MAX_VALUE, 1);
-        xSpinner = new JSpinner(xSpinnerModel);
+        JSpinner xSpinner = new JSpinner(xSpinnerModel);
         c.weightx = flist;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 1;
@@ -176,7 +171,7 @@ public class JumpDialog extends JFrame {
 
         // Add the Z spinner
         zSpinnerModel = new SpinnerNumberModel(0, Integer.MIN_VALUE, Integer.MAX_VALUE, 1);
-        zSpinner = new JSpinner(zSpinnerModel);
+        JSpinner zSpinner = new JSpinner(zSpinnerModel);
         c.weightx = flist;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 1;

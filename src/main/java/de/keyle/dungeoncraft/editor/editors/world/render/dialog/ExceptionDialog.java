@@ -47,8 +47,6 @@ public class ExceptionDialog extends JFrame {
     private JButton okButton;
 
     private GridBagLayout gridBagLayoutManager;
-    private JPanel basicPanel;
-    private JTextArea mainLabel;
     private JScrollPane mainPane;
 
     public static Image iconImage;
@@ -76,7 +74,7 @@ public class ExceptionDialog extends JFrame {
      * Layouts all the controls and labels on the dialog using a gridbaglayout
      */
     private void layoutControlsOnDialog(String windowName) {
-        basicPanel = new JPanel();
+        JPanel basicPanel = new JPanel();
 
         this.getContentPane().setLayout(gridBagLayoutManager);
         basicPanel.setLayout(gridBagLayoutManager);
@@ -207,7 +205,7 @@ public class ExceptionDialog extends JFrame {
         });
 
         // Main label
-        mainLabel = new JTextArea(warningText);
+        JTextArea mainLabel = new JTextArea(warningText);
         mainLabel.setLineWrap(false);
         mainLabel.setEditable(false);
         mainLabel.setMargin(new Insets(8, 8, 8, 8));
@@ -314,9 +312,7 @@ public class ExceptionDialog extends JFrame {
     public static void presentDialog(String windowName, String warningText) {
         ExceptionDialog dialog = new ExceptionDialog(windowName, warningText);
         try {
-            synchronized (dialog) {
-                dialog.wait();
-            }
+            dialog.wait();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

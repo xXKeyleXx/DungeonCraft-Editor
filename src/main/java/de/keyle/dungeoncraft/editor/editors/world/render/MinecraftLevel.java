@@ -49,8 +49,6 @@ public class MinecraftLevel {
     public ArrayList<Texture> minecraftTextures;
     public Texture paintingTexture;
 
-    public LightSourceRegistry lightSources;
-
     /**
      * Create a minecraftLevel from the given world
      *
@@ -69,9 +67,6 @@ public class MinecraftLevel {
         loadSchematic();
 
         this.spawnPoint_idx = -1;
-
-        // And finally, initialize our Light Source Registry
-        this.lightSources = new LightSourceRegistry();
     }
 
     public void loadSchematic() {

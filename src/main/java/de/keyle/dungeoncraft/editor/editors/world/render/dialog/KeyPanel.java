@@ -76,7 +76,7 @@ public class KeyPanel extends JPanel {
         this.afterLabel.setFont(keyFont);
         this.keyLabel = new JLabel();
         this.keyLabel.setFont(keyFont);
-        this.keyEdit = new KeyField(action, this);
+        this.keyEdit = new KeyField(this);
         this.unbindSpacer = new JLabel("  ");
         this.unbindSpacer.setFont(keyFont);
         this.unbindButton = new JButton("Unbind");
@@ -106,8 +106,8 @@ public class KeyPanel extends JPanel {
      */
     public void setBoundKey(int bound_key) {
         this.bound_key = bound_key;
-        this.keyStr = getKeyEnglish(this.action, bound_key);
-        this.beforeStr = getKeyExtraBefore(this.action, bound_key);
+        this.keyStr = getKeyEnglish(bound_key);
+        this.beforeStr = getKeyExtraBefore(this.action);
         this.afterStr = getKeyExtraAfter(this.action, bound_key);
 
         this.beforeLabel.setText(this.beforeStr);
@@ -139,7 +139,7 @@ public class KeyPanel extends JPanel {
      * to our master dialog to process.
      */
     public void notifyUnbindClicked() {
-        this.kh.notifyUnbindClicked(this);
+        this.kh.notifyUnbindClicked();
     }
 
     /**

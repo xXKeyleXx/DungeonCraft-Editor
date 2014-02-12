@@ -33,12 +33,6 @@ public class BlockTypeLoadException extends Exception {
     private String extraStatus1;
     private String extraStatus2;
 
-    public BlockTypeLoadException() {
-        this.origException = null;
-        this.extraStatus1 = ExceptionDialog.getExtraStatus1();
-        this.extraStatus2 = ExceptionDialog.getExtraStatus2();
-    }
-
     public BlockTypeLoadException(String message) {
         super(message);
         this.origException = null;
@@ -53,20 +47,21 @@ public class BlockTypeLoadException extends Exception {
         this.extraStatus2 = ExceptionDialog.getExtraStatus2();
     }
 
+    @SuppressWarnings("unused")
     public Exception getOrigException() {
         return this.origException;
     }
 
     public String toString() {
-        StringBuffer errStr = new StringBuffer();
+        StringBuilder errStr = new StringBuilder();
         if (this.extraStatus1 != null) {
-            errStr.append(this.extraStatus1 + " - ");
+            errStr.append(this.extraStatus1).append(" - ");
         }
         if (this.extraStatus2 != null) {
-            errStr.append(this.extraStatus2 + " - ");
+            errStr.append(this.extraStatus2).append(" - ");
         }
         if (this.getMessage() != null) {
-            errStr.append(this.getMessage() + " - ");
+            errStr.append(this.getMessage()).append(" - ");
         }
         if (this.origException != null && this.origException.toString() != null) {
             errStr.append(this.origException.toString());

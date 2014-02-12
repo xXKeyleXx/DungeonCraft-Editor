@@ -53,14 +53,11 @@ public class BlockBindDialog
     private JButton cancelButton;
 
     private GridBagLayout gridBagLayoutManager;
-    private JPanel basicPanel;
-    private JLabel statusLabel;
-    private String defaultStatusText;
 
     private static boolean dialog_showing = false;
     private static BlockBindDialog keyhelp_dialog;
 
-    private WorldViewer xrayInstance;
+    private WorldViewer worldViewerInstance;
 
     public static Image iconImage;
 
@@ -92,23 +89,14 @@ public class BlockBindDialog
         this.getContentPane().setLayout(gridBagLayoutManager);
         GridBagConstraints c = new GridBagConstraints();
 
-        float flabel = 0.1f;
-        float flist = 1.9f;
-
         JLabel titleLabel = new JLabel(window_title);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
 
-        this.defaultStatusText = "Click on the buttons to change bindings.";
-        this.statusLabel = new JLabel(defaultStatusText);
-        JLabel sectionLabel;
-        JLabel descLabel;
-        JLabel keyLabel;
-        JLabel keyLabelBefore;
-        JLabel keyLabelAfter;
-
+        String defaultStatusText = "Click on the buttons to change bindings.";
+        JLabel statusLabel = new JLabel(defaultStatusText);
         Insets standardInsets = new Insets(5, 5, 5, 5);
-        Insets categoryInsets = new Insets(20, 5, 5, 5);
-        Insets noBottomInsets = new Insets(5, 5, 0, 5);
+        new Insets(20, 5, 5, 5);
+        new Insets(5, 5, 0, 5);
         Insets noTopInsets = new Insets(0, 5, 5, 5);
         c.insets = standardInsets;
         c.weighty = .1f;
@@ -123,9 +111,6 @@ public class BlockBindDialog
         blockScroll.setBorder(null);
 
         // Our list of assigned highlights
-        String blockText;
-        ImageIcon icon;
-        BlockType t;
         int current_grid_y = 0;
         this.blockButtons = new BlockBindMainButton[this.ore_highlights.length];
         for (int i = 0; i < this.ore_highlights.length; i++) {
@@ -163,7 +148,7 @@ public class BlockBindDialog
         c.gridy = current_grid_y;
         c.anchor = GridBagConstraints.CENTER;
         c.insets = noTopInsets;
-        addComponent(this.getContentPane(), this.statusLabel, c);
+        addComponent(this.getContentPane(), statusLabel, c);
         c.insets = standardInsets;
 
         // Add our scrollpane to the window
@@ -198,7 +183,6 @@ public class BlockBindDialog
      * @param whichButton The button that was clicked
      */
     public void notifyHighlightClicked(BlockBindMainButton whichButton) {
-        int position = whichButton.getPosition();
         BlockBindChooserDialog dialog = new BlockBindChooserDialog(this.ore_icons, this);
         BlockBindButton newButton = dialog.getClickedButton();
         if (newButton != null) {
@@ -289,7 +273,7 @@ public class BlockBindDialog
         }
 
         if (changed) {
-            this.xrayInstance.updateHighlightBindings();
+            this.worldViewerInstance.updateHighlightBindings();
         }
 
         this.dialogCancel();
@@ -308,29 +292,16 @@ public class BlockBindDialog
     }
 
     /**
-     * Saves the mapping stored in our dialog to the master XRay class, and write out our
-     * properties file if need be.
-     */
-    private void saveMapping() {
-        boolean changed = false;
-        /*
-        if (changed)
-		{
-			this.xrayInstance.updateKeyMapping();
-		}
-		*/
-    }
-
-    /**
      * Creates a new BlockBindDialog
      *
-     * @param ore_highlights the current ore highlight settings
-     * @param windowName     the title of the dialog
+     * @param ore_highlights      the current ore highlight settings
+     * @param ore_textures        the title of the dialog
+     * @param worldViewerInstance
      */
-    protected BlockBindDialog(short[] ore_highlights, ArrayList<Texture> ore_textures, WorldViewer xrayInstance) {
+    protected BlockBindDialog(short[] ore_highlights, ArrayList<Texture> ore_textures, WorldViewer worldViewerInstance) {
         super(window_title);
         this.ore_highlights = ore_highlights;
-        this.xrayInstance = xrayInstance;
+        this.worldViewerInstance = worldViewerInstance;
 
         // First up, let's create a bunch of ImageIcons
         this.ore_icons = new HashMap<Short, ImageIcon>();
@@ -398,16 +369,17 @@ public class BlockBindDialog
     /**
      * Pops up the dialog window
      *
-     * @param ore_highlights the current ore highlight settings
-     * @param windowName     the title of the dialog
+     * @param ore_highlights      the current ore highlight settings
+     * @param ore_textures        the title of the dialog
+     * @param worldViewerInstance
      */
-    public static void presentDialog(short[] ore_highlights, ArrayList<Texture> ore_textures, WorldViewer xrayInstance) {
+    public static void presentDialog(short[] ore_highlights, ArrayList<Texture> ore_textures, WorldViewer worldViewerInstance) {
         if (dialog_showing) {
             BlockBindDialog.keyhelp_dialog.toFront();
             BlockBindDialog.keyhelp_dialog.requestFocus();
         } else {
             BlockBindDialog.dialog_showing = true;
-            BlockBindDialog.keyhelp_dialog = new BlockBindDialog(ore_highlights, ore_textures, xrayInstance);
+            BlockBindDialog.keyhelp_dialog = new BlockBindDialog(ore_highlights, ore_textures, worldViewerInstance);
         }
     }
 

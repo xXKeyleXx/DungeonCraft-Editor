@@ -27,8 +27,6 @@
  */
 package de.keyle.dungeoncraft.editor.editors.world.render.dialog;
 
-import de.keyle.dungeoncraft.editor.editors.world.render.MinecraftConstants.KEY_ACTION;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -42,7 +40,6 @@ import java.awt.event.MouseListener;
  * @author Eleazar
  */
 public class KeyField extends JTextField {
-    private KEY_ACTION keyAction;
     private KeyPanel panel;
     private Color bgColorNormal;
     private Color bgColorActive;
@@ -51,12 +48,10 @@ public class KeyField extends JTextField {
      * Constructs a new KeyField given the string to populate it with
      * and the KEY_ACTION it represents
      *
-     * @param ka
-     * @param s
+     * @param panel
      */
-    public KeyField(KEY_ACTION ka, KeyPanel panel) {
+    public KeyField(KeyPanel panel) {
         super(10);
-        this.keyAction = ka;
         this.panel = panel;
         this.setEditable(false);
         this.bgColorNormal = Color.WHITE;

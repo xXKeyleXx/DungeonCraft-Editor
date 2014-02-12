@@ -94,7 +94,6 @@ public class BlockTypeCollection {
         this.blocks_composite = new ArrayList<BlockType>();
         this.blocksByName = new HashMap<String, BlockType>();
         this.loadedCollections = new ArrayList<BlockTypeCollection>();
-        //this.blockArray = new BlockType[256];
         //Now we can collect block with ID below 4096 for price memory
         this.blockArray = new BlockType[4096];
         this.usedTextures = new ArrayList<Boolean[]>();
@@ -111,7 +110,6 @@ public class BlockTypeCollection {
 
     private BufferedImage addTextureMap(boolean initial) {
         Boolean[] usedTextures = new Boolean[256];
-        int res_tex_count = 0;
         for (int i = 0; i < 256; i++) {
             usedTextures[i] = false;
         }
@@ -211,13 +209,13 @@ public class BlockTypeCollection {
     public ArrayList<BlockType> getBlocksFull() {
         ArrayList<BlockType> blocks = new ArrayList<BlockType>();
         for (BlockTypeRegular block : this.blocks) {
-            blocks.add((BlockType) block);
+            blocks.add(block);
         }
         for (BlockTypeFilename block : this.mlblocks) {
-            blocks.add((BlockType) block);
+            blocks.add(block);
         }
         for (BlockType block : this.blocks_composite) {
-            blocks.add((BlockType) block);
+            blocks.add(block);
         }
         return blocks;
     }
@@ -514,7 +512,6 @@ public class BlockTypeCollection {
      */
     public void importCustomTextureSheets()
             throws BlockTypeLoadException {
-        int new_tex;
         if (this.getCustomTextureFileCount() > 0) {
             BufferedImage bi = this.textures.get(this.cur_texture_page);
             Graphics2D g2d = bi.createGraphics();

@@ -45,7 +45,6 @@ public class WarningDialog extends JFrame {
     private JButton okButton;
 
     private GridBagLayout gridBagLayoutManager;
-    private JPanel basicPanel;
     private JScrollPane mainLabel;
 
     public static boolean selectedShow;
@@ -72,7 +71,7 @@ public class WarningDialog extends JFrame {
      * Layouts all the controls and labels on the dialog using a gridbaglayout
      */
     private void layoutControlsOnDialog(boolean showCheckboxBool) {
-        basicPanel = new JPanel();
+        JPanel basicPanel = new JPanel();
 
         this.getContentPane().setLayout(gridBagLayoutManager);
         basicPanel.setLayout(gridBagLayoutManager);
@@ -80,9 +79,6 @@ public class WarningDialog extends JFrame {
 
         JLabel headerLabel = new JLabel("Warning");
         headerLabel.setFont(new Font("Arial", Font.BOLD, 18));
-
-        float flabel = 0.1f;
-        float flist = 1.9f;
 
         int current_grid_y = 0;
 
@@ -251,11 +247,9 @@ public class WarningDialog extends JFrame {
      * @param windowName the title of the dialog
      */
     public static void presentDialog(String windowName, String warningText, boolean showCheckbox, int width, int height) {
-        WarningDialog dialog = new WarningDialog(windowName, warningText, showCheckbox, width, height);
+        final WarningDialog dialog = new WarningDialog(windowName, warningText, showCheckbox, width, height);
         try {
-            synchronized (dialog) {
-                dialog.wait();
-            }
+            dialog.wait();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

@@ -32,7 +32,6 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
@@ -54,22 +53,6 @@ public class MinecraftEnvironment {
     public static OS os;
     public static File baseDir;
     public static File xrayBaseDir;
-    public static HashMap<Byte, Integer> silverfishDataPlain;
-    public static HashMap<Byte, Integer> silverfishDataHighlighted;
-
-    private static class MCDirectoryFilter implements FileFilter {
-        public MCDirectoryFilter() {
-            // Nothing, really
-        }
-
-        public boolean accept(File pathname) {
-            if (pathname.exists() && pathname.canRead() && pathname.isDirectory()) {
-                File levelDat = new File(pathname, "level.dat");
-                return (levelDat.exists() && levelDat.canRead());
-            }
-            return false;
-        }
-    }
 
     private static class BlockdefFilter implements FilenameFilter {
         public BlockdefFilter() {
@@ -130,8 +113,6 @@ public class MinecraftEnvironment {
      * Returns a file handle to our config file; will create the
      * directory if needed.  This will also create some other
      * subdirectories if needed.
-     *
-     * @return
      */
     public static File getXrayConfigFile() {
         if (MinecraftEnvironment.xrayBaseDir.exists()) {
@@ -189,8 +170,6 @@ public class MinecraftEnvironment {
     /**
      * Returns a stream to an arbitrary file either from our override directory,
      * the main jar, or from the user-specified texture pack.
-     *
-     * @return
      */
     public static InputStream getMinecraftTexturepackData(String filename) {
 
@@ -277,8 +256,6 @@ public class MinecraftEnvironment {
 
     /**
      * Returns a stream to the texture data (overrides in the directory are handled)
-     *
-     * @return
      */
     public static InputStream getMinecraftTextureData() {
         return getMinecraftTexturepackData("terrain.png");
@@ -286,8 +263,6 @@ public class MinecraftEnvironment {
 
     /**
      * Returns a stream to the water texture data
-     *
-     * @return
      */
     public static InputStream getMinecraftWaterData() {
         return getMinecraftTexturepackData("misc/water.png");
@@ -295,8 +270,6 @@ public class MinecraftEnvironment {
 
     /**
      * Returns a stream to the water texture data
-     *
-     * @return
      */
     public static InputStream getMinecraftParticleData() {
         return getMinecraftTexturepackData("particles.png");
@@ -304,8 +277,6 @@ public class MinecraftEnvironment {
 
     /**
      * Returns a stream to the painting data
-     *
-     * @return
      */
     public static InputStream getMinecraftPaintingData() {
         return getMinecraftTexturepackData("art/kz.png");
@@ -314,8 +285,7 @@ public class MinecraftEnvironment {
     /**
      * Attempts to create a bufferedImage for a stream
      *
-     * @param i
-     * @return
+     * @param i The inputstream of the image
      */
     public static BufferedImage buildImageFromInput(InputStream i) {
         if (i == null) {
@@ -331,8 +301,6 @@ public class MinecraftEnvironment {
 
     /**
      * Attempts to create a bufferedImage containing our painting sheet
-     *
-     * @return
      */
     public static BufferedImage getMinecraftPaintings() {
         return buildImageFromInput(getMinecraftPaintingData());
@@ -381,8 +349,6 @@ public class MinecraftEnvironment {
      * <p/>
      * TODO: it would be good to use the data values loaded from YAML to figure out where
      * to colorize, rather than hardcoding them here.
-     *
-     * @return
      */
     public static ArrayList<BufferedImage> getMinecraftTexture() throws BlockTypeLoadException {
         BufferedImage bi = buildImageFromInput(getMinecraftTextureData());
@@ -422,7 +388,6 @@ public class MinecraftEnvironment {
         // any of the other blocks we're colorizing, either, so it's a moot point)
         AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 0.4f);
         BlockType block;
-        Rectangle rect;
         if (grayscale) {
             for (String blockname : new String[]{"GRASS", "LEAVES"}) {
                 block = blockCollection.getByName(blockname);
@@ -503,34 +468,6 @@ public class MinecraftEnvironment {
         if (block != null) {
             AlphaComposite redstone_ac = AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 1f);
             tintSquare(block.getTexCoordsArr(), square_width, redstone_ac, Color.red, bi, g2d);
-        }
-
-        // Generate separate textures for each of the Silverfish textures, and colorize them
-        // I feel a little guilty for occupying three whole new textures for this, especially given the
-        // recent addition of mod support.  More and more likely that folks will break into the
-        // two-texture range (though at least we do support it now).  I may want to look into just
-        // doing some GL trickery to tint them at render-time instead.  If I ever get around to doing
-        // some simple shading on the blocks, that'd probably be a good opportunity to do so.
-        // TODO: that
-        block = BLOCK_SILVERFISH;
-        silverfishDataPlain = new HashMap<Byte, Integer>();
-        silverfishDataHighlighted = new HashMap<Byte, Integer>();
-        if (block.texture_data_map != null) {
-            for (Map.Entry<Byte, Integer> entry : block.texture_data_map.entrySet()) {
-                int new_tex = blockCollection.reserveTexture();
-                int[] old_coords = BlockType.getTexCoordsArr(entry.getValue());
-                int[] new_coords = BlockType.getTexCoordsArr(new_tex);
-                g2d.setComposite(AlphaComposite.Src);
-                g2d.drawImage(bi,
-                        new_coords[0] * square_width, new_coords[1] * square_width,
-                        (new_coords[0] + 1) * square_width, (new_coords[1] + 1) * square_width,
-                        old_coords[0] * square_width, old_coords[1] * square_width,
-                        (old_coords[0] + 1) * square_width, (old_coords[1] + 1) * square_width,
-                        null);
-                tintSquare(new_coords, square_width, ac, Color.red, bi, g2d);
-                silverfishDataPlain.put(entry.getKey(), entry.getValue());
-                silverfishDataHighlighted.put(entry.getKey(), new_tex);
-            }
         }
 
         // Load in the water texture separately and pretend it's a part of the main texture pack.
@@ -667,7 +604,6 @@ public class MinecraftEnvironment {
      * that, to our bundled fallbacks.
      *
      * @param fileName
-     * @return
      */
     public static InputStream getMinecraftFile(String fileName) {
         File minecraftDataFile = new File(baseDir, "bin/minecraft.jar");
@@ -710,7 +646,7 @@ public class MinecraftEnvironment {
             if (dataFile.exists()) {
                 try {
                     return new FileInputStream(dataFile);
-                } catch (FileNotFoundException e) {
+                } catch (FileNotFoundException ignored) {
                 }
             }
         }
