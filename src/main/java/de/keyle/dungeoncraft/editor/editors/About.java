@@ -42,6 +42,8 @@ public class About extends JDialog {
     private JLabel rsyntaxtextareaWebsiteLabel;
     private JLabel rsyntaxtextareaLicenseLabel;
     private JLabel buildLabel;
+    private JLabel xrayWebsiteLabel;
+    private JLabel xrayLicenseLabel;
 
     public About() {
         setContentPane(mainPanel);
@@ -141,6 +143,41 @@ public class About extends JDialog {
                     Desktop desktop = Desktop.getDesktop();
                     try {
                         URI uri = new URI("http://fifesoft.com/rsyntaxtextarea/RSyntaxTextArea.License.txt");
+                        desktop.browse(uri);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (URISyntaxException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        xrayWebsiteLabel = new JLabel("<HTML><FONT color=\"#000099\"><U>http://apocalyptech.com/minecraft/xray/</U></FONT></HTML>");
+        xrayWebsiteLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        xrayWebsiteLabel.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (Desktop.isDesktopSupported()) {
+                    Desktop desktop = Desktop.getDesktop();
+                    try {
+                        URI uri = new URI("http://apocalyptech.com/minecraft/xray/");
+                        desktop.browse(uri);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (URISyntaxException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
+        xrayLicenseLabel = new JLabel("<HTML><FONT color=\"#000099\"><U>License</U></FONT></HTML>");
+        xrayLicenseLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        xrayLicenseLabel.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (Desktop.isDesktopSupported()) {
+                    Desktop desktop = Desktop.getDesktop();
+                    try {
+                        URI uri = new URI("http://apocalyptech.com/minecraft/xray/COPYING.txt");
                         desktop.browse(uri);
                     } catch (IOException ex) {
                         ex.printStackTrace();

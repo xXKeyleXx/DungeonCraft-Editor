@@ -22,6 +22,7 @@ package de.keyle.dungeoncraft.editor.editors.world;
 
 import de.keyle.dungeoncraft.editor.GuiMain;
 import de.keyle.dungeoncraft.editor.editors.Editor;
+import de.keyle.dungeoncraft.editor.editors.world.render.WorldViewer;
 import de.keyle.dungeoncraft.editor.editors.world.schematic.Schematic;
 import de.keyle.dungeoncraft.editor.editors.world.schematic.SchematicLoader;
 import de.keyle.dungeoncraft.editor.editors.world.schematic.SchematicReveiver;
@@ -37,14 +38,13 @@ public class WorldOverview implements Editor, SchematicReveiver {
     private JPanel mainPanel;
     private JPanel renderPanel;
 
-    Canvas canvas;
+    public static Canvas canvas;
     File schematicFile;
     Schematic schematic = null;
-    final Renderer renderThread;
+    WorldViewer renderThread;
 
     public WorldOverview() {
         renderPanel.getWidth();
-        renderThread = new Renderer(canvas);
     }
 
     private void createUIComponents() {
@@ -68,7 +68,7 @@ public class WorldOverview implements Editor, SchematicReveiver {
     public void openDungeon(File dungeonFolder) {
         schematicFile = new File(dungeonFolder, dungeonFolder.getName() + ".schematic");
         schematic = null;
-        if(schematicFile.exists()) {
+        if (schematicFile.exists()) {
             new SchematicLoader(this).start();
         }
     }
@@ -79,7 +79,9 @@ public class WorldOverview implements Editor, SchematicReveiver {
 
     @Override
     public void init() {
-        renderThread.start();
+        renderThread = new WorldViewer(this);
+        renderThread.run();
+
         GuiMain.getMainForm().getFrame().addComponentListener(new ComponentAdapter() {
             boolean isResized = false;
 
@@ -119,6 +121,11 @@ public class WorldOverview implements Editor, SchematicReveiver {
     @Override
     public void setSchematic(Schematic schematic) {
         this.schematic = schematic;
-        renderThread.setSchematic(schematic);
+        renderThread.openNewSchematic();
+
+    }
+
+    public synchronized Schematic getSchematic() {
+        return schematic;
     }
 }
