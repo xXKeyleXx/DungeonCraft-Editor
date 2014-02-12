@@ -23,6 +23,7 @@ package de.keyle.dungeoncraft.editor;
 import de.keyle.dungeoncraft.editor.editors.MainForm;
 import de.keyle.dungeoncraft.editor.editors.config.ConfigEditor;
 import de.keyle.dungeoncraft.editor.editors.entity.EntityCreator;
+import de.keyle.dungeoncraft.editor.editors.region.RegionEditor;
 import de.keyle.dungeoncraft.editor.editors.trigger.TriggerEditor;
 import de.keyle.dungeoncraft.editor.editors.world.WorldOverview;
 
@@ -43,6 +44,7 @@ public class GuiMain {
         mainForm.registerNewEditor(new WorldOverview());
         mainForm.registerNewEditor(new EntityCreator());
         mainForm.registerNewEditor(new TriggerEditor());
+        mainForm.registerNewEditor(new RegionEditor());
 
         mainForm.showFrame();
     }

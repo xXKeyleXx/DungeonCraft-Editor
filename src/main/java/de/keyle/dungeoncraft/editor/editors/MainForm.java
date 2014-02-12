@@ -45,7 +45,6 @@ public class MainForm {
     private File dungeonFolder = null;
     private List<Editor> editorList = new ArrayList<Editor>();
 
-
     public MainForm() {
         aboutButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -88,6 +87,14 @@ public class MainForm {
                 }
             }
         });
+    }
+
+    public List<Editor> getEditorList() {
+        return editorList;
+    }
+
+    public void setEditorVisible(Editor editor) {
+        editorsTabbedPane.setSelectedComponent(editor.getPanel());
     }
 
     public JFrame getFrame() {

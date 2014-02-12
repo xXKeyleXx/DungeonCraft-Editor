@@ -210,6 +210,8 @@ public class WorldViewer extends Thread {
 
     private volatile boolean loadNewSchematic = false;
     private volatile boolean resize = false;
+    private OrientationVector newCameraPosition = null;
+
 
     public WorldViewer(WorldOverview worldOverviewEditor) {
         this.worldOverviewEditor = worldOverviewEditor;
@@ -848,8 +850,12 @@ public class WorldViewer extends Thread {
 
     private void moveCameraToPosition(OrientationVector playerPos) {
         this.takeLoadingBoxScreenshot();
-        this.camera.getPosition().set((float) playerPos.getX(), (float) playerPos.getY(), (float) playerPos.getZ());
+        this.camera.getPosition().set((float) -playerPos.getX(), (float) -playerPos.getY(), (float) -playerPos.getZ());
         this.camera.setYawAndPitch(180 + (float) playerPos.getYaw(), (float) playerPos.getPitch());
+    }
+
+    public synchronized void setCameraPosition(OrientationVector pos) {
+        newCameraPosition = pos;
     }
 
     public void openNewSchematic() {
@@ -1208,7 +1214,12 @@ public class WorldViewer extends Thread {
         GL11.glPushMatrix();
 
         // change the camera to point a the right direction
-        camera.applyCameraTransformation();
+        if (newCameraPosition == null) {
+            camera.applyCameraTransformation();
+        } else {
+            moveCameraToPosition(newCameraPosition);
+            newCameraPosition = null;
+        }
 
         float currentCameraPosX = -camera.getPosition().x;
         float currentCameraPosZ = -camera.getPosition().z;

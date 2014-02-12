@@ -27,6 +27,7 @@ import de.keyle.dungeoncraft.editor.editors.world.schematic.Schematic;
 import de.keyle.dungeoncraft.editor.editors.world.schematic.SchematicLoader;
 import de.keyle.dungeoncraft.editor.editors.world.schematic.SchematicReveiver;
 import de.keyle.dungeoncraft.editor.util.DisabledPanel;
+import de.keyle.dungeoncraft.editor.util.vector.OrientationVector;
 
 import javax.swing.*;
 import java.awt.*;
@@ -77,6 +78,10 @@ public class WorldOverview implements Editor, SchematicReveiver {
     public void saveDungeon() {
     }
 
+    public void setCameraPosition(OrientationVector pos) {
+        renderThread.setCameraPosition(pos);
+    }
+
     @Override
     public void init() {
         renderThread = new WorldViewer(this);
@@ -93,7 +98,9 @@ public class WorldOverview implements Editor, SchematicReveiver {
                     SwingUtilities.invokeLater(new Runnable() {
                         public void run() {
                             canvas.setSize(new Dimension(renderPanel.getWidth(), renderPanel.getHeight()));
-                            canvas.setVisible(true);
+                            if (mainPanel.isVisible()) {
+                                canvas.setVisible(true);
+                            }
                             isResized = false;
                             if (renderThread != null) {
                                 renderThread.resize();
