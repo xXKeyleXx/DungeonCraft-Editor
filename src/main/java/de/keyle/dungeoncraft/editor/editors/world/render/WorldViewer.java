@@ -54,7 +54,7 @@ import java.util.logging.Logger;
 
 import static de.keyle.dungeoncraft.editor.editors.world.render.MinecraftConstants.*;
 
-public class WorldViewer {
+public class WorldViewer extends Thread {
 
     // number of chunks around the camera which are visible (Square)
     private int visible_chunk_range = 5;
@@ -219,6 +219,7 @@ public class WorldViewer {
     public static Logger logger = Logger.getLogger("XRay.class");
 
     private volatile boolean loadNewSchematic = false;
+    private volatile boolean resize = false;
 
     public WorldViewer(WorldOverview worldOverviewEditor) {
         this.worldOverviewEditor = worldOverviewEditor;
@@ -330,6 +331,13 @@ public class WorldViewer {
 
                 // Push to screen
                 Display.update();
+
+                if (resize) {
+                    displayMode = new DisplayMode(WorldOverview.canvas.getWidth(), WorldOverview.canvas.getHeight());
+                    GL11.glViewport(0, 0, displayMode.getWidth(), displayMode.getHeight());
+                    GLU.gluPerspective(90.0f, (float) displayMode.getWidth() / (float) displayMode.getHeight(), 0.1f, 400.0f);
+                    resize = false;
+                }
 
             }
             // cleanup
@@ -759,6 +767,7 @@ public class WorldViewer {
     private void createWindow() throws Exception {
         displayMode = new DisplayMode(WorldOverview.canvas.getWidth(), WorldOverview.canvas.getHeight());
         Display.setVSyncEnabled(true);
+        Display.setResizable(true);
         Display.setParent(WorldOverview.canvas);
         Display.create();
         screenWidth = WorldOverview.canvas.getWidth();
@@ -857,6 +866,10 @@ public class WorldViewer {
 
     public void openNewSchematic() {
         loadNewSchematic = true;
+    }
+
+    public void resize() {
+        resize = true;
     }
 
     private void launchJumpDialog() {

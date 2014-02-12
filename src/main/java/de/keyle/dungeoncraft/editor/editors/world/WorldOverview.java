@@ -80,7 +80,7 @@ public class WorldOverview implements Editor, SchematicReveiver {
     @Override
     public void init() {
         renderThread = new WorldViewer(this);
-        renderThread.run();
+        renderThread.start();
 
         GuiMain.getMainForm().getFrame().addComponentListener(new ComponentAdapter() {
             boolean isResized = false;
@@ -95,6 +95,9 @@ public class WorldOverview implements Editor, SchematicReveiver {
                             canvas.setSize(new Dimension(renderPanel.getWidth(), renderPanel.getHeight()));
                             canvas.setVisible(true);
                             isResized = false;
+                            if (renderThread != null) {
+                                renderThread.resize();
+                            }
                         }
                     });
                 }
