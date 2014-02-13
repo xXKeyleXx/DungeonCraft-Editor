@@ -21,9 +21,9 @@
 package de.keyle.dungeoncraft.editor.util.vector;
 
 public class Vector implements Comparable<Vector> {
-    protected final double x;
-    protected final double y;
-    protected final double z;
+    protected double x;
+    protected double y;
+    protected double z;
 
     public Vector(double x, double y, double z) {
         this.x = x;
@@ -78,6 +78,18 @@ public class Vector implements Comparable<Vector> {
 
     public int getBlockZ() {
         return (int) Math.round(this.z);
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    public void setZ(double z) {
+        this.z = z;
     }
 
     @Override

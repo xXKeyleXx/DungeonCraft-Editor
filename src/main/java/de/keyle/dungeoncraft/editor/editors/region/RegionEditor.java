@@ -32,6 +32,8 @@ import de.keyle.dungeoncraft.editor.util.vector.Vector;
 import org.json.simple.JSONObject;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -192,6 +194,54 @@ public class RegionEditor implements Editor {
             }
         });
         valuePanel.setEnabled(false);
+        pos1xSpinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if (selectedRegion != null) {
+                    selectedRegion.getMin().setX((Integer) pos1xSpinner.getValue());
+                }
+            }
+        });
+        pos1ySpinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if (selectedRegion != null) {
+                    selectedRegion.getMin().setY((Integer) pos1ySpinner.getValue());
+                }
+            }
+        });
+        pos1zSpinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if (selectedRegion != null) {
+                    selectedRegion.getMin().setZ((Integer) pos1zSpinner.getValue());
+                }
+            }
+        });
+        pos2xSpinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if (selectedRegion != null) {
+                    selectedRegion.getMax().setX((Integer) pos2xSpinner.getValue());
+                }
+            }
+        });
+        pos2ySpinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if (selectedRegion != null) {
+                    selectedRegion.getMax().setY((Integer) pos2ySpinner.getValue());
+                }
+            }
+        });
+        pos2zSpinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if (selectedRegion != null) {
+                    selectedRegion.getMax().setZ((Integer) pos2zSpinner.getValue());
+                }
+            }
+        });
     }
 
     @Override
