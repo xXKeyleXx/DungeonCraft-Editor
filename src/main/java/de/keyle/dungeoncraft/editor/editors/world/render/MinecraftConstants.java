@@ -155,9 +155,6 @@ public class MinecraftConstants {
     public static BlockType BLOCK_PISTON_HEAD;
     public static BlockType BLOCK_PISTON_STICKY_BODY;
 
-    // A HashMap to define blocks that the "explored" highlight will use
-    public static HashMap<Short, Boolean> exploredBlocks;
-
     // A meta-block to use for unknown block types
     public static BlockType BLOCK_UNKNOWN;
 
@@ -170,11 +167,6 @@ public class MinecraftConstants {
             BLOCK_TYPE.DECORATION_GRID, BLOCK_TYPE.STEM,
             BLOCK_TYPE.END_PORTAL_FRAME, BLOCK_TYPE.BREWING_STAND
     };
-
-    // HIGHLIGHT_ORES defines the kinds of blocks that we'll highlight.
-    public static final String[] preferred_highlight_ores = new String[]{
-            "CLAY", "PUMPKIN", "OBSIDIAN", "COAL_ORE", "IRON_ORE",
-            "GOLD_ORE", "LAPIS_LAZULI_ORE", "DIAMOND_ORE", "REDSTONE_ORE", "MOB_SPAWNER"};
 
     // Keyboard action categories
     public static enum ACTION_CAT {
@@ -210,24 +202,7 @@ public class MinecraftConstants {
         DIMENSION_PREV(ACTION_CAT.CAMERA, Keyboard.KEY_P, "Jump to Previous Dimension"),
         TOGGLE_CAMERA_LOCK(ACTION_CAT.CAMERA, Keyboard.KEY_L, "Lock Camera to Vertical Axis"),
 
-        TOGGLE_ORE_1(ACTION_CAT.RENDERING, Keyboard.KEY_F1, "Toggle Ore #1"),
-        TOGGLE_ORE_2(ACTION_CAT.RENDERING, Keyboard.KEY_F2, "Toggle Ore #2"),
-        TOGGLE_ORE_3(ACTION_CAT.RENDERING, Keyboard.KEY_F3, "Toggle Ore #3"),
-        TOGGLE_ORE_4(ACTION_CAT.RENDERING, Keyboard.KEY_F4, "Toggle Ore #4"),
-        TOGGLE_ORE_5(ACTION_CAT.RENDERING, Keyboard.KEY_F5, "Toggle Ore #5"),
-        TOGGLE_ORE_6(ACTION_CAT.RENDERING, Keyboard.KEY_F6, "Toggle Ore #6"),
-        TOGGLE_ORE_7(ACTION_CAT.RENDERING, Keyboard.KEY_F7, "Toggle Ore #7"),
-        TOGGLE_ORE_8(ACTION_CAT.RENDERING, Keyboard.KEY_F8, "Toggle Ore #8"),
-        TOGGLE_ORE_9(ACTION_CAT.RENDERING, Keyboard.KEY_F9, "Toggle Ore #9"),
-        TOGGLE_ORE_10(ACTION_CAT.RENDERING, Keyboard.KEY_F10, "Toggle Ore #10"),
-        TOGGLE_ORE_HIGHLIGHTING(ACTION_CAT.RENDERING, Keyboard.KEY_H, "Toggle Ore Highlight Glow"),
-        HIGHLIGHT_RANGE_1(ACTION_CAT.RENDERING, Keyboard.KEY_1, "Ore Highlight Distance 1"),
-        HIGHLIGHT_RANGE_2(ACTION_CAT.RENDERING, Keyboard.KEY_2, "Ore Highlight Distance 2"),
-        HIGHLIGHT_RANGE_3(ACTION_CAT.RENDERING, Keyboard.KEY_3, "Ore Highlight Distance 3"),
-        HIGHLIGHT_RANGE_4(ACTION_CAT.RENDERING, Keyboard.KEY_4, "Ore Highlight Distance 4"),
-        HIGHLIGHT_RANGE_5(ACTION_CAT.RENDERING, Keyboard.KEY_5, "Ore Highlight Distance 5"),
-        HIGHLIGHT_RANGE_6(ACTION_CAT.RENDERING, Keyboard.KEY_6, "Ore Highlight Distance 6"),
-        HIGHLIGHT_RANGE_7(ACTION_CAT.RENDERING, Keyboard.KEY_7, "Ore Highlight Distance 7"),
+        TOGGLE_REGION_HIGHLIGHTING(ACTION_CAT.RENDERING, Keyboard.KEY_H, "Toggle Region Highlight Glow"),
         TOGGLE_FULLBRIGHT(ACTION_CAT.RENDERING, Keyboard.KEY_F, "Toggle Fullbright"),
         TOGGLE_BEDROCK(ACTION_CAT.RENDERING, Keyboard.KEY_B, "Toggle Bedrock"),
         TOGGLE_WATER(ACTION_CAT.RENDERING, Keyboard.KEY_T, "Toggle Water"),
@@ -247,7 +222,6 @@ public class MinecraftConstants {
         TOGGLE_RENDER_DETAILS(ACTION_CAT.OTHER, Keyboard.KEY_R, "Toggle Rendering Info"),
         RELEASE_MOUSE(ACTION_CAT.OTHER, Keyboard.KEY_ESCAPE, "Release Mouse"),
         KEY_HELP(ACTION_CAT.OTHER, Keyboard.KEY_Y, "Show Keyboard Reference"),
-        SET_ORE_BINDS(ACTION_CAT.OTHER, Keyboard.KEY_RBRACKET, "Set Ore Highlight Binds"),
         QUIT(ACTION_CAT.OTHER, Keyboard.KEY_Q, "Quit");
         public final ACTION_CAT category;
         public final int def_key;

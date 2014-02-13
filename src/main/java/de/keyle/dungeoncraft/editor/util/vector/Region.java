@@ -20,17 +20,24 @@
 
 package de.keyle.dungeoncraft.editor.util.vector;
 
+import java.awt.*;
+
 public class Region {
     private Vector min;
     private Vector max;
-
+    Color color;
 
     public Region(Vector min, Vector max) {
+        this(min, max, Color.GREEN);
+    }
+
+    public Region(Vector min, Vector max, Color color) {
         if (min.getX() > max.getX() || min.getY() > max.getY() || min.getZ() > max.getZ()) {
             throw new IllegalArgumentException("Max vector has to be bigger than the min vector: " + min + " > " + max);
         }
         this.min = min;
         this.max = max;
+        this.color = color;
     }
 
     public Vector getMin() {
@@ -39,6 +46,14 @@ public class Region {
 
     public Vector getMax() {
         return max;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     public boolean isVectorInside(Vector point) {

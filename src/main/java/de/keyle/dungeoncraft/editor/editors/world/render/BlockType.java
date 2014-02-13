@@ -72,9 +72,7 @@ import static de.keyle.dungeoncraft.editor.editors.world.render.MinecraftConstan
  * The getUsedTextures() call will only provide meaningful information after
  * normalization.
  */
-public class BlockType
-        implements Comparable<BlockType> {
-
+public class BlockType implements Comparable<BlockType> {
     public enum DIRECTION_REL {
         FORWARD,
         BACKWARD,
@@ -100,7 +98,6 @@ public class BlockType
     private HashMap<Integer, String> tex_direction_data;
     private int tex_data_bits;
     private boolean override; // This is not at all tested yet
-    private boolean explored;
 
     // Computed Attributes
     public Color color;
@@ -118,7 +115,6 @@ public class BlockType
 
     public BlockType() {
         this.override = false;
-        this.explored = false;
         this.id = -1;
         this.tex_idx = -1;
         this.texSheet = 0;
@@ -246,14 +242,6 @@ public class BlockType
 
     public boolean getOverride() {
         return this.override;
-    }
-
-    public void setExplored(boolean explored) {
-        this.explored = explored;
-    }
-
-    public boolean getExplored() {
-        return this.explored;
     }
 
     public boolean isSolid() {

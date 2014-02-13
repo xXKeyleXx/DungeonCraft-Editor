@@ -30,8 +30,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- */
 public class BlockTypeRegular extends BlockType {
 
     // YAML Attributes
@@ -92,8 +90,7 @@ public class BlockTypeRegular extends BlockType {
      * Normalizes our data from what we get from YAML, to a format that's
      * easier to deal with in X-Ray.
      */
-    public void normalizeData()
-            throws BlockTypeLoadException {
+    public void normalizeData() throws BlockTypeLoadException {
         // First call our parent
         super.normalizeData();
 

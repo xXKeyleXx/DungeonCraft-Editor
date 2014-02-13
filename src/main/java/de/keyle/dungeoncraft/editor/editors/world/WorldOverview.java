@@ -22,31 +22,32 @@ package de.keyle.dungeoncraft.editor.editors.world;
 
 import de.keyle.dungeoncraft.editor.GuiMain;
 import de.keyle.dungeoncraft.editor.editors.Editor;
+import de.keyle.dungeoncraft.editor.editors.region.RegionEditor;
 import de.keyle.dungeoncraft.editor.editors.world.render.WorldViewer;
 import de.keyle.dungeoncraft.editor.editors.world.schematic.Schematic;
 import de.keyle.dungeoncraft.editor.editors.world.schematic.SchematicLoader;
 import de.keyle.dungeoncraft.editor.editors.world.schematic.SchematicReveiver;
 import de.keyle.dungeoncraft.editor.util.DisabledPanel;
 import de.keyle.dungeoncraft.editor.util.vector.OrientationVector;
+import de.keyle.dungeoncraft.editor.util.vector.Region;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.File;
+import java.util.List;
 
 public class WorldOverview implements Editor, SchematicReveiver {
     private JPanel mainPanel;
     private JPanel renderPanel;
+    private JCheckBox showRegionsCheckBox;
 
-    public static Canvas canvas;
+    public Canvas canvas;
     File schematicFile;
     Schematic schematic = null;
     WorldViewer renderThread;
-
-    public WorldOverview() {
-        renderPanel.getWidth();
-    }
+    RegionEditor regionEditor = null;
 
     private void createUIComponents() {
         mainPanel = new DisabledPanel();
@@ -67,6 +68,7 @@ public class WorldOverview implements Editor, SchematicReveiver {
 
     @Override
     public void openDungeon(File dungeonFolder) {
+        resetFields();
         schematicFile = new File(dungeonFolder, dungeonFolder.getName() + ".schematic");
         schematic = null;
         if (schematicFile.exists()) {
@@ -78,8 +80,16 @@ public class WorldOverview implements Editor, SchematicReveiver {
     public void saveDungeon() {
     }
 
+    private void resetFields() {
+        showRegionsCheckBox.setSelected(false);
+    }
+
     public void setCameraPosition(OrientationVector pos) {
         renderThread.setCameraPosition(pos);
+    }
+
+    public synchronized boolean showRegions() {
+        return showRegionsCheckBox.isSelected();
     }
 
     @Override
@@ -146,5 +156,15 @@ public class WorldOverview implements Editor, SchematicReveiver {
 
     public synchronized Schematic getSchematic() {
         return schematic;
+    }
+
+    public synchronized List<Region> getSelectedRegions() {
+        if (regionEditor == null) {
+            regionEditor = GuiMain.getMainForm().getEditor(RegionEditor.class);
+        }
+        if (regionEditor != null) {
+            return regionEditor.getShownRegions();
+        }
+        return null;
     }
 }

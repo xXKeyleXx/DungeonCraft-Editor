@@ -44,8 +44,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.List;
 
 public class RegionEditor implements Editor {
     private JPanel mainPanel;
@@ -63,10 +63,13 @@ public class RegionEditor implements Editor {
     private JButton goToPos1Button;
     private JButton goToPos2Button;
     private JPanel valuePanel;
+    private JButton colorPickerButton;
+    private JCheckBox showInWorldViewerCheckBox;
 
     private File regionFile = null;
     private Map<String, Region> regions = new HashMap<String, Region>();
     private Region selectedRegion = null;
+    public static java.util.List<Region> shownRegions = new ArrayList<Region>();
 
     public RegionEditor() {
         deleteRegionButton.addActionListener(new ActionListener() {
@@ -116,12 +119,13 @@ public class RegionEditor implements Editor {
                         RegionNode node = (RegionNode) component;
                         selectedRegion = node.getRegion();
                         regionNameTextField.setText(node.getRegionName());
-                        pos1xSpinner.setValue(selectedRegion.getMin().getBlockX());
-                        pos1ySpinner.setValue(selectedRegion.getMin().getBlockY());
-                        pos1zSpinner.setValue(selectedRegion.getMin().getBlockZ());
                         pos2xSpinner.setValue(selectedRegion.getMax().getBlockX());
                         pos2ySpinner.setValue(selectedRegion.getMax().getBlockY());
                         pos2zSpinner.setValue(selectedRegion.getMax().getBlockZ());
+                        pos1xSpinner.setValue(selectedRegion.getMin().getBlockX());
+                        pos1ySpinner.setValue(selectedRegion.getMin().getBlockY());
+                        pos1zSpinner.setValue(selectedRegion.getMin().getBlockZ());
+                        showInWorldViewerCheckBox.setSelected(shownRegions.contains(selectedRegion));
                         valuePanel.setEnabled(true);
                         deleteRegionButton.setEnabled(true);
                     }
@@ -242,6 +246,25 @@ public class RegionEditor implements Editor {
                 }
             }
         });
+        colorPickerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Color color = JColorChooser.showDialog(mainPanel, "Select Region Color", selectedRegion.getColor());
+                if (color != null) {
+                    selectedRegion.setColor(color);
+                }
+            }
+        });
+        showInWorldViewerCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (showInWorldViewerCheckBox.isSelected()) {
+                    shownRegions.add(selectedRegion);
+                } else {
+                    shownRegions.remove(selectedRegion);
+                }
+            }
+        });
     }
 
     @Override
@@ -252,6 +275,14 @@ public class RegionEditor implements Editor {
     @Override
     public Component getPanel() {
         return mainPanel;
+    }
+
+    public Collection<Region> getRegions() {
+        return regions.values();
+    }
+
+    public List<Region> getShownRegions() {
+        return shownRegions;
     }
 
     @Override
@@ -304,6 +335,17 @@ public class RegionEditor implements Editor {
                 Vector maxVector = new Vector(Math.max(xMin, xMax), Math.max(yMin, yMax), Math.max(zMin, zMax));
 
                 Region newRegion = new Region(minVector, maxVector);
+                if (region.containsKey("editor")) {
+                    JSONObject editor = (JSONObject) region.get("editor");
+                    if (editor.containsKey("color") && Util.isInt(editor.get("color").toString())) {
+                        Color color = new Color(Integer.parseInt(editor.get("color").toString()));
+                        newRegion.setColor(color);
+                    }
+                    if (editor.containsKey("visible") && editor.get("visible").toString().equalsIgnoreCase("true")) {
+                        shownRegions.add(newRegion);
+                    }
+                }
+
 
                 regions.put(regionName, newRegion);
                 ((DefaultMutableTreeNode) regionsTree.getModel().getRoot()).add(new RegionNode(regionName, newRegion));
@@ -355,6 +397,10 @@ public class RegionEditor implements Editor {
             max.put("y", region.getMax().getBlockY());
             max.put("z", region.getMax().getBlockZ());
             regionObject.put("max", max);
+            JSONObject editor = new JSONObject();
+            editor.put("color", region.getColor().getRGB());
+            editor.put("visible", shownRegions.contains(region));
+            regionObject.put("editor", editor);
             root.put(regionName, regionObject);
         }
         jsonConfig.save();
@@ -380,6 +426,7 @@ public class RegionEditor implements Editor {
         ((DefaultMutableTreeNode) regionsTree.getModel().getRoot()).removeAllChildren();
         regionsTree.updateUI();
         valuePanel.setEnabled(false);
+        showInWorldViewerCheckBox.setSelected(false);
     }
 
     private void createUIComponents() {

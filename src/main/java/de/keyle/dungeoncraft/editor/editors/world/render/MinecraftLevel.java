@@ -44,7 +44,6 @@ public class MinecraftLevel {
 
     // This var holds the index of the player position we've most recently picked
     private int spawnPoint_idx;
-    public short[] HIGHLIGHT_ORES;
 
     public ArrayList<Texture> minecraftTextures;
     public Texture paintingTexture;
@@ -54,11 +53,10 @@ public class MinecraftLevel {
      *
      * @param schematic
      */
-    public MinecraftLevel(Schematic schematic, ArrayList<Texture> minecraftTextures, Texture paintingTexture, short[] HIGHLIGHT_ORES) {
+    public MinecraftLevel(Schematic schematic, ArrayList<Texture> minecraftTextures, Texture paintingTexture) {
         this.schematic = schematic;
         this.minecraftTextures = minecraftTextures;
         this.paintingTexture = paintingTexture;
-        this.HIGHLIGHT_ORES = HIGHLIGHT_ORES;
 
         int chunkCountX = (int) Math.ceil(schematic.getWidth() / 16.);
         int chunkCountZ = (int) Math.ceil(schematic.getLenght() / 16.);

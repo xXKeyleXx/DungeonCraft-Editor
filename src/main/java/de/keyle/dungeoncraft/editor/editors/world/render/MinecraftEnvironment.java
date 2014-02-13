@@ -31,7 +31,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
@@ -337,15 +336,6 @@ public class MinecraftEnvironment {
      * 4) Then we attempt to construct a passable "fire" texture from the particles file.
      * 5) Then we create a "blank" texture, for use with unknown block types
      * 6) Then we create a nether (portal) texture and an air portal texture
-     * 7) Lastly, we duplicate the texture with a green tint, immediately below the
-     * main texture group.  We do this to support our "explored" highlighting - the
-     * tinting can be done easily via OpenGL itself, but there were pretty severe
-     * performance issues when I tried that on my laptop.  If we just modify the texture
-     * and use offsets instead, there's no FPS drop on there.  This DOES have the
-     * unfortunate downside that, when specifying texture coordinates with glTexCoord2f(),
-     * we can no longer think of the textures as perfectly "square."  The Y offsets must
-     * be half of what we're used to.  Perhaps it would make sense to double the X axis
-     * here as well, so that we could avoid some confusion; for now I'll leave it though.
      * <p/>
      * TODO: it would be good to use the data values loaded from YAML to figure out where
      * to colorize, rather than hardcoding them here.
@@ -565,35 +555,6 @@ public class MinecraftEnvironment {
 
         // Report on the count of texture sheets
         //XRay.logger.debug("Texture Sheet count: " + blockCollection.textures.size());
-
-        // For each texture we now have, copy the texture underneath, tinted for our "explored" areas
-        i = 0;
-        ArrayList<BufferedImage> explored = new ArrayList<BufferedImage>();
-        for (BufferedImage image : blockCollection.textures) {
-            bi2 = new BufferedImage(image.getWidth(), image.getHeight() * 2, BufferedImage.TYPE_INT_ARGB);
-            g2d = bi2.createGraphics();
-            g2d.setComposite(AlphaComposite.Src);
-            g2d.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), null);
-            g2d.drawImage(image, 0, image.getHeight(), image.getWidth(), image.getHeight(), null);
-            g2d.setComposite(AlphaComposite.SrcAtop);
-            g2d.setColor(new Color(0f, 1f, 0f, .2f));
-            g2d.fillRect(0, image.getHeight(), image.getWidth(), image.getHeight());
-
-            explored.add(bi2);
-
-            i++;
-        }
-
-        // This bit here is extremely grody; we should just do this in-place or something
-        blockCollection.textures = explored;
-
-        // And while we're on that subject, let's populate our exploredBlocks HashMap
-        exploredBlocks = new HashMap<Short, Boolean>();
-        for (BlockType expblock : blockCollection.getBlocksFull()) {
-            if (expblock.getExplored()) {
-                exploredBlocks.put(expblock.id, true);
-            }
-        }
 
         // a bit unnecessary since that's a constant...
         return blockCollection.textures;

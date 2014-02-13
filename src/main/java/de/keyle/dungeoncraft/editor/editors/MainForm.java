@@ -31,8 +31,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainForm {
     private JFrame editorFrame;
@@ -45,7 +46,7 @@ public class MainForm {
     private JPanel mainPanel;
 
     private File dungeonFolder = null;
-    private List<Editor> editorList = new ArrayList<Editor>();
+    private Map<Class<? extends Editor>, Editor> editors = new HashMap<Class<? extends Editor>, Editor>();
 
     public MainForm() {
         aboutButton.addActionListener(new ActionListener() {
@@ -58,7 +59,7 @@ public class MainForm {
             public void actionPerformed(ActionEvent e) {
                 if (dungeonFolder != null) {
                     if (dungeonFolder.exists() && dungeonFolder.isDirectory()) {
-                        for (Editor panel : editorList) {
+                        for (Editor panel : editors.values()) {
                             panel.saveDungeon();
                         }
                     }
@@ -93,13 +94,13 @@ public class MainForm {
             public void stateChanged(ChangeEvent changeEvent) {
                 Editor selectedEditor = null;
                 Component selectedComponent = editorsTabbedPane.getSelectedComponent();
-                for (Editor editor : editorList) {
+                for (Editor editor : editors.values()) {
                     if (editor.getPanel() == selectedComponent) {
                         selectedEditor = editor;
                     }
                 }
                 if (selectedEditor != null) {
-                    for (Editor editor : editorList) {
+                    for (Editor editor : editors.values()) {
                         editor.switchToEditor(selectedEditor);
                     }
                 }
@@ -107,8 +108,16 @@ public class MainForm {
         });
     }
 
-    public List<Editor> getEditorList() {
-        return editorList;
+    public Collection<Editor> getEditorList() {
+        return editors.values();
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends Editor> T getEditor(Class<? extends Editor> clazz) {
+        if (editors.containsKey(clazz)) {
+            return (T) editors.get(clazz);
+        }
+        return null;
     }
 
     public void setEditorVisible(Editor editor) {
@@ -123,7 +132,7 @@ public class MainForm {
         if (dungeonFolder != null) {
             if (dungeonFolder.exists() && dungeonFolder.isDirectory()) {
                 this.dungeonFolder = dungeonFolder;
-                for (Editor panel : editorList) {
+                for (Editor panel : editors.values()) {
                     if (panel.getPanel() instanceof DisabledPanel) {
                         panel.getPanel().setEnabled(true);
                     }
@@ -134,7 +143,7 @@ public class MainForm {
     }
 
     public void registerNewEditor(Editor editor) {
-        editorList.add(editor);
+        editors.put(editor.getClass(), editor);
         editorsTabbedPane.add(editor.getName(), editor.getPanel());
         if (dungeonFolder == null) {
             if (editor.getPanel() instanceof DisabledPanel) {
@@ -178,10 +187,9 @@ public class MainForm {
                 }
             });
 
-            for (Editor panel : editorList) {
+            for (Editor panel : editors.values()) {
                 panel.init();
             }
-
         }
         return editorFrame;
     }

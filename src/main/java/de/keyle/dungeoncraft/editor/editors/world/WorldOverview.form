@@ -19,12 +19,18 @@
         </properties>
         <border type="none"/>
         <children>
-          <component id="6328b" class="javax.swing.JLabel">
+          <hspacer id="f71b5">
+            <constraints/>
+          </hspacer>
+          <component id="84578" class="javax.swing.JCheckBox" binding="showRegionsCheckBox" default-binding="true">
             <constraints/>
             <properties>
-              <text value="Render Test"/>
+              <text value="Show Regions"/>
             </properties>
           </component>
+          <hspacer id="b7daf">
+            <constraints/>
+          </hspacer>
         </children>
       </toolbar>
       <grid id="57c04" binding="renderPanel" custom-create="true" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">

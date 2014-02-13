@@ -27,9 +27,13 @@
 package de.keyle.dungeoncraft.editor.editors.world.render;
 
 import de.keyle.dungeoncraft.editor.editors.world.WorldOverview;
-import de.keyle.dungeoncraft.editor.editors.world.render.dialog.*;
+import de.keyle.dungeoncraft.editor.editors.world.render.dialog.ExceptionDialog;
+import de.keyle.dungeoncraft.editor.editors.world.render.dialog.JumpDialog;
+import de.keyle.dungeoncraft.editor.editors.world.render.dialog.KeyHelpDialog;
+import de.keyle.dungeoncraft.editor.editors.world.render.dialog.WarningDialog;
 import de.keyle.dungeoncraft.editor.editors.world.schematic.Schematic;
 import de.keyle.dungeoncraft.editor.util.vector.OrientationVector;
+import de.keyle.dungeoncraft.editor.util.vector.Region;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
@@ -68,10 +72,6 @@ public class WorldViewer extends Thread {
     private static final int[] HIGHLIGHT_RANGES = new int[]{2, 3, 4, 5, 6, 7, 8};
     private int currentHighlightDistance = 1;
 
-    // ore highlight vars
-    private static short[] HIGHLIGHT_ORES = new short[preferred_highlight_ores.length];
-    private static final int[] HIGHLIGHT_ORE_KEYS = new int[preferred_highlight_ores.length];
-
     // set to true when the program is finished
     private boolean done = false;
 
@@ -107,6 +107,7 @@ public class WorldViewer extends Thread {
     public enum HIGHLIGHT_TYPE {
         DISCO("Disco", Color.GREEN.darker()),
         WHITE("White", Color.GREEN.darker()),
+        REGION("Region", Color.GREEN.darker()),
         OFF("Off", Color.RED.darker());
         public String reportText;
         public Color reportColor;
@@ -117,14 +118,14 @@ public class WorldViewer extends Thread {
         }
     }
 
-    private static final HIGHLIGHT_TYPE defaultHighlightOre = HIGHLIGHT_TYPE.DISCO;
+    private static final HIGHLIGHT_TYPE defaultHighlightRegion = HIGHLIGHT_TYPE.REGION;
 
     // Toggles that need to be available to the renderers
     public static class RenderToggles {
         public boolean render_bedrock = false;
         public boolean render_water = true;
         public boolean beta19_fences = true;
-        public HIGHLIGHT_TYPE highlightOres = defaultHighlightOre;
+        public HIGHLIGHT_TYPE highlightRegions = defaultHighlightRegion;
     }
 
     public static RenderToggles toggle = new RenderToggles();
@@ -169,14 +170,11 @@ public class WorldViewer extends Thread {
     private boolean updateFPSText;
     private long time;
 
-    private boolean[] mineralToggle;
-    private Texture[] mineralToggleTextures;
-
     // lighting on or of (its actually fog, but hey...)
     private boolean lightMode = true;
 
     // level info texture
-    private boolean levelInfoToggle = false;
+    private boolean levelInfoToggle = true;
     private Texture levelInfoTexture;
     private boolean renderDetailsToggle = true;
     private Texture renderDetailsTexture;
@@ -184,7 +182,6 @@ public class WorldViewer extends Thread {
     private int cur_renderDetails_h;
     private int levelInfoTexture_h = 144;
     private boolean regenerateRenderDetailsTexture = false;
-    private boolean regenerateOreHighlightTexture = false;
     private boolean regenerateOutOfBoundsTexture = false;
 
     // light level
@@ -215,7 +212,7 @@ public class WorldViewer extends Thread {
 
     public WorldViewer(WorldOverview worldOverviewEditor) {
         this.worldOverviewEditor = worldOverviewEditor;
-        this.emptyLevel = new MinecraftLevel(new Schematic(new byte[0], new byte[0], (short) 0, (short) 0, (short) 0), new ArrayList<Texture>(), null, new short[0]);
+        this.emptyLevel = new MinecraftLevel(new Schematic(new byte[0], new byte[0], (short) 0, (short) 0, (short) 0), new ArrayList<Texture>(), null);
     }
 
     // go
@@ -232,7 +229,6 @@ public class WorldViewer extends Thread {
 
         // This was moved from initialize() because we want to have this variable
         // available for loadOptionStates(), which happens first.
-        mineralToggle = new boolean[HIGHLIGHT_ORES.length];
 
         try {
             // Load our preferences (this includes key mappings)
@@ -302,9 +298,6 @@ public class WorldViewer extends Thread {
                 if (this.regenerateRenderDetailsTexture) {
                     updateRenderDetails();
                 }
-                if (this.regenerateOreHighlightTexture) {
-                    updateOreHighlightTextures();
-                }
                 if (this.regenerateOutOfBoundsTexture) {
                     updateOutOfBoundsTexture();
                 }
@@ -325,7 +318,7 @@ public class WorldViewer extends Thread {
                 Display.update();
 
                 if (resize) {
-                    displayMode = new DisplayMode(WorldOverview.canvas.getWidth(), WorldOverview.canvas.getHeight());
+                    displayMode = new DisplayMode(worldOverviewEditor.canvas.getWidth(), worldOverviewEditor.canvas.getHeight());
                     GL11.glViewport(0, 0, displayMode.getWidth(), displayMode.getHeight());
                     GLU.gluPerspective(90.0f, (float) displayMode.getWidth() / (float) displayMode.getHeight(), 0.1f, 400.0f);
                     resize = false;
@@ -398,31 +391,6 @@ public class WorldViewer extends Thread {
         for (i = 0; i < CHUNK_RANGES.length; i++) {
             CHUNK_RANGES_KEYS[i] = this.key_mapping.get(KEY_ACTION.valueOf("CHUNK_RANGE_" + (i + 1)));
         }
-        for (i = 0; i < HIGHLIGHT_RANGES.length; i++) {
-            HIGHLIGHT_RANGES_KEYS[i] = this.key_mapping.get(KEY_ACTION.valueOf("HIGHLIGHT_RANGE_" + (i + 1)));
-        }
-        for (i = 0; i < HIGHLIGHT_ORES.length; i++) {
-            HIGHLIGHT_ORE_KEYS[i] = this.key_mapping.get(KEY_ACTION.valueOf("TOGGLE_ORE_" + (i + 1)));
-        }
-
-        // Populate our list of ores to highlight
-        String prefs_highlight;
-        String prefs_highlight_key;
-        for (i = 0; i < preferred_highlight_ores.length; i++) {
-            prefs_highlight_key = "HIGHLIGHT_" + (i + 1);
-            prefs_highlight = xray_properties.getProperty(prefs_highlight_key);
-            if (prefs_highlight != null) {
-                try {
-                    HIGHLIGHT_ORES[i] = blockCollection.getByName(prefs_highlight).id;
-                } catch (Exception e) {
-                    // no worries, just populate with our default
-                    error = "Block type '" + prefs_highlight + "', for HIGHLIGHT_" + (i + 1) + " is an unknown block.  Reverting to default: " + blockArray[HIGHLIGHT_ORES[i]].idStr;
-                    logger.warning(error);
-                    errors.add(error);
-                }
-            }
-            xray_properties.put(prefs_highlight_key, blockArray[HIGHLIGHT_ORES[i]].idStr);
-        }
 
         // Read in our saved option states, if we have 'em
         this.loadOptionStates();
@@ -456,20 +424,6 @@ public class WorldViewer extends Thread {
     }
 
     /**
-     * Updates our ore-binding preferences and saves out the config file.
-     * Will also invalidate our selection stuff.
-     */
-    public void updateHighlightBindings() {
-        for (int i = 0; i < HIGHLIGHT_ORES.length; i++) {
-            xray_properties.setProperty("HIGHLIGHT_" + (i + 1), blockArray[HIGHLIGHT_ORES[i]].idStr);
-        }
-        this.savePreferences();
-
-        this.regenerateOreHighlightTexture = true;
-        this.invalidateSelectedChunks();
-    }
-
-    /**
      * Saves our preferences out
      */
     public void savePreferences() {
@@ -491,11 +445,6 @@ public class WorldViewer extends Thread {
         key_mapping = new HashMap<KEY_ACTION, Integer>();
         for (KEY_ACTION action : KEY_ACTION.values()) {
             key_mapping.put(action, action.def_key);
-        }
-
-        // Then populate our highlight blocks
-        for (int i = 0; i < preferred_highlight_ores.length; i++) {
-            WorldViewer.HIGHLIGHT_ORES[i] = blockCollection.getByName(preferred_highlight_ores[i]).id;
         }
     }
 
@@ -558,7 +507,7 @@ public class WorldViewer extends Thread {
      * Initialize the basic openGL environment
      */
     private void initGL() {
-        displayMode = new DisplayMode(WorldOverview.canvas.getWidth(), WorldOverview.canvas.getHeight()); //ResolutionDialog.selectedDisplayMode;
+        displayMode = new DisplayMode(worldOverviewEditor.canvas.getWidth(), worldOverviewEditor.canvas.getHeight()); //ResolutionDialog.selectedDisplayMode;
 
         GL11.glEnable(GL11.GL_TEXTURE_2D); // Enable Texture Mapping
         GL11.glShadeModel(GL11.GL_FLAT); // Disable Smooth Shading
@@ -618,10 +567,6 @@ public class WorldViewer extends Thread {
      * variables
      */
     private void initialize() throws BlockTypeLoadException {
-        // init the precalc tables
-
-        mineralToggleTextures = new Texture[HIGHLIGHT_ORES.length];
-
         // camera
         //camera = new FirstPersonCameraController(-145, -120, -176);
         camera = new FirstPersonCameraController(0, 0, 0);
@@ -700,9 +645,6 @@ public class WorldViewer extends Thread {
             paintingTexture = TextureTool.allocateTexture(minecraftPaintingImage, GL11.GL_NEAREST);
             paintingTexture.update();
 
-            // mineral textures
-            this.updateOreHighlightTextures();
-
             // Chunk border texture
             int chunkBorderWidth = 256;
             int chunkBorderHeight = 2048;
@@ -737,33 +679,18 @@ public class WorldViewer extends Thread {
     }
 
     /**
-     * Generate our text labels for the ores we're highlighting
-     */
-    private void updateOreHighlightTextures() throws IOException {
-        for (int i = 0; i < HIGHLIGHT_ORES.length; i++) {
-            mineralToggleTextures[i] = TextureTool.allocateTexture(128, 32);
-            Graphics2D g = mineralToggleTextures[i].getImage().createGraphics();
-            g.setFont(ARIALFONT);
-            g.setColor(Color.white);
-            g.drawString("[F" + (i + 1) + "] " + blockArray[HIGHLIGHT_ORES[i]].name, 0, 16);
-            mineralToggleTextures[i].update();
-        }
-        this.regenerateOreHighlightTexture = false;
-    }
-
-    /**
      * Creates the window and initializes the lwjgl display object
      *
      * @throws Exception
      */
     private void createWindow() throws Exception {
-        displayMode = new DisplayMode(WorldOverview.canvas.getWidth(), WorldOverview.canvas.getHeight());
+        displayMode = new DisplayMode(worldOverviewEditor.canvas.getWidth(), worldOverviewEditor.canvas.getHeight());
         Display.setVSyncEnabled(true);
         Display.setResizable(true);
-        Display.setParent(WorldOverview.canvas);
+        Display.setParent(worldOverviewEditor.canvas);
         Display.create();
-        screenWidth = WorldOverview.canvas.getWidth();
-        screenHeight = WorldOverview.canvas.getHeight();
+        screenWidth = worldOverviewEditor.canvas.getWidth();
+        screenHeight = worldOverviewEditor.canvas.getHeight();
     }
 
     private void setChunkRange(int n) {
@@ -803,7 +730,7 @@ public class WorldViewer extends Thread {
             this.level = emptyLevel;
             return;
         }
-        this.level = new MinecraftLevel(schematic, minecraftTextures, paintingTexture, HIGHLIGHT_ORES);
+        this.level = new MinecraftLevel(schematic, minecraftTextures, paintingTexture);
 
         // determine which chunks are available in this world
 
@@ -874,11 +801,6 @@ public class WorldViewer extends Thread {
     private void launchKeyHelpDialog() {
         Mouse.setGrabbed(false);
         KeyHelpDialog.presentDialog(key_mapping, this);
-    }
-
-    private void launchBlockBindDialog() {
-        Mouse.setGrabbed(false);
-        BlockBindDialog.presentDialog(HIGHLIGHT_ORES, minecraftTextures, this);
     }
 
     /**
@@ -975,19 +897,19 @@ public class WorldViewer extends Thread {
                     // Toggle fullbright
                     setLightMode(!lightMode);
                     updateRenderDetails();
-                } else if (key == key_mapping.get(KEY_ACTION.TOGGLE_ORE_HIGHLIGHTING)) {
+                } else if (key == key_mapping.get(KEY_ACTION.TOGGLE_REGION_HIGHLIGHTING)) {
                     // Toggle ore highlighting
                     boolean found = false;
                     boolean set = false;
                     boolean have_off = false;
                     for (HIGHLIGHT_TYPE type : HIGHLIGHT_TYPE.values()) {
-                        if (type == toggle.highlightOres) {
+                        if (type == toggle.highlightRegions) {
                             found = true;
                             if (type == HIGHLIGHT_TYPE.OFF) {
                                 have_off = true;
                             }
                         } else if (found) {
-                            toggle.highlightOres = type;
+                            toggle.highlightRegions = type;
                             set = true;
                             if (type == HIGHLIGHT_TYPE.OFF) {
                                 have_off = true;
@@ -996,7 +918,7 @@ public class WorldViewer extends Thread {
                         }
                     }
                     if (!set) {
-                        toggle.highlightOres = HIGHLIGHT_TYPE.DISCO;
+                        toggle.highlightRegions = HIGHLIGHT_TYPE.DISCO;
                     }
                     updateRenderDetails();
                     if (have_off) {
@@ -1073,18 +995,6 @@ public class WorldViewer extends Thread {
 				}
 				 */
                 else {
-                    // Toggle highlightable ores
-                    needToReloadWorld = false;
-                    for (int i = 0; i < mineralToggle.length; i++) {
-                        if (key == HIGHLIGHT_ORE_KEYS[i]) {
-                            mineralToggle[i] = !mineralToggle[i];
-                            needToReloadWorld = true;
-                        }
-                    }
-                    if (needToReloadWorld) {
-                        invalidateSelectedChunks();
-                    }
-
                     // Handle changing chunk ranges (how far out we draw from the camera
                     for (int i = 0; i < CHUNK_RANGES.length; i++) {
                         if (key == CHUNK_RANGES_KEYS[i]) {
@@ -1117,9 +1027,6 @@ public class WorldViewer extends Thread {
                 } else if (key == key_mapping.get(KEY_ACTION.KEY_HELP)) {
                     // Launch the dialog
                     launchKeyHelpDialog();
-                } else if (key == key_mapping.get(KEY_ACTION.SET_ORE_BINDS)) {
-                    // Launch the ore-binding dialog
-                    launchBlockBindDialog();
                 } else if (key == key_mapping.get(KEY_ACTION.JUMP_NEAREST)) {
                     // Jump to the nearest actually-loaded chunk
                     // This actually only launches a dialog if there's no map
@@ -1285,7 +1192,7 @@ public class WorldViewer extends Thread {
                         last_tex = i;
                     }
                     k.renderSolid(i);
-                    k.renderSelected(i, this.mineralToggle);
+                    k.renderSelected(i);
                 }
             }
         }
@@ -1323,11 +1230,10 @@ public class WorldViewer extends Thread {
             last_tex = -1;
         }
 
-        // And now, if we're highlighting ores, highlight them.
-        if (toggle.highlightOres != HIGHLIGHT_TYPE.OFF) {
-
+        // And now, if we're highlighting regions, highlight them.
+        if (toggle.highlightRegions != HIGHLIGHT_TYPE.OFF && worldOverviewEditor.showRegions()) {
             GL11.glDisable(GL11.GL_DEPTH_TEST);
-            switch (toggle.highlightOres) {
+            switch (toggle.highlightRegions) {
                 // Old-style; at least one person prefers it
                 case WHITE:
                     long time = System.currentTimeMillis();
@@ -1351,25 +1257,17 @@ public class WorldViewer extends Thread {
             setLightLevel(20);
             GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
 
-            // TODO: could check for specific textures here, rather than looping over all
-            for (i = 0; i < this.minecraftTextures.size(); i++) {
-                for (Chunk k : chunkList) {
-                    if (k.x >= currentLevelX - highlight_chunk_range &&
-                            k.x <= currentLevelX + highlight_chunk_range &&
-                            k.z >= currentLevelZ - highlight_chunk_range &&
-                            k.z <= currentLevelZ + highlight_chunk_range) {
-                        if (k.usesSheet(i)) {
-                            if (last_tex != i) {
-                                minecraftTextures.get(i).bind();
-                                last_tex = i;
-                            }
-                            k.renderSelected(i, this.mineralToggle);
-                        }
-                    }
+            chunkBorderTexture.bind();
+            java.util.List<Region> selectedRegions = new ArrayList<Region>(worldOverviewEditor.getSelectedRegions());
+            for (Region region : selectedRegions) {
+                if (toggle.highlightRegions == HIGHLIGHT_TYPE.REGION) {
+                    GL11.glColor4f(region.getColor().getRed(), region.getColor().getGreen(), region.getColor().getBlue(), 1f);
                 }
+                renderRegion(region);
             }
             GL11.glEnable(GL11.GL_DEPTH_TEST);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            last_tex = -1;
         }
 
         setLightLevel();
@@ -1390,6 +1288,21 @@ public class WorldViewer extends Thread {
 
         // draw the user interface (fps and map)
         drawUI();
+    }
+
+    public void renderRegion(Region region) {
+        float xMin = region.getMin().getBlockX() - .48f;
+        float yMin = region.getMin().getBlockY() - .48f;
+        float zMin = region.getMin().getBlockZ() - .48f;
+        float xMax = region.getMax().getBlockX() + 1 - .52f;
+        float yMax = region.getMax().getBlockY() + 1 - .52f;
+        float zMax = region.getMax().getBlockZ() + 1 - .52f;
+        Chunk.renderNonstandardVertical(0, 0, 1, 1, xMin, yMax, zMin, xMax, yMin, zMin);
+        Chunk.renderNonstandardVertical(0, 0, 1, 1, xMin, yMax, zMax, xMax, yMin, zMax);
+        Chunk.renderNonstandardVertical(0, 0, 1, 1, xMin, yMax, zMin, xMin, yMin, zMax);
+        Chunk.renderNonstandardVertical(0, 0, 1, 1, xMax, yMax, zMin, xMax, yMin, zMax);
+        Chunk.renderNonstandardHorizontal(0, 0, 1, 1, xMin, zMin, xMax, zMax, yMax);
+        Chunk.renderNonstandardHorizontal(0, 0, 1, 1, xMin, zMin, xMax, zMax, yMin);
     }
 
     /**
@@ -1559,7 +1472,7 @@ public class WorldViewer extends Thread {
         line_count++;
         infoboxSlider(g, x_off, line_count * line_h, "Highlight Dist:", Color.BLACK, DETAILFONT, line_h, 90, currentHighlightDistance, HIGHLIGHT_RANGES.length);
         line_count++;
-        infoboxTextLabel(g, x_off, line_count * line_h, "Ore Highlight: ", Color.BLACK, DETAILFONT, toggle.highlightOres.reportText, toggle.highlightOres.reportColor, DETAILVALUEFONT);
+        infoboxTextLabel(g, x_off, line_count * line_h, "Ore Highlight: ", Color.BLACK, DETAILFONT, toggle.highlightRegions.reportText, toggle.highlightRegions.reportColor, DETAILVALUEFONT);
         if (toggle.render_bedrock) {
             line_count++;
             infoboxTextLabel(g, x_off, line_count * line_h, "Bedrock: ", Color.BLACK, DETAILFONT, "On", Color.GREEN.darker(), DETAILVALUEFONT);
@@ -1810,7 +1723,7 @@ public class WorldViewer extends Thread {
         xray_properties.setBooleanProperty("STATE_BEDROCK", toggle.render_bedrock);
         xray_properties.setBooleanProperty("STATE_WATER", toggle.render_water);
         xray_properties.setBooleanProperty("STATE_BETA19_FENCES", toggle.beta19_fences);
-        xray_properties.setProperty("STATE_HIGHLIGHT_ORES", toggle.highlightOres.toString());
+        xray_properties.setProperty("STATE_HIGHLIGHT_ORES", toggle.highlightRegions.toString());
         xray_properties.setBooleanProperty("STATE_CAMERA_LOCK", camera_lock);
         xray_properties.setBooleanProperty("STATE_LIGHTING", lightMode);
         xray_properties.setBooleanProperty("STATE_LEVEL_INFO", levelInfoToggle);
@@ -1820,9 +1733,6 @@ public class WorldViewer extends Thread {
         xray_properties.setIntProperty("STATE_CHUNK_RANGE", currentChunkRange);
         xray_properties.setIntProperty("STATE_HIGHLIGHT_DISTANCE", currentHighlightDistance);
         xray_properties.setIntProperty("STATE_LIGHT_LEVEL", currentLightLevel);
-        for (int i = 0; i < mineralToggle.length; i++) {
-            xray_properties.setBooleanProperty("STATE_HIGHLIGHT_" + i, mineralToggle[i]);
-        }
         savePreferences();
     }
 
@@ -1837,14 +1747,14 @@ public class WorldViewer extends Thread {
         toggle.beta19_fences = xray_properties.getBooleanProperty("STATE_BETA19_FENCES", toggle.beta19_fences);
         String highlight = xray_properties.getProperty("STATE_HIGHLIGHT_ORES");
         if (highlight == null || highlight.equals("1")) {
-            toggle.highlightOres = defaultHighlightOre;
+            toggle.highlightRegions = defaultHighlightRegion;
         } else if (highlight.equals("0")) {
-            toggle.highlightOres = HIGHLIGHT_TYPE.OFF;
+            toggle.highlightRegions = HIGHLIGHT_TYPE.OFF;
         } else {
             try {
-                toggle.highlightOres = Enum.valueOf(HIGHLIGHT_TYPE.class, highlight);
+                toggle.highlightRegions = Enum.valueOf(HIGHLIGHT_TYPE.class, highlight);
             } catch (IllegalArgumentException e) {
-                toggle.highlightOres = defaultHighlightOre;
+                toggle.highlightRegions = defaultHighlightRegion;
             }
         }
         camera_lock = xray_properties.getBooleanProperty("STATE_CAMERA_LOCK", camera_lock);
@@ -1856,9 +1766,6 @@ public class WorldViewer extends Thread {
         currentChunkRange = xray_properties.getIntProperty("STATE_CHUNK_RANGE", currentChunkRange);
         currentHighlightDistance = xray_properties.getIntProperty("STATE_HIGHLIGHT_DISTANCE", currentHighlightDistance);
         currentLightLevel = xray_properties.getIntProperty("STATE_LIGHT_LEVEL", currentLightLevel);
-        for (int i = 0; i < mineralToggle.length; i++) {
-            mineralToggle[i] = xray_properties.getBooleanProperty("STATE_HIGHLIGHT_" + i, mineralToggle[i]);
-        }
     }
 
     /**
@@ -1867,7 +1774,6 @@ public class WorldViewer extends Thread {
     private void cleanup() {
         JumpDialog.closeDialog();
         KeyHelpDialog.closeDialog();
-        BlockBindDialog.closeDialog();
         Display.destroy();
     }
 }

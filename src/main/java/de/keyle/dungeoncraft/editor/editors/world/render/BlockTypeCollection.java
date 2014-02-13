@@ -370,8 +370,7 @@ public class BlockTypeCollection {
     /**
      * Loads from a Yaml document.
      */
-    public static BlockTypeCollection loadFromYaml(String filename, boolean global)
-            throws java.io.FileNotFoundException {
+    public static BlockTypeCollection loadFromYaml(String filename, boolean global) throws java.io.FileNotFoundException {
         Constructor constructor = new Constructor(BlockTypeCollection.class);
         TypeDescription blockDesc = new TypeDescription(BlockTypeCollection.class);
         blockDesc.putListPropertyType("blocks", BlockTypeRegular.class);
@@ -392,8 +391,7 @@ public class BlockTypeCollection {
      * <p/>
      * TODO: set a "normalized" flag
      */
-    public void normalizeBlocks()
-            throws BlockTypeLoadException {
+    public void normalizeBlocks() throws BlockTypeLoadException {
         for (BlockType block : this.getBlocksFull()) {
             ExceptionDialog.setExtraStatus2("Looking at block ID " + block.id + ": " + block.idStr);
             block.normalizeData();

@@ -471,7 +471,7 @@ public abstract class Chunk {
      * @param y2
      * @param z2
      */
-    public void renderNonstandardVertical(float tx, float ty, float tdx, float tdy, float x1, float y1, float z1, float x2, float y2, float z2) {
+    public static void renderNonstandardVertical(float tx, float ty, float tdx, float tdy, float x1, float y1, float z1, float x2, float y2, float z2) {
         GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
         GL11.glTexCoord2f(tx, ty);
         GL11.glVertex3f(x1, y1, z1);
@@ -631,7 +631,7 @@ public abstract class Chunk {
      * @param z2
      * @param y
      */
-    public void renderNonstandardHorizontal(float tx, float ty, float tdx, float tdy, float x1, float z1, float x2, float z2, float y) {
+    public static void renderNonstandardHorizontal(float tx, float ty, float tdx, float tdy, float x1, float z1, float x2, float z2, float y) {
         GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
         GL11.glTexCoord2f(tx, ty);
         GL11.glVertex3f(x1, y, z1);
@@ -3590,19 +3590,19 @@ public abstract class Chunk {
     }
 
     public void renderWorldSolids(int sheet) {
-        renderWorld(RENDER_PASS.SOLIDS, sheet, null);
+        renderWorld(RENDER_PASS.SOLIDS, sheet);
     }
 
     public void renderWorldNonstandard(int sheet) {
-        renderWorld(RENDER_PASS.NONSTANDARD, sheet, null);
+        renderWorld(RENDER_PASS.NONSTANDARD, sheet);
     }
 
     public void renderWorldGlass(int sheet) {
-        renderWorld(RENDER_PASS.GLASS, sheet, null);
+        renderWorld(RENDER_PASS.GLASS, sheet);
     }
 
-    public void renderWorldSelected(int sheet, boolean[] selectedMap) {
-        renderWorld(RENDER_PASS.SELECTED, sheet, selectedMap);
+    public void renderWorldSelected(int sheet) {
+        renderWorld(RENDER_PASS.SELECTED, sheet);
     }
 
     /**
@@ -3610,9 +3610,8 @@ public abstract class Chunk {
      *
      * @param pass        What pass of rendering are we processing?
      * @param sheet       Which texture sheet are we currently rendering?
-     * @param selectedMap If in RENDER_PASS.SELECTED, here's a HashMap to which ones to highlight.
      */
-    public void renderWorld(RENDER_PASS pass, int sheet, boolean[] selectedMap) {
+    public void renderWorld(RENDER_PASS pass, int sheet) {
 
         float worldX = this.x * 16;
         float worldZ = this.z * 16;
@@ -3620,7 +3619,7 @@ public abstract class Chunk {
         boolean draw = false;
         int tex_offset = 0;
         BlockType block;
-        boolean highlightingOres = (WorldViewer.toggle.highlightOres != WorldViewer.HIGHLIGHT_TYPE.OFF);
+        boolean highlightingRegions = (WorldViewer.toggle.highlightRegions != WorldViewer.HIGHLIGHT_TYPE.OFF);
         short t;
         int xOff, zOff;
         int x, y, z;
@@ -3643,7 +3642,7 @@ public abstract class Chunk {
         for (FACING facingPass : facingPasses) {
             // If we're rendering "selected" stuff, we want the main XRay
             // loop to be determining our color
-            if (pass != RENDER_PASS.SELECTED || !highlightingOres) {
+            if (pass != RENDER_PASS.SELECTED || !highlightingRegions) {
                 switch (facingPass) {
                     case TOP:
                         GL11.glColor3f(1f, 1f, 1f);
@@ -3724,17 +3723,6 @@ public abstract class Chunk {
                         // If we got here, our checks above would have made sure that we're
                         // only dealing with the proper materials.
                         draw = true;
-                        break;
-
-                    case SELECTED:
-                        draw = false;
-                        for (int i = 0; i < selectedMap.length; i++) {
-                            if (selectedMap[i] && level.HIGHLIGHT_ORES[i] == t) {
-                                // TODO: should maybe check our boundaries for similar ores, like we do for regular blocks
-                                draw = true;
-                                break;
-                            }
-                        }
                         break;
 
                     default:
@@ -4101,7 +4089,7 @@ public abstract class Chunk {
                             }
 
                             // Finally, we're to the point of actually rendering the solid
-                            if (pass != RENDER_PASS.SELECTED || highlightingOres) {
+                            if (pass != RENDER_PASS.SELECTED || highlightingRegions) {
                                 this.renderBlockFace(curTexture, worldX + this.lx, this.ly, worldZ + this.lz, facingPass);
                             }
                             break;
@@ -4248,13 +4236,13 @@ public abstract class Chunk {
         GL11.glCallList(this.glassListNums.get(sheet));
     }
 
-    public void renderSelected(int sheet, boolean[] selectedMap) {
+    public void renderSelected(int sheet) {
         if (!this.usedTextureSheets.containsKey(sheet)) {
             return;
         }
         if (isSelectedDirty.get(sheet)) {
             GL11.glNewList(this.selectedDisplayListNums.get(sheet), GL11.GL_COMPILE);
-            renderWorldSelected(sheet, selectedMap);
+            renderWorldSelected(sheet);
             GL11.glEndList();
             this.isSelectedDirty.put(sheet, false);
         }
