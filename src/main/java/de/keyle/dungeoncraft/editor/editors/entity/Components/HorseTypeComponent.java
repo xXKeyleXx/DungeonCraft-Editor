@@ -27,4 +27,12 @@ public class HorseTypeComponent implements IComponent<Byte> {
     public String getParameterName() {
         return "horseType";
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == null || !(o instanceof IComponent)) {
+            return false;
+        }
+        return ((IComponent) o).getClassName().equals(this.getClassName()) && ((IComponent) o).getValue().equals(this.getValue());
+    }
 }

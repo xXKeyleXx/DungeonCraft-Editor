@@ -31,4 +31,12 @@ public class EquipmentArmorComponent implements IComponent<Map<String, JSONObjec
     public String getParameterName() {
         return null;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == null || !(o instanceof IComponent)) {
+            return false;
+        }
+        return ((IComponent) o).getClassName().equals(this.getClassName()) && ((IComponent) o).getValue().equals(this.getValue());
+    }
 }

@@ -27,4 +27,12 @@ public class WitherComponent implements IComponent<Boolean> {
     public String getParameterName() {
         return "wither";
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == null || !(o instanceof IComponent)) {
+            return false;
+        }
+        return ((IComponent) o).getClassName().equals(this.getClassName()) && ((IComponent) o).getValue().equals(this.getValue());
+    }
 }

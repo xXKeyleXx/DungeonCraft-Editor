@@ -27,4 +27,12 @@ public class ProfessionComponent implements IComponent<Integer> {
     public String getParameterName() {
         return "profession";
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == null || !(o instanceof IComponent)) {
+            return false;
+        }
+        return ((IComponent) o).getClassName().equals(this.getClassName()) && ((IComponent) o).getValue().equals(this.getValue());
+    }
 }

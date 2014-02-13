@@ -29,4 +29,12 @@ public class RangeDamageComponent implements IComponent<Map<String, Double>> {
     public String getParameterName() {
         return "damage";
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == null || !(o instanceof IComponent)) {
+            return false;
+        }
+        return ((IComponent) o).getClassName().equals(this.getClassName()) && ((IComponent) o).getValue().equals(this.getValue());
+    }
 }

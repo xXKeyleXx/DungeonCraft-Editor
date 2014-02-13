@@ -83,5 +83,20 @@ public class EntityTemplate {
         this.displayName = displayName;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        EntityTemplate template = (EntityTemplate) o;
+
+        if (components != null ? !components.equals(template.components) : template.components != null) return false;
+        if (!displayName.equals(template.displayName)) return false;
+        if (!entityType.equals(template.entityType)) return false;
+        if (!maxHealth.equals(template.maxHealth)) return false;
+        if (!templateId.equals(template.templateId)) return false;
+        if (!walkSpeed.equals(template.walkSpeed)) return false;
+
+        return true;
+    }
 }

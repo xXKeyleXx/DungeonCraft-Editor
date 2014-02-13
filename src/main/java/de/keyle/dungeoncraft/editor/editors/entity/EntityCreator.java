@@ -29,6 +29,8 @@ import de.keyle.dungeoncraft.editor.util.Util;
 import org.json.simple.JSONObject;
 
 import javax.swing.*;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
@@ -419,8 +421,7 @@ public class EntityCreator implements Editor {
                                 activateFields(true, template);
                                 break;
                             case KeyEvent.VK_DELETE:
-                               /* selectedMobtype.removeSkillTree(template.getClassName());
-                                skilltreeTreeSetSkilltrees();    */
+                                deleteTemplate(template);
                                 break;
                         }
                     }
@@ -428,6 +429,45 @@ public class EntityCreator implements Editor {
 
             }
         });
+
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (entityTemplateTree.getSelectionPath() != null) {
+                    if (entityTemplateTree.getSelectionPath().getPath().length == 2) {
+                        if (entityTemplateTree.getSelectionPath().getPathComponent(1) instanceof TemplateNode) {
+                            TemplateNode node = ((TemplateNode) entityTemplateTree.getSelectionPath().getPathComponent(1));
+                            EntityTemplate template = node.getEntityTemplate();
+                            int selectionRow = entityTemplateTree.getMaxSelectionRow();
+                            ((DefaultMutableTreeNode) entityTemplateTree.getModel().getRoot()).remove(node);
+                            if (selectionRow >= entityTemplateTree.getRowCount()) {
+                                entityTemplateTree.setSelectionRow(entityTemplateTree.getRowCount() - 1);
+                            } else {
+                                entityTemplateTree.setSelectionRow(selectionRow);
+                            }
+                            deleteTemplate(template);
+                        }
+                    }
+                }
+            }
+        });
+        entityTemplateTree.addTreeSelectionListener(new TreeSelectionListener() {
+            @Override
+            public void valueChanged(TreeSelectionEvent e) {
+                if (e.getPath().getPath().length == 2) {
+                    try{
+                    Object component = entityTemplateTree.getSelectionPath().getLastPathComponent();
+                        if (component instanceof TemplateNode) {
+                            deleteButton.setEnabled(true);
+                        }
+                    } catch (Exception ignore) {
+                    }
+                } else {
+                    deleteButton.setEnabled(false);
+                }
+            }
+        });
+
         loader = new EntityTemplateLoader();
         templateList = new ArrayList<EntityTemplate>();
         loadCreaturesInTemplate();
@@ -468,6 +508,9 @@ public class EntityCreator implements Editor {
         templateFile = new File(dungeonFolder, "entity-templates.json");
         if (templateFile.exists()) {
             templateList = loader.loadCreaturesInTemplate(templateFile);
+            loadCreaturesInTemplate();
+        } else {
+            templateList = new ArrayList<EntityTemplate>();
             loadCreaturesInTemplate();
         }
     }
@@ -524,6 +567,11 @@ public class EntityCreator implements Editor {
             }
         }
         return false;
+    }
+
+    public void deleteTemplate(EntityTemplate entityTemplate) {
+        templateList.remove(entityTemplate);
+        loadCreaturesInTemplate();
     }
 
     public void activateFields(boolean editMode, EntityTemplate template) {

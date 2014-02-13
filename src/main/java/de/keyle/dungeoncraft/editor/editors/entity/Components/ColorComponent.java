@@ -27,4 +27,12 @@ public class ColorComponent implements IComponent<Byte> {
     public String getParameterName() {
         return "color";
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == null || !(o instanceof IComponent)) {
+            return false;
+        }
+        return ((IComponent) o).getClassName().equals(this.getClassName()) && ((IComponent) o).getValue().equals(this.getValue());
+    }
 }
