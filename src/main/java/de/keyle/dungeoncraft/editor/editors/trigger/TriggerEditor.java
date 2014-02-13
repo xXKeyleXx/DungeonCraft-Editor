@@ -149,6 +149,8 @@ public class TriggerEditor implements Editor {
 
     @Override
     public void openDungeon(File dungeonFolder) {
+        resetFields();
+
         triggerFolder = new File(dungeonFolder, "trigger");
         if (triggerFolder.exists() && triggerFolder.isDirectory()) {
             File[] triggerFiles = triggerFolder.listFiles(new PatternFilenameFilter(Pattern.compile("[.-_a-z0-9]+\\.js", Pattern.CASE_INSENSITIVE)));
@@ -165,9 +167,6 @@ public class TriggerEditor implements Editor {
                     triggerFilesTabbedPane.setVisible(true);
                     deleteTriggerButton.setEnabled(true);
                     renameTriggerButton.setEnabled(true);
-                } else {
-                    deleteTriggerButton.setEnabled(false);
-                    renameTriggerButton.setEnabled(false);
                 }
             }
         }
@@ -190,6 +189,15 @@ public class TriggerEditor implements Editor {
 
             Util.writeFile(triggerFile, trigger.getContent());
         }
+    }
+
+    private void resetFields() {
+        triggerFilesTabbedPane.removeAll();
+        deletedTriggerFiles.clear();
+        triggerPanels.clear();
+        deleteTriggerButton.setEnabled(false);
+        renameTriggerButton.setEnabled(false);
+        triggerFilesTabbedPane.setVisible(false);
     }
 
     @Override
