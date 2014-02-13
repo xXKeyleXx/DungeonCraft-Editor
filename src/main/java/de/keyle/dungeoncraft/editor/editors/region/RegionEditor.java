@@ -315,6 +315,10 @@ public class RegionEditor implements Editor {
 
     }
 
+    @Override
+    public void switchToEditor(Editor editor) {
+    }
+
     private void resetFields() {
         regionNameTextField.setText("");
         pos1xSpinner.setValue(0);

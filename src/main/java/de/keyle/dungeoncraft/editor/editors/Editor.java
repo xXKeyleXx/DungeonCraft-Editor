@@ -33,4 +33,6 @@ public interface Editor {
     public void saveDungeon();
 
     public void init();
+
+    public void switchToEditor(Editor editor);
 }

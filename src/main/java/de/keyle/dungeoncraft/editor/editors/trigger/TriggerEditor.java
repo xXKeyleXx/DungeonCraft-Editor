@@ -197,6 +197,10 @@ public class TriggerEditor implements Editor {
     }
 
     @Override
+    public void switchToEditor(Editor editor) {
+    }
+
+    @Override
     public String getName() {
         return "Trigger Editor";
     }

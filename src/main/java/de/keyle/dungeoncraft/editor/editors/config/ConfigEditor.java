@@ -341,4 +341,8 @@ public class ConfigEditor implements Editor {
     @Override
     public void init() {
     }
+
+    @Override
+    public void switchToEditor(Editor editor) {
+    }
 }

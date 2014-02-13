@@ -481,6 +481,10 @@ public class EntityCreator implements Editor {
     public void init() {
     }
 
+    @Override
+    public void switchToEditor(Editor editor) {
+    }
+
     public void loadCreaturesInTemplate() {
 
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Templates");

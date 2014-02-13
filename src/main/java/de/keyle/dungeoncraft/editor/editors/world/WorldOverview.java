@@ -124,6 +124,15 @@ public class WorldOverview implements Editor, SchematicReveiver {
     }
 
     @Override
+    public void switchToEditor(Editor editor) {
+        if (editor == this) {
+            canvas.setVisible(true);
+        } else {
+            canvas.setVisible(false);
+        }
+    }
+
+    @Override
     public File getSchematicFile() {
         return schematicFile;
     }

@@ -23,6 +23,8 @@ package de.keyle.dungeoncraft.editor.editors;
 import de.keyle.dungeoncraft.editor.util.DisabledPanel;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -84,6 +86,22 @@ public class MainForm {
                 if (result == JFileChooser.APPROVE_OPTION) {
                     openDungeon(chooser.getSelectedFile());
                     saveButton.setEnabled(true);
+                }
+            }
+        });
+        editorsTabbedPane.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent changeEvent) {
+                Editor selectedEditor = null;
+                Component selectedComponent = editorsTabbedPane.getSelectedComponent();
+                for (Editor editor : editorList) {
+                    if (editor.getPanel() == selectedComponent) {
+                        selectedEditor = editor;
+                    }
+                }
+                if (selectedEditor != null) {
+                    for (Editor editor : editorList) {
+                        editor.switchToEditor(selectedEditor);
+                    }
                 }
             }
         });
