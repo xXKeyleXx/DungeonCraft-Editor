@@ -556,6 +556,28 @@ public class MinecraftEnvironment {
         // Report on the count of texture sheets
         //XRay.logger.debug("Texture Sheet count: " + blockCollection.textures.size());
 
+        //ToDo check why this part is important --------------
+        // For each texture we now have, copy the texture underneath, tinted for our "explored" areas
+        i = 0;
+        ArrayList<BufferedImage> explored = new ArrayList<BufferedImage>();
+        for (BufferedImage image : blockCollection.textures) {
+            bi2 = new BufferedImage(image.getWidth(), image.getHeight() * 2, BufferedImage.TYPE_INT_ARGB);
+            g2d = bi2.createGraphics();
+            g2d.setComposite(AlphaComposite.Src);
+            g2d.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), null);
+            g2d.drawImage(image, 0, image.getHeight(), image.getWidth(), image.getHeight(), null);
+            g2d.setComposite(AlphaComposite.SrcAtop);
+            g2d.setColor(new Color(0f, 1f, 0f, .2f));
+            g2d.fillRect(0, image.getHeight(), image.getWidth(), image.getHeight());
+
+            explored.add(bi2);
+
+            i++;
+        }
+        // This bit here is extremely grody; we should just do this in-place or something
+        blockCollection.textures = explored;
+        // ---------------------------------------------------
+
         // a bit unnecessary since that's a constant...
         return blockCollection.textures;
     }
