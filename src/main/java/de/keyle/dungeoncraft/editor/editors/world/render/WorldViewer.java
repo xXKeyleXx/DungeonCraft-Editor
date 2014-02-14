@@ -67,11 +67,6 @@ public class WorldViewer extends Thread {
     private static final int[] CHUNK_RANGES = new int[]{3, 4, 5, 6, 7, 8};
     private int currentChunkRange = 4;
 
-    // highlight distance
-    private static final int[] HIGHLIGHT_RANGES_KEYS = new int[7];
-    private static final int[] HIGHLIGHT_RANGES = new int[]{2, 3, 4, 5, 6, 7, 8};
-    private int currentHighlightDistance = 1;
-
     // set to true when the program is finished
     private boolean done = false;
 
@@ -107,8 +102,7 @@ public class WorldViewer extends Thread {
     public enum HIGHLIGHT_TYPE {
         DISCO("Disco", Color.GREEN.darker()),
         WHITE("White", Color.GREEN.darker()),
-        REGION("Region", Color.GREEN.darker()),
-        OFF("Off", Color.RED.darker());
+        REGION("Region", Color.GREEN.darker());
         public String reportText;
         public Color reportColor;
 
@@ -122,7 +116,6 @@ public class WorldViewer extends Thread {
 
     // Toggles that need to be available to the renderers
     public static class RenderToggles {
-        public boolean render_bedrock = false;
         public boolean render_water = true;
         public boolean beta19_fences = true;
         public HIGHLIGHT_TYPE highlightRegions = defaultHighlightRegion;
@@ -353,7 +346,7 @@ public class WorldViewer extends Thread {
 
         // Here's where we would load from our prefs file
         /*
-        File prefs = MinecraftEnvironment.getXrayConfigFile();
+        File prefs = MinecraftEnvironment.getWorldViewerConfigFile();
         if (prefs.exists() && prefs.canRead()) {
             try {
                 xray_properties.load(new FileInputStream(prefs));
@@ -427,10 +420,9 @@ public class WorldViewer extends Thread {
      * Saves our preferences out
      */
     public void savePreferences() {
-        File prefs = MinecraftEnvironment.getXrayConfigFile();
+        File prefs = MinecraftEnvironment.getWorldViewerConfigFile();
         try {
-            xray_properties.store(new FileOutputStream(prefs),
-                    "Feel free to edit.  Use \"NONE\" to disable an action.  Keys taken from http://www.lwjgl.org/javadoc/constant-values.html#org.lwjgl.input.Keyboard.KEY_1");
+            xray_properties.store(new FileOutputStream(prefs), "Feel free to edit.  Use \"NONE\" to disable an action.  Keys taken from http://www.lwjgl.org/javadoc/constant-values.html#org.lwjgl.input.Keyboard.KEY_1");
         } catch (IOException e) {
             // Just report on the console and move on
             logger.warning("Could not save preferences to file: " + e.toString());
@@ -707,19 +699,6 @@ public class WorldViewer extends Thread {
         this.visible_chunk_range = CHUNK_RANGES[n];
     }
 
-    private void setHighlightRange(int n) {
-        if (n >= HIGHLIGHT_RANGES.length) {
-            n = HIGHLIGHT_RANGES.length - 1;
-        }
-        if (n <= 0) {
-            n = 0;
-        }
-        if (n == currentHighlightDistance) {
-            return;
-        }
-        this.currentHighlightDistance = n;
-    }
-
     /**
      * Sets the world number we want to view
      *
@@ -901,19 +880,12 @@ public class WorldViewer extends Thread {
                     // Toggle ore highlighting
                     boolean found = false;
                     boolean set = false;
-                    boolean have_off = false;
                     for (HIGHLIGHT_TYPE type : HIGHLIGHT_TYPE.values()) {
                         if (type == toggle.highlightRegions) {
                             found = true;
-                            if (type == HIGHLIGHT_TYPE.OFF) {
-                                have_off = true;
-                            }
                         } else if (found) {
                             toggle.highlightRegions = type;
                             set = true;
-                            if (type == HIGHLIGHT_TYPE.OFF) {
-                                have_off = true;
-                            }
                             break;
                         }
                     }
@@ -921,9 +893,6 @@ public class WorldViewer extends Thread {
                         toggle.highlightRegions = HIGHLIGHT_TYPE.DISCO;
                     }
                     updateRenderDetails();
-                    if (have_off) {
-                        invalidateSelectedChunks();
-                    }
                 } else if (key == key_mapping.get(KEY_ACTION.TOGGLE_ACCURATE_GRASS)) {
                     // Toggle the drawing of accurate grass
                     accurateGrass = !accurateGrass;
@@ -947,11 +916,6 @@ public class WorldViewer extends Thread {
                 } else if (key == key_mapping.get(KEY_ACTION.TOGGLE_RENDER_DETAILS)) {
                     // Toggle rendering info popup
                     renderDetailsToggle = !renderDetailsToggle;
-                } else if (key == key_mapping.get(KEY_ACTION.TOGGLE_BEDROCK)) {
-                    // Toggle bedrock rendering
-                    toggle.render_bedrock = !toggle.render_bedrock;
-                    invalidateSelectedChunks(true);
-                    updateRenderDetails();
                 } else if (key == key_mapping.get(KEY_ACTION.TOGGLE_WATER)) {
                     // Toggle water rendering
                     toggle.render_water = !toggle.render_water;
@@ -999,14 +963,6 @@ public class WorldViewer extends Thread {
                     for (int i = 0; i < CHUNK_RANGES.length; i++) {
                         if (key == CHUNK_RANGES_KEYS[i]) {
                             setChunkRange(i);
-                            updateRenderDetails();
-                        }
-                    }
-
-                    // Handle changing the ore highlight distances
-                    for (int i = 0; i < HIGHLIGHT_RANGES.length; i++) {
-                        if (key == HIGHLIGHT_RANGES_KEYS[i]) {
-                            setHighlightRange(i);
                             updateRenderDetails();
                         }
                     }
@@ -1143,12 +1099,6 @@ public class WorldViewer extends Thread {
             currentLevelZ = MinecraftLevel.getChunkZ(levelBlockZ);
         }
 
-        // Set our range for chunks to highlight
-        int highlight_chunk_range = visible_chunk_range;
-        if (HIGHLIGHT_RANGES[currentHighlightDistance] < highlight_chunk_range) {
-            highlight_chunk_range = HIGHLIGHT_RANGES[currentHighlightDistance];
-        }
-
         // Get a list of chunks that we'll iterate over, on our various passes
         ArrayList<Chunk> chunkList = new ArrayList<Chunk>();
         Chunk curChunk = null;
@@ -1231,7 +1181,7 @@ public class WorldViewer extends Thread {
         }
 
         // And now, if we're highlighting regions, highlight them.
-        if (toggle.highlightRegions != HIGHLIGHT_TYPE.OFF && worldOverviewEditor.showRegions()) {
+        if (worldOverviewEditor.showRegions()) {
             GL11.glDisable(GL11.GL_DEPTH_TEST);
             switch (toggle.highlightRegions) {
                 // Old-style; at least one person prefers it
@@ -1470,13 +1420,7 @@ public class WorldViewer extends Thread {
         line_count++;
         infoboxSlider(g, x_off, line_count * line_h, "Render Dist:", Color.BLACK, DETAILFONT, line_h, 90, currentChunkRange, CHUNK_RANGES.length);
         line_count++;
-        infoboxSlider(g, x_off, line_count * line_h, "Highlight Dist:", Color.BLACK, DETAILFONT, line_h, 90, currentHighlightDistance, HIGHLIGHT_RANGES.length);
-        line_count++;
-        infoboxTextLabel(g, x_off, line_count * line_h, "Ore Highlight: ", Color.BLACK, DETAILFONT, toggle.highlightRegions.reportText, toggle.highlightRegions.reportColor, DETAILVALUEFONT);
-        if (toggle.render_bedrock) {
-            line_count++;
-            infoboxTextLabel(g, x_off, line_count * line_h, "Bedrock: ", Color.BLACK, DETAILFONT, "On", Color.GREEN.darker(), DETAILVALUEFONT);
-        }
+        infoboxTextLabel(g, x_off, line_count * line_h, "Region Highlight: ", Color.BLACK, DETAILFONT, toggle.highlightRegions.reportText, toggle.highlightRegions.reportColor, DETAILVALUEFONT);
         if (!toggle.render_water) {
             line_count++;
             infoboxTextLabel(g, x_off, line_count * line_h, "Water: ", Color.BLACK, DETAILFONT, "Off", Color.RED.darker(), DETAILVALUEFONT);
@@ -1577,8 +1521,7 @@ public class WorldViewer extends Thread {
 
     /**
      * Draws a 2d GL box over which we can show some info which might be
-     * difficult to make out otherwise (used for our ore highlights,
-     * "loading" messages, etc).
+     * difficult to make out otherwise
      *
      * @param bgX      X coordinate to draw to
      * @param bgY      Y coordinate to draw to
@@ -1591,8 +1534,7 @@ public class WorldViewer extends Thread {
 
     /**
      * Draws a 2d GL box over which we can show some info which might be
-     * difficult to make out otherwise (used for our ore highlights,
-     * "loading" messages, etc).
+     * difficult to make out otherwise
      *
      * @param bgX      X coordinate to draw to
      * @param bgY      Y coordinate to draw to
@@ -1720,10 +1662,8 @@ public class WorldViewer extends Thread {
      * than here, because they only actually apply on a per-world basis.
      */
     private void saveOptionStates() {
-        xray_properties.setBooleanProperty("STATE_BEDROCK", toggle.render_bedrock);
         xray_properties.setBooleanProperty("STATE_WATER", toggle.render_water);
         xray_properties.setBooleanProperty("STATE_BETA19_FENCES", toggle.beta19_fences);
-        xray_properties.setProperty("STATE_HIGHLIGHT_ORES", toggle.highlightRegions.toString());
         xray_properties.setBooleanProperty("STATE_CAMERA_LOCK", camera_lock);
         xray_properties.setBooleanProperty("STATE_LIGHTING", lightMode);
         xray_properties.setBooleanProperty("STATE_LEVEL_INFO", levelInfoToggle);
@@ -1731,7 +1671,6 @@ public class WorldViewer extends Thread {
         xray_properties.setBooleanProperty("STATE_ACCURATE_GRASS", accurateGrass);
         xray_properties.setBooleanProperty("STATE_CHUNK_BORDERS", renderChunkBorders);
         xray_properties.setIntProperty("STATE_CHUNK_RANGE", currentChunkRange);
-        xray_properties.setIntProperty("STATE_HIGHLIGHT_DISTANCE", currentHighlightDistance);
         xray_properties.setIntProperty("STATE_LIGHT_LEVEL", currentLightLevel);
         savePreferences();
     }
@@ -1742,21 +1681,8 @@ public class WorldViewer extends Thread {
      * is loaded, not when the application starts up.
      */
     private void loadOptionStates() {
-        toggle.render_bedrock = xray_properties.getBooleanProperty("STATE_BEDROCK", toggle.render_bedrock);
         toggle.render_water = xray_properties.getBooleanProperty("STATE_WATER", toggle.render_water);
         toggle.beta19_fences = xray_properties.getBooleanProperty("STATE_BETA19_FENCES", toggle.beta19_fences);
-        String highlight = xray_properties.getProperty("STATE_HIGHLIGHT_ORES");
-        if (highlight == null || highlight.equals("1")) {
-            toggle.highlightRegions = defaultHighlightRegion;
-        } else if (highlight.equals("0")) {
-            toggle.highlightRegions = HIGHLIGHT_TYPE.OFF;
-        } else {
-            try {
-                toggle.highlightRegions = Enum.valueOf(HIGHLIGHT_TYPE.class, highlight);
-            } catch (IllegalArgumentException e) {
-                toggle.highlightRegions = defaultHighlightRegion;
-            }
-        }
         camera_lock = xray_properties.getBooleanProperty("STATE_CAMERA_LOCK", camera_lock);
         lightMode = xray_properties.getBooleanProperty("STATE_LIGHTING", lightMode);
         levelInfoToggle = xray_properties.getBooleanProperty("STATE_LEVEL_INFO", levelInfoToggle);
@@ -1764,7 +1690,6 @@ public class WorldViewer extends Thread {
         accurateGrass = xray_properties.getBooleanProperty("STATE_ACCURATE_GRASS", accurateGrass);
         renderChunkBorders = xray_properties.getBooleanProperty("STATE_CHUNK_BORDERS", renderChunkBorders);
         currentChunkRange = xray_properties.getIntProperty("STATE_CHUNK_RANGE", currentChunkRange);
-        currentHighlightDistance = xray_properties.getIntProperty("STATE_HIGHLIGHT_DISTANCE", currentHighlightDistance);
         currentLightLevel = xray_properties.getIntProperty("STATE_LIGHT_LEVEL", currentLightLevel);
     }
 

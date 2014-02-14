@@ -51,7 +51,7 @@ public class MinecraftEnvironment {
 
     public static OS os;
     public static File baseDir;
-    public static File xrayBaseDir;
+    public static File worldViewerBaseDir;
 
     private static class BlockdefFilter implements FilenameFilter {
         public BlockdefFilter() {
@@ -60,22 +60,20 @@ public class MinecraftEnvironment {
 
         public boolean accept(File pathname, String filename) {
             File tempFile = new File(pathname, filename);
-            return (tempFile.isFile() &&
-                    tempFile.canRead() &&
-                    !filename.equalsIgnoreCase("minecraft.yaml") &&
-                    filename.endsWith(".yaml"));
+            return (tempFile.isFile() && tempFile.canRead() && !filename.equalsIgnoreCase("minecraft.yaml") && filename.endsWith(".yaml"));
         }
     }
 
     static {
         String os = System.getProperty("os.name");
-        if (os.startsWith("Mac")) {
+        if (os.contains("Mac")) {
             MinecraftEnvironment.os = OS.MacOS;
-        } else if (os.startsWith("Windows")) {
+        } else if (os.contains("Windows")) {
             MinecraftEnvironment.os = OS.Windows;
         } else {
             MinecraftEnvironment.os = OS.Linux;
         }
+        MinecraftEnvironment.worldViewerBaseDir = new File(WorldViewer.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParentFile();
         switch (MinecraftEnvironment.os) {
             case Windows:
                 String basedir = System.getenv("APPDATA");
@@ -83,28 +81,16 @@ public class MinecraftEnvironment {
                     basedir = System.getProperty("user.home");
                 }
                 MinecraftEnvironment.baseDir = new File(basedir, ".minecraft");
-                MinecraftEnvironment.xrayBaseDir = new File(basedir, ".minecraft_xray");
                 break;
             case Linux:
                 MinecraftEnvironment.baseDir = new File(System.getProperty("user.home"), ".minecraft");
-                MinecraftEnvironment.xrayBaseDir = new File(System.getProperty("user.home"), ".minecraft_xray");
                 break;
             case MacOS:
-                // TODO: we should really be using "minecraft_xray" without a dot; perhaps have something to convert that.
-                // Apparently the minecraft directory itself doesn't use a dot here, so we're being weird by doing it
-                // ourselves.
-                File dotMinecraftEnv = new File(System.getProperty("user.home"), "Library/Application Support/.minecraft");
-                if (dotMinecraftEnv.exists()) {
-                    MinecraftEnvironment.baseDir = dotMinecraftEnv;
-                    MinecraftEnvironment.xrayBaseDir = new File(System.getProperty("user.home"), "Library/Application Support/.minecraft_xray");
-                } else {
-                    MinecraftEnvironment.baseDir = new File(System.getProperty("user.home"), "Library/Application Support/minecraft"); // untested
-                    MinecraftEnvironment.xrayBaseDir = new File(System.getProperty("user.home"), "Library/Application Support/minecraft_xray"); // untested
-                }
+                MinecraftEnvironment.baseDir = new File(System.getProperty("user.home"), "Library/Application Support/minecraft"); // untested
                 break;
             default:
                 MinecraftEnvironment.baseDir = null;
-                MinecraftEnvironment.xrayBaseDir = null;
+                MinecraftEnvironment.worldViewerBaseDir = null;
         }
     }
 
@@ -113,25 +99,25 @@ public class MinecraftEnvironment {
      * directory if needed.  This will also create some other
      * subdirectories if needed.
      */
-    public static File getXrayConfigFile() {
-        if (MinecraftEnvironment.xrayBaseDir.exists()) {
-            if (!MinecraftEnvironment.xrayBaseDir.isDirectory()) {
+    public static File getWorldViewerConfigFile() {
+        if (MinecraftEnvironment.worldViewerBaseDir.exists()) {
+            if (!MinecraftEnvironment.worldViewerBaseDir.isDirectory()) {
                 return null;
             }
         } else {
-            if (!MinecraftEnvironment.xrayBaseDir.mkdir()) {
+            if (!MinecraftEnvironment.worldViewerBaseDir.mkdir()) {
                 return null;
             }
         }
-        File texDir = new File(MinecraftEnvironment.xrayBaseDir, "textures");
+        File texDir = new File(MinecraftEnvironment.worldViewerBaseDir, "textures");
         if (!texDir.exists()) {
             texDir.mkdir();
         }
-        File blockdefDir = new File(MinecraftEnvironment.xrayBaseDir, "blockdefs");
+        File blockdefDir = new File(MinecraftEnvironment.worldViewerBaseDir, "blockdefs");
         if (!blockdefDir.exists()) {
             blockdefDir.mkdir();
         }
-        return new File(MinecraftEnvironment.xrayBaseDir, "xray.properties");
+        return new File(MinecraftEnvironment.worldViewerBaseDir, "dungeon-craft-editor.properties");
     }
 
     /**
@@ -157,12 +143,12 @@ public class MinecraftEnvironment {
 
     /**
      * Returns a list of available BlockType files, both from our global directory,
-     * and the user xrayBaseDir
+     * and the user worldViewerBaseDir
      */
     public static ArrayList<BlockTypeCollection> getBlockTypeCollectionFiles() {
         ArrayList<BlockTypeCollection> list = new ArrayList<BlockTypeCollection>();
         list.addAll(getBlockTypeCollectionFilesFromDir(new File("blockdefs"), true));
-        list.addAll(getBlockTypeCollectionFilesFromDir(new File(xrayBaseDir, "blockdefs"), false));
+        list.addAll(getBlockTypeCollectionFilesFromDir(new File(worldViewerBaseDir, "blockdefs"), false));
         return list;
     }
 
@@ -173,7 +159,7 @@ public class MinecraftEnvironment {
     public static InputStream getMinecraftTexturepackData(String filename) {
 
         // First check our override directory for the file
-        File overrideFile = new File(xrayBaseDir, "textures/" + filename);
+        File overrideFile = new File(worldViewerBaseDir, "textures/" + filename);
         if (overrideFile.exists()) {
             try {
                 WorldViewer.logger.info("Overriding " + filename + " at " + overrideFile.getPath());
@@ -383,7 +369,7 @@ public class MinecraftEnvironment {
                 block = blockCollection.getByName(blockname);
                 if (block != null) {
                     tex_coords = block.getTexCoordsArr();
-                    tintSquare(block.getTexCoordsArr(), square_width, ac, Color.green, bi, g2d);
+                    tintSquare(tex_coords, square_width, ac, Color.green, bi, g2d);
                 }
             }
 
@@ -409,7 +395,7 @@ public class MinecraftEnvironment {
             block = blockCollection.getByName(blockname);
             if (block != null) {
                 tex_coords = block.getTexCoordsArr();
-                tintSquare(block.getTexCoordsArr(), square_width, ac, Color.green.darker(), bi, g2d);
+                tintSquare(tex_coords, square_width, ac, Color.green.darker(), bi, g2d);
             }
         }
 

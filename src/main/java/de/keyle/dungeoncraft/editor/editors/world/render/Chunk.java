@@ -137,8 +137,6 @@ public abstract class Chunk {
      */
     protected void finishConstructor() {
         // Compute which texture sheets are in-use by this chunk
-        // Also we'll be populating our light source object in here
-        // highlight will key off of
         this.usedTextureSheets = new HashMap<Integer, Boolean>();
         this.rewindLoop();
         short t = 0;
@@ -3608,8 +3606,8 @@ public abstract class Chunk {
     /**
      * Renders our chunk.
      *
-     * @param pass        What pass of rendering are we processing?
-     * @param sheet       Which texture sheet are we currently rendering?
+     * @param pass  What pass of rendering are we processing?
+     * @param sheet Which texture sheet are we currently rendering?
      */
     public void renderWorld(RENDER_PASS pass, int sheet) {
 
@@ -3619,7 +3617,6 @@ public abstract class Chunk {
         boolean draw = false;
         int tex_offset = 0;
         BlockType block;
-        boolean highlightingRegions = (WorldViewer.toggle.highlightRegions != WorldViewer.HIGHLIGHT_TYPE.OFF);
         short t;
         int xOff, zOff;
         int x, y, z;
@@ -3642,7 +3639,7 @@ public abstract class Chunk {
         for (FACING facingPass : facingPasses) {
             // If we're rendering "selected" stuff, we want the main XRay
             // loop to be determining our color
-            if (pass != RENDER_PASS.SELECTED || !highlightingRegions) {
+            if (pass != RENDER_PASS.SELECTED) {
                 switch (facingPass) {
                     case TOP:
                         GL11.glColor3f(1f, 1f, 1f);
@@ -4089,7 +4086,7 @@ public abstract class Chunk {
                             }
 
                             // Finally, we're to the point of actually rendering the solid
-                            if (pass != RENDER_PASS.SELECTED || highlightingRegions) {
+                            if (pass != RENDER_PASS.SELECTED) {
                                 this.renderBlockFace(curTexture, worldX + this.lx, this.ly, worldZ + this.lz, facingPass);
                             }
                             break;
