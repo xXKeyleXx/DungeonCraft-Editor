@@ -26,6 +26,7 @@ import de.keyle.dungeoncraft.editor.editors.entity.EntityCreator;
 import de.keyle.dungeoncraft.editor.editors.region.RegionEditor;
 import de.keyle.dungeoncraft.editor.editors.trigger.TriggerEditor;
 import de.keyle.dungeoncraft.editor.editors.world.WorldOverview;
+import de.keyle.dungeoncraft.editor.util.Util;
 
 import javax.swing.*;
 
@@ -36,6 +37,12 @@ public class GuiMain {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ignored) {
+        }
+
+        try {
+            Util.resetLibraryPath();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         mainForm = new MainForm();

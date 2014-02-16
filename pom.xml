@@ -38,6 +38,8 @@
         <knbt.version>0.0.1-SNAPSHOT</knbt.version>
         <guava.version>16.0.1</guava.version>
         <rsyntaxtextarea.version>2.5.0</rsyntaxtextarea.version>
+        <guava.version>16.0.1</guava.version>
+        <lwjgl.version>2.9.1</lwjgl.version>
     </properties>
 
     <repositories>
@@ -72,7 +74,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>16.0.1</version>
+            <version>${guava.version}</version>
             <scope>compile</scope>
             <optional>true</optional>
         </dependency>
@@ -99,12 +101,12 @@
         <dependency>
             <groupId>org.lwjgl.lwjgl</groupId>
             <artifactId>lwjgl</artifactId>
-            <version>2.9.1</version>
+            <version>${lwjgl.version}</version>
         </dependency>
         <dependency>
             <groupId>org.lwjgl.lwjgl</groupId>
             <artifactId>lwjgl_util</artifactId>
-            <version>2.9.1</version>
+            <version>${lwjgl.version}</version>
         </dependency>
     </dependencies>
 
@@ -133,7 +135,8 @@
                     <jarName>${project.name}-${project.version}</jarName>
                     <archive>
                         <manifestEntries>
-                            <Class-Path>lwjgl.jar lwjgl-platform-2.9.1-natives-windows.jar lwjgl_util.jar</Class-Path>
+                            <Class-Path>libs/lwjgl-${lwjgl.version}.jar libs/lwjgl_util-${lwjgl.version}.jar
+                            </Class-Path>
                             <Main-Class>de.keyle.dungeoncraft.editor.GuiMain</Main-Class>
                             <Project-Author>Keyle</Project-Author>
                             <Project-Name>${project.name}</Project-Name>

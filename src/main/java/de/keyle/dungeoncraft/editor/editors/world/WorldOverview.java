@@ -28,11 +28,14 @@ import de.keyle.dungeoncraft.editor.editors.world.schematic.Schematic;
 import de.keyle.dungeoncraft.editor.editors.world.schematic.SchematicLoader;
 import de.keyle.dungeoncraft.editor.editors.world.schematic.SchematicReveiver;
 import de.keyle.dungeoncraft.editor.util.DisabledPanel;
+import de.keyle.dungeoncraft.editor.util.Util;
 import de.keyle.dungeoncraft.editor.util.vector.OrientationVector;
 import de.keyle.dungeoncraft.editor.util.vector.Region;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.File;
@@ -42,12 +45,35 @@ public class WorldOverview implements Editor, SchematicReveiver {
     private JPanel mainPanel;
     private JPanel renderPanel;
     private JCheckBox showRegionsCheckBox;
+    private JProgressBar downloadProgressBar;
+    private JButton downloadLWJGLButton;
+    private JButton restartEditorButton;
+    private JPanel downloadPanel;
+
+    private final boolean lwjglFound;
 
     public Canvas canvas;
     File schematicFile;
     Schematic schematic = null;
     WorldViewer renderThread;
     RegionEditor regionEditor = null;
+
+    public WorldOverview() {
+        lwjglFound = Util.existsClass("org.lwjgl.opengl.Display") && Util.existsClass("org.lwjgl.util.glu.GLU");
+        downloadLWJGLButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new DependencyDownloader(downloadProgressBar, restartEditorButton).start();
+                downloadLWJGLButton.setEnabled(false);
+            }
+        });
+        restartEditorButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Util.restartApplication();
+            }
+        });
+    }
 
     private void createUIComponents() {
         mainPanel = new DisabledPanel();
@@ -69,10 +95,15 @@ public class WorldOverview implements Editor, SchematicReveiver {
     @Override
     public void openDungeon(File dungeonFolder) {
         resetFields();
-        schematicFile = new File(dungeonFolder, dungeonFolder.getName() + ".schematic");
-        schematic = null;
-        if (schematicFile.exists()) {
-            new SchematicLoader(this).start();
+        if (lwjglFound) {
+            schematicFile = new File(dungeonFolder, dungeonFolder.getName() + ".schematic");
+            schematic = null;
+            if (schematicFile.exists()) {
+                new SchematicLoader(this).start();
+            }
+        } else {
+            mainPanel.setEnabled(false);
+            downloadLWJGLButton.setEnabled(true);
         }
     }
 
@@ -94,52 +125,62 @@ public class WorldOverview implements Editor, SchematicReveiver {
 
     @Override
     public void init() {
-        renderThread = new WorldViewer(this);
-        renderThread.start();
+        if (lwjglFound) {
+            downloadPanel.setVisible(false);
+            renderThread = new WorldViewer(this);
+            renderThread.start();
 
-        GuiMain.getMainForm().getFrame().addComponentListener(new ComponentAdapter() {
-            boolean isResized = false;
+            GuiMain.getMainForm().getFrame().addComponentListener(new ComponentAdapter() {
+                boolean isResized = false;
 
-            @Override
-            public void componentResized(ComponentEvent e) {
-                if (!isResized) {
-                    canvas.setVisible(false);
-                    isResized = true;
-                    SwingUtilities.invokeLater(new Runnable() {
-                        public void run() {
-                            canvas.setSize(new Dimension(renderPanel.getWidth(), renderPanel.getHeight()));
-                            if (mainPanel.isVisible()) {
-                                canvas.setVisible(true);
+                @Override
+                public void componentResized(ComponentEvent e) {
+                    if (!isResized) {
+                        canvas.setVisible(false);
+                        isResized = true;
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                canvas.setSize(new Dimension(renderPanel.getWidth(), renderPanel.getHeight()));
+                                if (mainPanel.isVisible()) {
+                                    canvas.setVisible(true);
+                                }
+                                isResized = false;
+                                if (renderThread != null) {
+                                    renderThread.resize();
+                                }
                             }
-                            isResized = false;
-                            if (renderThread != null) {
-                                renderThread.resize();
-                            }
-                        }
-                    });
+                        });
+                    }
                 }
-            }
 
-            public void componentMoved(ComponentEvent e) {
-            }
+                public void componentMoved(ComponentEvent e) {
+                }
 
-            @Override
-            public void componentShown(ComponentEvent e) {
-            }
+                @Override
+                public void componentShown(ComponentEvent e) {
+                }
 
-            @Override
-            public void componentHidden(ComponentEvent e) {
-            }
-        });
+                @Override
+                public void componentHidden(ComponentEvent e) {
+                }
+            });
+        } else {
+            downloadPanel.setVisible(true);
+            downloadLWJGLButton.setEnabled(true);
+        }
     }
 
     @Override
     public void switchToEditor(Editor editor) {
-        if (editor == this) {
+        if (lwjglFound && editor == this) {
             canvas.setVisible(true);
         } else {
             canvas.setVisible(false);
         }
+    }
+
+    public boolean isLWJGLFound() {
+        return lwjglFound;
     }
 
     @Override

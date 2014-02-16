@@ -6,6 +6,9 @@ import com.google.common.io.Files;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.net.URLDecoder;
+import java.util.ArrayList;
 
 public class Util {
     public static boolean isDouble(String number) {
@@ -61,5 +64,44 @@ public class Util {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void resetLibraryPath() throws Exception {
+        File folder = new File(Util.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParentFile();
+        System.setProperty("java.library.path", System.getProperty("java.library.path") + File.pathSeparator + URLDecoder.decode(folder.getAbsolutePath()) + File.separator + "libs");
+        final Field sysPathsField = ClassLoader.class.getDeclaredField("sys_paths");
+        sysPathsField.setAccessible(true);
+        sysPathsField.set(null, null);
+    }
+
+    public static boolean existsClass(String className) {
+        try {
+            Class.forName(className);
+            return true;
+        } catch (ClassNotFoundException exception) {
+            return false;
+        }
+    }
+
+    public static void restartApplication() {
+        final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
+        final File currentJar = new File(Util.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+
+        if (!currentJar.getName().endsWith(".jar")) {
+            return;
+        }
+
+        final ArrayList<String> command = new ArrayList<String>();
+        command.add(javaBin);
+        command.add("-jar");
+        command.add(currentJar.getPath());
+
+        final ProcessBuilder builder = new ProcessBuilder(command);
+        try {
+            builder.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.exit(0);
     }
 }

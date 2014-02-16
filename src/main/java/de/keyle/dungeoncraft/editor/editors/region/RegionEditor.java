@@ -128,6 +128,16 @@ public class RegionEditor implements Editor {
                         showInWorldViewerCheckBox.setSelected(shownRegions.contains(selectedRegion));
                         valuePanel.setEnabled(true);
                         deleteRegionButton.setEnabled(true);
+                        for (Editor editor : GuiMain.getMainForm().getEditorList()) {
+                            if (editor instanceof WorldOverview) {
+                                if (!((WorldOverview) editor).isLWJGLFound()) {
+                                    goToPos1Button.setEnabled(false);
+                                    goToPos2Button.setEnabled(false);
+                                    showInWorldViewerCheckBox.setEnabled(false);
+                                }
+                                break;
+                            }
+                        }
                     }
                 } else {
                     regionNameTextField.setText("");
@@ -138,6 +148,8 @@ public class RegionEditor implements Editor {
                     pos2ySpinner.setValue(0);
                     pos2zSpinner.setValue(0);
                     deleteRegionButton.setEnabled(false);
+                    goToPos1Button.setEnabled(true);
+                    goToPos2Button.setEnabled(true);
                     valuePanel.setEnabled(false);
                 }
             }
