@@ -56,6 +56,17 @@
         </pluginRepository>
     </pluginRepositories>
 
+    <distributionManagement>
+        <repository>
+            <id>Keyle-Release-Repo</id>
+            <url>http://nexus.keyle.de/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>Keyle-Snapshot-Repo</id>
+            <url>http://nexus.keyle.de/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <dependencies>
         <dependency>
             <groupId>com.intellij</groupId>
@@ -109,6 +120,17 @@
             <version>${lwjgl.version}</version>
         </dependency>
     </dependencies>
+
+    <ciManagement>
+        <system>jenkins</system>
+        <url>http://build.keyle.de</url>
+    </ciManagement>
+
+    <scm>
+        <connection>scm:git:git@github.com:xXKeyleXx/DungeonCraft-Editor.git</connection>
+        <developerConnection>scm:git:git@github.com:xXKeyleXx/DungeonCraft-Editor.git</developerConnection>
+        <url>https://github.com/xXKeyleXx/DungeonCraft-Editor/tree/master/</url>
+    </scm>
 
     <build>
         <defaultGoal>clean package</defaultGoal>
