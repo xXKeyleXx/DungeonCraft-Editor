@@ -26,9 +26,10 @@ import de.keyle.dungeoncraft.editor.editors.entity.EntityCreator;
 import de.keyle.dungeoncraft.editor.editors.region.RegionEditor;
 import de.keyle.dungeoncraft.editor.editors.trigger.TriggerEditor;
 import de.keyle.dungeoncraft.editor.editors.world.WorldOverview;
-import de.keyle.dungeoncraft.editor.util.Util;
 
 import javax.swing.*;
+import java.io.File;
+import java.net.URLDecoder;
 
 public class GuiMain {
     private static MainForm mainForm;
@@ -39,11 +40,8 @@ public class GuiMain {
         } catch (Exception ignored) {
         }
 
-        try {
-            Util.resetLibraryPath();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        File folder = new File(GuiMain.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParentFile();
+        System.setProperty("org.lwjgl.librarypath", URLDecoder.decode(folder.getAbsolutePath()) + File.separator + "libs");
 
         mainForm = new MainForm();
 
