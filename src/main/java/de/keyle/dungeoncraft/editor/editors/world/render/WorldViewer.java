@@ -1056,12 +1056,12 @@ public class WorldViewer extends Thread {
     }
 
     public void renderRegion(Region region) {
-        float xMin = region.getMin().getBlockX() - .48f;
-        float yMin = region.getMin().getBlockY() - .48f;
-        float zMin = region.getMin().getBlockZ() - .48f;
-        float xMax = region.getMax().getBlockX() + 1 - .52f;
-        float yMax = region.getMax().getBlockY() + 1 - .52f;
-        float zMax = region.getMax().getBlockZ() + 1 - .52f;
+        float xMin = region.getMin().getBlockX();
+        float yMin = region.getMin().getBlockY();
+        float zMin = region.getMin().getBlockZ();
+        float xMax = region.getMax().getBlockX() + 1;
+        float yMax = region.getMax().getBlockY() + 1;
+        float zMax = region.getMax().getBlockZ() + 1;
         Renderer.renderNonstandardVertical(0, 0, 1, 1, xMin, yMax, zMin, xMax, yMin, zMin);
         Renderer.renderNonstandardVertical(0, 0, 1, 1, xMin, yMax, zMax, xMax, yMin, zMax);
         Renderer.renderNonstandardVertical(0, 0, 1, 1, xMin, yMax, zMin, xMin, yMin, zMax);
