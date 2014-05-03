@@ -62,14 +62,6 @@ public class MinecraftEnvironment {
                 return null;
             }
         }
-        File texDir = new File(MinecraftEnvironment.worldViewerBaseDir, "textures");
-        if (!texDir.exists()) {
-            texDir.mkdir();
-        }
-        File blockdefDir = new File(MinecraftEnvironment.worldViewerBaseDir, "blockdefs");
-        if (!blockdefDir.exists()) {
-            blockdefDir.mkdir();
-        }
         return new File(MinecraftEnvironment.worldViewerBaseDir, "dungeon-craft-editor.properties");
     }
 
