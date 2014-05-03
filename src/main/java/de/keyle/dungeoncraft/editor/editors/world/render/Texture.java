@@ -82,26 +82,6 @@ public class Texture {
 
     private int textureId = -1;
 
-	/*public static final ColorModel glAlphaColorModel = new ComponentColorModel(
-            ColorSpace.getInstance(ColorSpace.CS_sRGB),
-			new int[] { 8, 8, 8, 8 }, true, false,
-			ComponentColorModel.TRANSLUCENT, DataBuffer.TYPE_BYTE);
-
-	public static final ColorModel glColorModel = new ComponentColorModel(
-			ColorSpace.getInstance(ColorSpace.CS_sRGB),
-			new int[] { 8, 8, 8, 0 }, false, false, ComponentColorModel.OPAQUE,
-			DataBuffer.TYPE_BYTE);*/
-
-    public Texture(BufferedImage image, int frameNum, long playTime,
-                   long delayTime) {
-        // XRay.logger.trace(image.hashCode());
-        this.image = image;
-        this.frameNum = frameNum;
-        this.playTime = playTime;
-        this.delayTime = delayTime;
-        this.textureCompatibleBuffer = null;
-    }
-
     public Texture(BufferedImage image) {
         // XRay.logger.trace(image.hashCode());
         this.image = image;
@@ -184,21 +164,16 @@ public class Texture {
         textureHeight = TextureTool.get2Fold(image.getHeight());
 
         // generate an interleaved byte-based ARGB raster and image
-        raster = Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE,
-                this.textureWidth, this.textureHeight, 4, null);
-        texImage = new BufferedImage(TextureTool.glAlphaColorModel, raster, false,
-                new Hashtable<String, Object>());
+        raster = Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE, this.textureWidth, this.textureHeight, 4, null);
+        texImage = new BufferedImage(TextureTool.glAlphaColorModel, raster, false, new Hashtable<String, Object>());
 
         // get the pointers to the data of the [t]exture buffer
         // and the data of the [i]image buffer
-        iBuffer = ((DataBufferByte) image.getRaster().getDataBuffer())
-                .getData();
-        tBuffer = ((DataBufferByte) texImage.getRaster()
-                .getDataBuffer()).getData();
+        iBuffer = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+        tBuffer = ((DataBufferByte) texImage.getRaster().getDataBuffer()).getData();
 
         // get information on how the image is stored in the buffer
-        ComponentSampleModel imageSampleModel = (ComponentSampleModel) image
-                .getSampleModel();
+        ComponentSampleModel imageSampleModel = (ComponentSampleModel) image.getSampleModel();
         scanLineStride = imageSampleModel.getScanlineStride();
         pixelStride = imageSampleModel.getPixelStride();
         bankOffsets = imageSampleModel.getBandOffsets();
@@ -211,8 +186,7 @@ public class Texture {
         yScaleUnit = (int) (((double) image.getHeight() / (double) textureHeight) * 65536);
 
         // generate a bytebuffer to store the resulting image
-        textureCompatibleBuffer = ByteBuffer
-                .allocateDirect(tBuffer.length);
+        textureCompatibleBuffer = ByteBuffer.allocateDirect(tBuffer.length);
         textureCompatibleBuffer.order(ByteOrder.nativeOrder());
     }
 
@@ -242,8 +216,7 @@ public class Texture {
                         yBufferOffset = (yOffset >> 16) * scanLineStride;
 
                         for (x = 0; x < textureWidth; x++) {
-                            bufferOffset = yBufferOffset + (xOffset >> 16)
-                                    * pixelStride;
+                            bufferOffset = yBufferOffset + (xOffset >> 16) * pixelStride;
 
                             tBuffer[adr] = iBuffer[bufferOffset + bOff0];
                             tBuffer[adr + 1] = iBuffer[bufferOffset + bOff1];
@@ -267,8 +240,7 @@ public class Texture {
                         yBufferOffset = (yOffset >> 16) * scanLineStride;
 
                         for (x = 0; x < textureWidth; x++) {
-                            bufferOffset = yBufferOffset + (xOffset >> 16)
-                                    * pixelStride;
+                            bufferOffset = yBufferOffset + (xOffset >> 16) * pixelStride;
 
                             tBuffer[adr] = iBuffer[bufferOffset + bOff0];
                             tBuffer[adr + 1] = iBuffer[bufferOffset + bOff1];
@@ -293,8 +265,7 @@ public class Texture {
                         yBufferOffset = (yOffset >> 16) * scanLineStride;
 
                         for (x = 0; x < textureWidth; x++) {
-                            bufferOffset = yBufferOffset + (xOffset >> 16)
-                                    * pixelStride;
+                            bufferOffset = yBufferOffset + (xOffset >> 16) * pixelStride;
 
                             tBuffer[adr] = iBuffer[bufferOffset + bOff0];
                             tBuffer[adr + 1] = iBuffer[bufferOffset + bOff1];
@@ -318,8 +289,7 @@ public class Texture {
                         yBufferOffset = (yOffset >> 16) * scanLineStride;
 
                         for (x = 0; x < textureWidth; x++) {
-                            bufferOffset = yBufferOffset + (xOffset >> 16)
-                                    * pixelStride;
+                            bufferOffset = yBufferOffset + (xOffset >> 16) * pixelStride;
 
                             tBuffer[adr] = iBuffer[bufferOffset + bOff0];
                             tBuffer[adr + 1] = iBuffer[bufferOffset + bOff1];
@@ -348,8 +318,7 @@ public class Texture {
         }
     }
 
-    public synchronized void setTextureCompatibleBuffer(
-            ByteBuffer textureCompatibleBuffer) {
+    public synchronized void setTextureCompatibleBuffer(ByteBuffer textureCompatibleBuffer) {
         synchronized (this.syncObj) {
             this.textureCompatibleBuffer = textureCompatibleBuffer;
         }

@@ -20,36 +20,97 @@
 
 package de.keyle.dungeoncraft.editor.editors.world.render;
 
+import de.keyle.dungeoncraft.editor.editors.world.render.block.Block;
 import de.keyle.dungeoncraft.editor.editors.world.schematic.Schematic;
+import de.keyle.dungeoncraft.editor.util.Facing;
 
-public class ChunkSchematic extends Chunk {
+public class ChunkSchematic {
 
     private short[][][] blockId;
     private byte[][][] blockData;
 
-    public ChunkSchematic(MinecraftLevel level, int x, int z, Schematic schematic) {
-        super(level, x, z);
-        this.ceilingHeight = this.maxHeight = schematic.getHeight();
+    int maxHeight;
+    int maxWidth;
+    int maxLength;
+
+    protected int lx, ly, lz;
+
+    public ChunkSchematic(MinecraftLevel level, Schematic schematic) {
+        this.maxHeight = schematic.getHeight();
+        this.maxLength = schematic.getLenght();
+        this.maxWidth = schematic.getWidth();
 
         this.parseSchematic(schematic);
+    }
 
-        this.finishConstructor();
+    public void renderWorld() {
+        boolean draw = false;
+        Block block;
+        short t;
+        byte data;
+
+        this.rewindLoop();
+        t = 0;
+
+        while (t != -2) {
+            // Grab our block type
+            t = this.nextBlock();
+            if (t < 1) {
+                continue;
+            }
+
+            // Get the actual BlockType object
+            block = MinecraftConstants.getBlockType(t);
+            if (block == null) {
+                //XRay.logger.debug("Unknown block ID: " + t);
+                block = MinecraftConstants.getBlockType((short) -1);
+                data = 0;
+            } else {
+                data = getData(this.lx, this.ly, this.lz);
+            }
+
+            // Continue on to the actual rendering
+            block.render(data, this.lx, this.ly, this.lz, this);
+        }
+    }
+
+    /**
+     * "Rewinds" our looping over blocks.
+     */
+    protected void rewindLoop() {
+        this.lx = 0;
+        this.ly = 0;
+        this.lz = 0;
+    }
+
+    /**
+     * Renders a border around this chunk.  Note that we should have our chunkBorderTexture
+     * bound before we get in here.
+     */
+    public void renderBorder() {
+        float x = -.49f;
+        float z = -.49f;
+        float top = this.maxHeight + 1f;
+        float bottom = -1f;
+        float width = this.maxWidth + .49f;
+        float length = this.maxLength + .49f;
+        Renderer.renderNonstandardVertical(0, 0, 1, 1, x, top, z, x + width, bottom, z);
+        Renderer.renderNonstandardVertical(0, 0, 1, 1, x, top, z + length, x + width, bottom, z + length);
+        Renderer.renderNonstandardVertical(0, 0, 1, 1, x, top, z, x, bottom, z + width);
+        Renderer.renderNonstandardVertical(0, 0, 1, 1, x + width, top, z, x + width, bottom, z + length);
     }
 
     private void parseSchematic(Schematic schematic) {
         byte[] schematicBlocks = schematic.getBlocks();
         byte[] schematicBlockDatas = schematic.getData();
-        int schematicHeight = schematic.getHeight();
-        int schematicWidth = schematic.getWidth();
-        int schematicLength = schematic.getLenght();
 
         int blockIndex;
-        blockId = new short[16][schematicHeight][16];
-        blockData = new byte[16][schematicHeight][16];
-        for (int xC = 0; xC < 16; xC++) {
-            for (int yC = 0; yC < schematicHeight; yC++) {
-                for (int zC = 0; zC < 16; zC++) {
-                    blockIndex = getSchematicIndex(x, z, xC, yC, zC, schematicLength, schematicWidth, schematicHeight);
+        blockId = new short[maxWidth][maxHeight][maxLength];
+        blockData = new byte[maxWidth][maxHeight][maxLength];
+        for (int xC = 0; xC < maxWidth; xC++) {
+            for (int yC = 0; yC < maxHeight; yC++) {
+                for (int zC = 0; zC < maxLength; zC++) {
+                    blockIndex = getSchematicIndex(xC, yC, zC, maxLength, maxWidth, maxHeight);
                     if (blockIndex != -1 && blockIndex < schematicBlocks.length) {
                         blockId[xC][yC][zC] = schematicBlocks[blockIndex];
                         blockData[xC][yC][zC] = schematicBlockDatas[blockIndex];
@@ -59,24 +120,24 @@ public class ChunkSchematic extends Chunk {
         }
     }
 
-    public static int getSchematicIndex(int chunkX, int chunkZ, int x, int y, int z, int schematicLength, int schematicWidth, int schematicHeight) {
-        if (x >= schematicWidth - chunkX * 16) {
+    public static int getSchematicIndex(int x, int y, int z, int schematicLength, int schematicWidth, int schematicHeight) {
+        if (x >= schematicWidth) {
             return -1;
         }
         if (y >= schematicHeight) {
             return -1;
         }
-        if (z >= schematicLength - chunkZ * 16) {
+        if (z >= schematicLength) {
             return -1;
         }
-        return (y * schematicWidth * schematicLength) + ((z + chunkZ * 16) * schematicWidth) + (x + chunkX * 16);
+        return (y * schematicWidth * schematicLength) + (z * schematicWidth) + x;
     }
 
-    protected short getAdjBlockId(int x, int y, int z, FACING facing) {
+    public short getAdjBlockId(int x, int y, int z, Facing facing) {
         switch (facing) {
-            case TOP:
+            case UP:
                 return getAdjUpBlockId(x, y, z);
-            case BOTTOM:
+            case DOWN:
                 return getAdjDownBlockId(x, y, z);
             case NORTH:
                 return getAdjNorthBlockId(x, y, z);
@@ -91,70 +152,55 @@ public class ChunkSchematic extends Chunk {
         return -1;
     }
 
-    protected short getAdjWestBlockId(int x, int y, int z) {
+    public short getAdjWestBlockId(int x, int y, int z) {
         if (x > 0) {
-            return getBlock(x - 1, y, z);
+            return getBlockId(x - 1, y, z);
         } else {
-            Chunk otherChunk = level.getChunk(this.x - 1, this.z);
-            if (otherChunk == null) {
-                return -1;
-            } else {
-                return otherChunk.getBlock(15, y, z);
-            }
+            return -1;
         }
     }
 
-    protected short getAdjEastBlockId(int x, int y, int z) {
-        if (x < 15) {
-            return getBlock(x + 1, y, z);
+    public short getAdjEastBlockId(int x, int y, int z) {
+        if (x < maxWidth) {
+            return getBlockId(x + 1, y, z);
         } else {
-            Chunk otherChunk = level.getChunk(this.x + 1, this.z);
-            if (otherChunk == null) {
-                return -1;
-            } else {
-                return otherChunk.getBlock(0, y, z);
-            }
+            return -1;
         }
     }
 
-    protected short getAdjNorthBlockId(int x, int y, int z) {
+    public short getAdjNorthBlockId(int x, int y, int z) {
         if (z > 0) {
-            return getBlock(x, y, z - 1);
+            return getBlockId(x, y, z - 1);
         } else {
-            Chunk otherChunk = level.getChunk(this.x, this.z - 1);
-            if (otherChunk == null) {
-                return -1;
-            } else {
-                return otherChunk.getBlock(x, y, 15);
-            }
+            return -1;
         }
     }
 
-    protected short getAdjSouthBlockId(int x, int y, int z) {
-        if (z < 15) {
-            return getBlock(x, y, z + 1);
+    public short getAdjSouthBlockId(int x, int y, int z) {
+        if (z < maxLength) {
+            return getBlockId(x, y, z + 1);
         } else {
-            Chunk otherChunk = level.getChunk(this.x, this.z + 1);
-            if (otherChunk == null) {
-                return -1;
-            } else {
-                return otherChunk.getBlock(x, y, 0);
-            }
+            return -1;
         }
     }
 
-    protected short getAdjUpBlockId(int x, int y, int z) {
-        return getBlock(x, y + 1, z);
+    public short getAdjUpBlockId(int x, int y, int z) {
+        if (y < maxHeight) {
+            return getBlockId(x, y + 1, z);
+        } else {
+            return -1;
+        }
     }
 
     protected short getAdjDownBlockId(int x, int y, int z) {
-        if (y <= 0) {
+        if (y > 0) {
+            return getBlockId(x, y - 1, z);
+        } else {
             return -1;
         }
-        return getBlock(x, y - 1, z);
     }
 
-    public short getBlock(int x, int y, int z) {
+    public short getBlockId(int x, int y, int z) {
         if (x >= 0 && x < blockId.length) {
             if (y >= 0 && y < blockId[x].length) {
                 if (z >= 0 && z < blockId[x][y].length) {
@@ -163,6 +209,21 @@ public class ChunkSchematic extends Chunk {
             }
         }
         return -1;
+    }
+
+    public Block getBlockType(int x, int y, int z) {
+        Block type = null;
+        if (x >= 0 && x < blockId.length) {
+            if (y >= 0 && y < blockId[x].length) {
+                if (z >= 0 && z < blockId[x][y].length) {
+                    type = MinecraftConstants.getBlockType(blockId[x][y][z]);
+                }
+            }
+        }
+        if (type != null) {
+            return type;
+        }
+        return MinecraftConstants.getBlockType((short) -1);
     }
 
     public byte getData(int x, int y, int z) {
@@ -177,15 +238,27 @@ public class ChunkSchematic extends Chunk {
     }
 
     protected short nextBlock() {
-        if (++this.lx > 0xF) {
+        if (++this.lx > maxWidth) {
             this.lx = 0;
-            if (++this.lz > 0xF) {
+            if (++this.lz > maxLength) {
                 this.lz = 0;
                 if (++this.ly >= maxHeight) {
                     return -2;
                 }
             }
         }
-        return getBlock(lx, ly, lz);
+        return getBlockId(lx, ly, lz);
+    }
+
+    public int getMaxHeight() {
+        return maxHeight;
+    }
+
+    public int getMaxWidth() {
+        return maxWidth;
+    }
+
+    public int getMaxLength() {
+        return maxLength;
     }
 }

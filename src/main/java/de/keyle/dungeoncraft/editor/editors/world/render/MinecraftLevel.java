@@ -28,8 +28,6 @@ package de.keyle.dungeoncraft.editor.editors.world.render;
 
 import de.keyle.dungeoncraft.editor.editors.world.schematic.Schematic;
 
-import java.util.ArrayList;
-
 /**
  * A Minecraft level
  *
@@ -38,47 +36,35 @@ import java.util.ArrayList;
 public class MinecraftLevel {
 
     //public static int LEVELDATA_SIZE = 256;
-    public Chunk[][] chunks;
+    public ChunkSchematic chunk;
 
     public Schematic schematic;
 
     // This var holds the index of the player position we've most recently picked
     private int spawnPoint_idx;
 
-    public ArrayList<Texture> minecraftTextures;
-    public Texture paintingTexture;
-
     /**
      * Create a minecraftLevel from the given world
      *
      * @param schematic
      */
-    public MinecraftLevel(Schematic schematic, ArrayList<Texture> minecraftTextures, Texture paintingTexture) {
+    public MinecraftLevel(Schematic schematic) {
         this.schematic = schematic;
-        this.minecraftTextures = minecraftTextures;
-        this.paintingTexture = paintingTexture;
 
         int chunkCountX = (int) Math.ceil(schematic.getWidth() / 16.);
         int chunkCountZ = (int) Math.ceil(schematic.getLenght() / 16.);
 
-        this.chunks = new Chunk[chunkCountX][chunkCountZ];
         loadSchematic();
 
         this.spawnPoint_idx = -1;
     }
 
     public void loadSchematic() {
-        int schematicWidth = schematic.getWidth();
-        int schematicLength = schematic.getLenght();
-        int chunkCountX = (int) Math.ceil(schematicWidth / 16.);
-        int chunkCountZ = (int) Math.ceil(schematicLength / 16.);
+        chunk = new ChunkSchematic(this, schematic);
+    }
 
-        for (int x = 0; x < chunkCountX; x++) {
-            for (int z = 0; z < chunkCountZ; z++) {
-                Chunk c = new ChunkSchematic(this, x, z, schematic);
-                chunks[x][z] = c;
-            }
-        }
+    public ChunkSchematic getChunk() {
+        return chunk;
     }
 
     /**
@@ -137,57 +123,10 @@ public class MinecraftLevel {
         }
     }
 
-    public void invalidateSelected() {
-        this.invalidateSelected(false);
-    }
-
-    public void invalidateSelected(boolean main_dirty) {
-        for (Chunk[] chunkrow : this.chunks) {
-            for (Chunk chunk : chunkrow) {
-                if (chunk != null) {
-                    chunk.setSelectedDirty();
-                    if (main_dirty) {
-                        chunk.setDirty();
-                    }
-                }
-            }
-        }
-    }
-
-    public void markChunkAsDirty(int x, int z) {
-        Chunk c = this.getChunk(x, z);
-        if (c != null) {
-            c.setDirty();
-        }
-    }
-
     /**
-     * Gets the specified Chunk object
-     *
-     * @param chunkX
-     * @param chunkZ
-     * @return
+     * Sets chunk to null
      */
-    public Chunk getChunk(int chunkX, int chunkZ) {
-        if (chunkX >= 0 && chunkX < this.chunks.length) {
-            if (chunkZ >= 0 && chunkZ < this.chunks[chunkX].length) {
-                return this.chunks[chunkX][chunkZ];
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Sets a chunk to null
-     *
-     * @param chunkX
-     * @param chunkZ
-     */
-    public void clearChunk(int chunkX, int chunkZ) {
-        if (chunkX >= 0 && chunkX < this.chunks.length) {
-            if (chunkZ >= 0 && chunkZ < this.chunks[chunkX].length) {
-                this.chunks[chunkX][chunkZ] = null;
-            }
-        }
+    public void clearChunk() {
+        chunk = null;
     }
 }

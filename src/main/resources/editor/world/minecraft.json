@@ -1,0 +1,4165 @@
+{
+    "name": "Vanilla Minecraft Block Types",
+    "version": "1.7.4",
+    "blocks": [
+        {
+            "id": 1,
+            "idStr": "STONE",
+            "name": "Stone",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        0,
+                        0
+                    ]
+                }
+            }
+        },
+        {
+            "id": 2,
+            "idStr": "GRASS",
+            "name": "Grass",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        2,
+                        0
+                    ],
+                    "TOP": [
+                        3,
+                        0
+                    ],
+                    "BOTTOM": [
+                        1,
+                        0
+                    ]
+                }
+            }
+        },
+        {
+            "id": 3,
+            "idStr": "DIRT",
+            "name": "Dirt",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        1,
+                        0
+                    ]
+                }
+            }
+        },
+        {
+            "id": 4,
+            "idStr": "COBBLESTONE",
+            "name": "Cobblestone",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        4,
+                        0
+                    ]
+                }
+            }
+        },
+        {
+            "id": 5,
+            "idStr": "PLANK",
+            "name": "Wooden Planks",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        5,
+                        0
+                    ]
+                },
+                "1": {
+                    "SIDE": [
+                        6,
+                        0
+                    ]
+                },
+                "2": {
+                    "SIDE": [
+                        7,
+                        0
+                    ]
+                },
+                "3": {
+                    "SIDE": [
+                        8,
+                        0
+                    ]
+                },
+                "4": {
+                    "SIDE": [
+                        9,
+                        0
+                    ]
+                },
+                "5": {
+                    "SIDE": [
+                        10,
+                        0
+                    ]
+                }
+            }
+        },
+        {
+            "id": 6,
+            "idStr": "SAPLING",
+            "name": "Sapling",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        11,
+                        0
+                    ]
+                },
+                "1": {
+                    "SIDE": [
+                        12,
+                        0
+                    ]
+                },
+                "2": {
+                    "SIDE": [
+                        13,
+                        0
+                    ]
+                },
+                "3": {
+                    "SIDE": [
+                        14,
+                        0
+                    ]
+                },
+                "4": {
+                    "SIDE": [
+                        15,
+                        0
+                    ]
+                },
+                "5": {
+                    "SIDE": [
+                        0,
+                        1
+                    ]
+                }
+            },
+            "type": "DECORATION_CROSS",
+            "texture_data_bits": 2
+        },
+        {
+            "id": 7,
+            "idStr": "BEDROCK",
+            "name": "Bedrock",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        1,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "id": 8,
+            "idStr": "WATER",
+            "name": "Water",
+            "aka": "Water (Moving)",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        2,
+                        1
+                    ]
+                }
+            },
+            "type": "WATER"
+        },
+        {
+            "id": 9,
+            "idStr": "STATIONARY_WATER",
+            "name": "Water (Stationary)",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        2,
+                        1
+                    ]
+                }
+            },
+            "type": "WATER"
+        },
+        {
+            "id": 10,
+            "idStr": "LAVA",
+            "name": "Lava (Moving)",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        3,
+                        1
+                    ]
+                }
+            },
+            "type": "SEMISOLID"
+        },
+        {
+            "id": 11,
+            "idStr": "STATIONARY_LAVA",
+            "name": "Lava (Stationary)",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        3,
+                        1
+                    ]
+                }
+            },
+            "type": "SEMISOLID"
+        },
+        {
+            "id": 12,
+            "idStr": "SAND",
+            "name": "Sand",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        4,
+                        1
+                    ]
+                },
+                "1": {
+                    "SIDE": [
+                        5,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "id": 13,
+            "idStr": "GRAVEL",
+            "name": "Gravel",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        6,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "id": 14,
+            "idStr": "GOLD_ORE",
+            "name": "Gold",
+            "aka": "Gold Ore",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        7,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "id": 15,
+            "idStr": "IRON_ORE",
+            "name": "Iron",
+            "aka": "Iron Ore",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        8,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "id": 16,
+            "idStr": "COAL_ORE",
+            "name": "Coal",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        9,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "id": 17,
+            "idStr": "WOOD",
+            "name": "Log",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        10,
+                        1
+                    ],
+                    "TOP": [
+                        11,
+                        1
+                    ]
+                },
+                "1": {
+                    "SIDE": [
+                        12,
+                        1
+                    ],
+                    "TOP": [
+                        13,
+                        1
+                    ]
+                },
+                "2": {
+                    "SIDE": [
+                        14,
+                        1
+                    ],
+                    "TOP": [
+                        15,
+                        1
+                    ]
+                },
+                "3": {
+                    "SIDE": [
+                        0,
+                        2
+                    ],
+                    "TOP": [
+                        1,
+                        2
+                    ]
+                }
+            },
+            "type": "LOG"
+        },
+        {
+            "id": 18,
+            "idStr": "LEAVES",
+            "name": "Leaves",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        2,
+                        2
+                    ]
+                },
+                "1": {
+                    "SIDE": [
+                        3,
+                        2
+                    ]
+                },
+                "2": {
+                    "SIDE": [
+                        4,
+                        2
+                    ]
+                },
+                "3": {
+                    "SIDE": [
+                        5,
+                        2
+                    ]
+                }
+            },
+            "texture_data_bits": 2
+        },
+        {
+            "id": 19,
+            "idStr": "SPONGE",
+            "name": "Sponge",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        6,
+                        2
+                    ]
+                }
+            }
+        },
+        {
+            "id": 20,
+            "idStr": "GLASS",
+            "name": "Glass",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        7,
+                        2
+                    ]
+                }
+            },
+            "type": "GLASS"
+        },
+        {
+            "id": 21,
+            "idStr": "LAPIS_LAZULI_ORE",
+            "name": "Lapis Lazuli Ore",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        9,
+                        2
+                    ]
+                }
+            }
+        },
+        {
+            "id": 22,
+            "idStr": "LAPIS_LAZULI_BLOCK",
+            "name": "Lapis Lazuli Block",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        9,
+                        2
+                    ]
+                }
+            }
+        },
+        {
+            "id": 23,
+            "idStr": "DISPENSER",
+            "name": "Dispenser",
+            "texture": {
+                "0": {
+                    "OPENING_FRONT": [
+                        10,
+                        2
+                    ],
+                    "OPENING_TOP": [
+                        11,
+                        2
+                    ],
+                    "TOP": [
+                        12,
+                        3
+                    ]
+                }
+            },
+            "type": "DISPENSER"
+        },
+        {
+            "id": 24,
+            "idStr": "SANDSTONE",
+            "name": "Sandstone",
+            "texture": {
+                "0": {
+                    "TOP": [
+                        12,
+                        2
+                    ],
+                    "SIDE": [
+                        14,
+                        2
+                    ],
+                    "BOTTOM": [
+                        12,
+                        2
+                    ]
+                },
+                "1": {
+                    "TOP": [
+                        12,
+                        2
+                    ],
+                    "SIDE": [
+                        15,
+                        2
+                    ],
+                    "BOTTOM": [
+                        12,
+                        2
+                    ]
+                },
+                "2": {
+                    "TOP": [
+                        12,
+                        2
+                    ],
+                    "SIDE": [
+                        0,
+                        3
+                    ],
+                    "BOTTOM": [
+                        12,
+                        2
+                    ]
+                }
+            }
+        },
+        {
+            "id": 25,
+            "idStr": "NOTE_BLOCK",
+            "name": "Note Block",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        1,
+                        3
+                    ]
+                }
+            }
+        },
+        {
+            "id": 26,
+            "idStr": "BED",
+            "name": "Bed",
+            "texture": {
+                "0": {
+                    "FEED_END": [
+                        2,
+                        3
+                    ],
+                    "FEED_SIDE": [
+                        3,
+                        3
+                    ],
+                    "FEED_TOP": [
+                        4,
+                        3
+                    ],
+                    "HEAD_END": [
+                        5,
+                        3
+                    ],
+                    "HEAD_SIDE": [
+                        6,
+                        3
+                    ],
+                    "HEAD_TOP": [
+                        7,
+                        3
+                    ]
+                }
+            },
+            "type": "BED"
+        },
+        {
+            "id": 27,
+            "idStr": "POWERED_RAIL",
+            "name": "Power Rail",
+            "texture": {
+                "0": {
+                    "OFF": [
+                        8,
+                        3
+                    ],
+                    "ON": [
+                        9,
+                        3
+                    ]
+                }
+            },
+            "type": "SIMPLE_RAIL"
+        },
+        {
+            "id": 28,
+            "idStr": "DETECTOR_RAIL",
+            "name": "Detector",
+            "texture": {
+                "0": {
+                    "OFF": [
+                        10,
+                        3
+                    ],
+                    "ON": [
+                        11,
+                        3
+                    ]
+                }
+            },
+            "type": "SIMPLE_RAIL"
+        },
+        {
+            "id": 29,
+            "idStr": "PISTON_STICKY_BODY",
+            "name": "Sticky Piston",
+            "texture": {
+                "0": {
+                    "BODY_BOTTOM": [
+                        12,
+                        3
+                    ],
+                    "BODY_SIDE": [
+                        14,
+                        3
+                    ],
+                    "BODY_TOP": [
+                        13,
+                        3
+                    ]
+                }
+            },
+            "type": "PISTON_BODY"
+        },
+        {
+            "id": 30,
+            "idStr": "WEB",
+            "name": "Web",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        0,
+                        4
+                    ]
+                }
+            },
+            "type": "DECORATION_CROSS"
+        },
+        {
+            "id": 31,
+            "idStr": "TALL_GRASS",
+            "name": "Tall Grass",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        1,
+                        4
+                    ]
+                },
+                "1": {
+                    "SIDE": [
+                        2,
+                        4
+                    ]
+                },
+                "2": {
+                    "SIDE": [
+                        3,
+                        4
+                    ]
+                },
+                "3": {
+                    "SIDE": [
+                        1,
+                        4
+                    ]
+                }
+            },
+            "type": "DECORATION_CROSS"
+        },
+        {
+            "id": 32,
+            "idStr": "DEAD_SHRUB",
+            "name": "Dead Shrub",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        1,
+                        4
+                    ]
+                }
+            },
+            "type": "DECORATION_CROSS"
+        },
+        {
+            "id": 33,
+            "idStr": "PISTON_BODY",
+            "name": "Piston",
+            "texture": {
+                "0": {
+                    "BODY_BOTTOM": [
+                        12,
+                        3
+                    ],
+                    "BODY_SIDE": [
+                        14,
+                        3
+                    ],
+                    "BODY_TOP": [
+                        13,
+                        3
+                    ],
+                    "TOP_NORMAL": [
+                        4,
+                        4
+                    ],
+                    "TOP_STICKY": [
+                        15,
+                        3
+                    ]
+                }
+            },
+            "type": "PISTON_BODY"
+        },
+        {
+            "id": 34,
+            "idStr": "PISTON_HEAD",
+            "name": "Piston Head",
+            "texture": {
+                "0": {
+                    "NORMAL": [
+                        4,
+                        4
+                    ],
+                    "STICKY": [
+                        15,
+                        3
+                    ]
+                }
+            },
+            "type": "PISTON_HEAD"
+        },
+        {
+            "id": 35,
+            "idStr": "WOOL",
+            "name": "Wool",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        5,
+                        4
+                    ]
+                },
+                "1": {
+                    "SIDE": [
+                        6,
+                        4
+                    ]
+                },
+                "2": {
+                    "SIDE": [
+                        7,
+                        4
+                    ]
+                },
+                "3": {
+                    "SIDE": [
+                        8,
+                        4
+                    ]
+                },
+                "4": {
+                    "SIDE": [
+                        9,
+                        4
+                    ]
+                },
+                "5": {
+                    "SIDE": [
+                        10,
+                        4
+                    ]
+                },
+                "6": {
+                    "SIDE": [
+                        11,
+                        4
+                    ]
+                },
+                "7": {
+                    "SIDE": [
+                        12,
+                        4
+                    ]
+                },
+                "8": {
+                    "SIDE": [
+                        13,
+                        4
+                    ]
+                },
+                "9": {
+                    "SIDE": [
+                        14,
+                        4
+                    ]
+                },
+                "10": {
+                    "SIDE": [
+                        15,
+                        4
+                    ]
+                },
+                "11": {
+                    "SIDE": [
+                        0,
+                        5
+                    ]
+                },
+                "12": {
+                    "SIDE": [
+                        1,
+                        5
+                    ]
+                },
+                "13": {
+                    "SIDE": [
+                        2,
+                        5
+                    ]
+                },
+                "14": {
+                    "SIDE": [
+                        3,
+                        5
+                    ]
+                },
+                "15": {
+                    "SIDE": [
+                        4,
+                        5
+                    ]
+                }
+            }
+        },
+        {
+            "id": 37,
+            "idStr": "YELLOW_FLOWER",
+            "name": "Flower",
+            "aka": "Yellow Flower",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        5,
+                        5
+                    ]
+                }
+            },
+            "type": "DECORATION_CROSS"
+        },
+        {
+            "id": 38,
+            "idStr": "RED_ROSE",
+            "name": "Flower",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        6,
+                        5
+                    ]
+                },
+                "1": {
+                    "SIDE": [
+                        7,
+                        5
+                    ]
+                },
+                "2": {
+                    "SIDE": [
+                        8,
+                        5
+                    ]
+                },
+                "3": {
+                    "SIDE": [
+                        9,
+                        5
+                    ]
+                },
+                "4": {
+                    "SIDE": [
+                        10,
+                        5
+                    ]
+                },
+                "5": {
+                    "SIDE": [
+                        11,
+                        5
+                    ]
+                },
+                "6": {
+                    "SIDE": [
+                        12,
+                        5
+                    ]
+                },
+                "7": {
+                    "SIDE": [
+                        13,
+                        5
+                    ]
+                },
+                "8": {
+                    "SIDE": [
+                        14,
+                        5
+                    ]
+                }
+            },
+            "type": "DECORATION_CROSS"
+        },
+        {
+            "id": 39,
+            "idStr": "BROWN_MUSHROOM",
+            "name": "Brown Mushroom",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        15,
+                        5
+                    ]
+                }
+            },
+            "type": "DECORATION_CROSS"
+        },
+        {
+            "id": 40,
+            "idStr": "RED_MUSHROOM",
+            "name": "Red Mushroom",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        0,
+                        6
+                    ]
+                }
+            },
+            "type": "DECORATION_CROSS"
+        },
+        {
+            "id": 41,
+            "idStr": "GOLD_BLOCK",
+            "name": "Gold",
+            "aka": "Gold Block",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        1,
+                        6
+                    ]
+                }
+            }
+        },
+        {
+            "id": 42,
+            "idStr": "IRON_BLOCK",
+            "name": "Iron",
+            "aka": "Iron Block",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        2,
+                        6
+                    ]
+                }
+            }
+        },
+        {
+            "id": 43,
+            "idStr": "DOUBLE_SLAB",
+            "name": "Double Slab",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        3,
+                        6
+                    ],
+                    "TOP": [
+                        4,
+                        6
+                    ]
+                },
+                "1": {
+                    "SIDE": [
+                        14,
+                        3
+                    ],
+                    "TOP": [
+                        12,
+                        3
+                    ],
+                    "BOTTOM": [
+                        13,
+                        3
+                    ]
+                },
+                "2": {
+                    "SIDE": [
+                        5,
+                        0
+                    ]
+                },
+                "3": {
+                    "SIDE": [
+                        4,
+                        0
+                    ]
+                },
+                "4": {
+                    "SIDE": [
+                        5,
+                        6
+                    ]
+                },
+                "5": {
+                    "SIDE": [
+                        11,
+                        11
+                    ]
+                },
+                "6": {
+                    "SIDE": [
+                        15,
+                        12
+                    ]
+                },
+                "7": {
+                    "SIDE": [
+                        15,
+                        15
+                    ],
+                    "TOP": [
+                        1,
+                        16
+                    ]
+                },
+                "8": {
+                    "SIDE": [
+                        4,
+                        6
+                    ]
+                },
+                "9": {
+                    "SIDE": [
+                        12,
+                        3
+                    ]
+                },
+                "15": {
+                    "SIDE": [
+                        15,
+                        15
+                    ],
+                    "TOP": [
+                        1,
+                        16
+                    ],
+                    "BOTTOM": [
+                        0,
+                        16
+                    ]
+                }
+            }
+        },
+        {
+            "id": 44,
+            "idStr": "SLAB",
+            "name": "Half Step",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        3,
+                        6
+                    ],
+                    "TOP": [
+                        4,
+                        6
+                    ]
+                },
+                "1": {
+                    "SIDE": [
+                        14,
+                        3
+                    ],
+                    "TOP": [
+                        12,
+                        3
+                    ],
+                    "BOTTOM": [
+                        13,
+                        3
+                    ]
+                },
+                "2": {
+                    "SIDE": [
+                        5,
+                        0
+                    ]
+                },
+                "3": {
+                    "SIDE": [
+                        4,
+                        0
+                    ]
+                },
+                "4": {
+                    "SIDE": [
+                        5,
+                        6
+                    ]
+                },
+                "5": {
+                    "SIDE": [
+                        11,
+                        11
+                    ]
+                },
+                "6": {
+                    "SIDE": [
+                        15,
+                        12
+                    ]
+                },
+                "7": {
+                    "SIDE": [
+                        15,
+                        15
+                    ],
+                    "TOP": [
+                        1,
+                        16
+                    ]
+                },
+                "8": {
+                    "SIDE": [
+                        4,
+                        6
+                    ]
+                },
+                "9": {
+                    "SIDE": [
+                        12,
+                        3
+                    ]
+                },
+                "15": {
+                    "SIDE": [
+                        15,
+                        15
+                    ],
+                    "TOP": [
+                        1,
+                        16
+                    ],
+                    "BOTTOM": [
+                        0,
+                        16
+                    ]
+                }
+            },
+            "type": "HALFHEIGHT",
+            "texture_data_bits": 3
+        },
+        {
+            "id": 45,
+            "idStr": "BRICK",
+            "name": "Brick",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        5,
+                        6
+                    ]
+                }
+            }
+        },
+        {
+            "id": 46,
+            "idStr": "TNT",
+            "name": "TNT",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        7,
+                        6
+                    ],
+                    "TOP": [
+                        8,
+                        6
+                    ],
+                    "BOTTOM": [
+                        6,
+                        6
+                    ]
+                }
+            }
+        },
+        {
+            "id": 47,
+            "idStr": "BOOKSHELF",
+            "name": "Bookshelf",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        9,
+                        6
+                    ],
+                    "TOP": [
+                        5,
+                        0
+                    ]
+                }
+            }
+        },
+        {
+            "id": 48,
+            "idStr": "MOSSY_COBBLESTONE",
+            "name": "Mossy Cobblestone",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        10,
+                        6
+                    ]
+                }
+            }
+        },
+        {
+            "id": 49,
+            "idStr": "OBSIDIAN",
+            "name": "Obsidian",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        11,
+                        6
+                    ]
+                }
+            }
+        },
+        {
+            "id": 50,
+            "idStr": "TORCH",
+            "name": "Torch",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        12,
+                        6
+                    ]
+                }
+            },
+            "type": "TORCH"
+        },
+        {
+            "id": 51,
+            "idStr": "FIRE",
+            "name": "Fire",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        13,
+                        6
+                    ]
+                }
+            },
+            "type": "DECORATION_CROSS"
+        },
+        {
+            "id": 52,
+            "idStr": "MOB_SPAWNER",
+            "name": "Spawner",
+            "aka": "Monster Cage",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        14,
+                        6
+                    ]
+                }
+            },
+            "type": "SEMISOLID"
+        },
+        {
+            "id": 53,
+            "idStr": "WOODEN_STAIRS",
+            "name": "Wooden Stairs",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        5,
+                        9
+                    ]
+                }
+            },
+            "type": "STAIRS"
+        },
+        {
+            "id": 54,
+            "idStr": "CHEST",
+            "name": "Chest",
+            "texture": {
+                "0": {
+                    "FRONT": [
+                        15,
+                        6
+                    ],
+                    "SIDE": [
+                        0,
+                        7
+                    ],
+                    "BOTTOM": [
+                        1,
+                        7
+                    ],
+                    "FRONT_LEFT": [
+                        4,
+                        7
+                    ],
+                    "FRONT_RIGHT": [
+                        5,
+                        7
+                    ],
+                    "BACK_LEFT": [
+                        2,
+                        7
+                    ],
+                    "BACK_RIGHT": [
+                        3,
+                        7
+                    ]
+                }
+            },
+            "type": "CHEST"
+        },
+        {
+            "id": 55,
+            "idStr": "REDSTONE_WIRE",
+            "name": "Redstone Wire",
+            "texture": {
+                "0": {
+                    "TOP": [
+                        6,
+                        7
+                    ]
+                }
+            },
+            "type": "FLOOR"
+        },
+        {
+            "id": 56,
+            "idStr": "DIAMOND_ORE",
+            "name": "Diamond Ore",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        7,
+                        7
+                    ]
+                }
+            }
+        },
+        {
+            "id": 57,
+            "idStr": "DIAMOND_BLOCK",
+            "name": "Diamond Block",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        8,
+                        7
+                    ]
+                }
+            }
+        },
+        {
+            "id": 58,
+            "idStr": "WORKBENCH",
+            "name": "Crafting Table",
+            "texture": {
+                "0": {
+                    "FRONT": [
+                        9,
+                        7
+                    ],
+                    "SIDE": [
+                        10,
+                        7
+                    ],
+                    "TOP": [
+                        11,
+                        7
+                    ],
+                    "BOTTOM": [
+                        5,
+                        0
+                    ]
+                }
+            }
+        },
+        {
+            "id": 59,
+            "idStr": "CROPS",
+            "name": "Crops",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        12,
+                        7
+                    ]
+                },
+                "1": {
+                    "SIDE": [
+                        13,
+                        7
+                    ]
+                },
+                "2": {
+                    "SIDE": [
+                        14,
+                        7
+                    ]
+                },
+                "3": {
+                    "SIDE": [
+                        15,
+                        7
+                    ]
+                },
+                "4": {
+                    "SIDE": [
+                        0,
+                        8
+                    ]
+                },
+                "5": {
+                    "SIDE": [
+                        1,
+                        8
+                    ]
+                },
+                "6": {
+                    "SIDE": [
+                        2,
+                        8
+                    ]
+                },
+                "7": {
+                    "SIDE": [
+                        3,
+                        8
+                    ]
+                }
+            },
+            "type": "DECORATION_GRID"
+        },
+        {
+            "id": 60,
+            "idStr": "FARMLAND",
+            "name": "Farmland",
+            "texture": {
+                "0": {
+                    "TOP": [
+                        4,
+                        8
+                    ],
+                    "SIDE": [
+                        1,
+                        0
+                    ],
+                    "BOTTOM": [
+                        1,
+                        0
+                    ]
+                },
+                "1": {
+                    "TOP": [
+                        5,
+                        8
+                    ],
+                    "SIDE": [
+                        1,
+                        0
+                    ],
+                    "BOTTOM": [
+                        1,
+                        0
+                    ]
+                },
+                "2": {
+                    "TOP": [
+                        5,
+                        8
+                    ],
+                    "SIDE": [
+                        1,
+                        0
+                    ],
+                    "BOTTOM": [
+                        1,
+                        0
+                    ]
+                },
+                "3": {
+                    "TOP": [
+                        5,
+                        8
+                    ],
+                    "SIDE": [
+                        1,
+                        0
+                    ],
+                    "BOTTOM": [
+                        1,
+                        0
+                    ]
+                },
+                "4": {
+                    "TOP": [
+                        5,
+                        8
+                    ],
+                    "SIDE": [
+                        1,
+                        0
+                    ],
+                    "BOTTOM": [
+                        1,
+                        0
+                    ]
+                },
+                "5": {
+                    "TOP": [
+                        5,
+                        8
+                    ],
+                    "SIDE": [
+                        1,
+                        0
+                    ],
+                    "BOTTOM": [
+                        1,
+                        0
+                    ]
+                },
+                "6": {
+                    "TOP": [
+                        5,
+                        8
+                    ],
+                    "SIDE": [
+                        1,
+                        0
+                    ],
+                    "BOTTOM": [
+                        1,
+                        0
+                    ]
+                },
+                "7": {
+                    "TOP": [
+                        5,
+                        8
+                    ],
+                    "SIDE": [
+                        1,
+                        0
+                    ],
+                    "BOTTOM": [
+                        1,
+                        0
+                    ]
+                },
+                "8": {
+                    "TOP": [
+                        5,
+                        8
+                    ],
+                    "SIDE": [
+                        1,
+                        0
+                    ],
+                    "BOTTOM": [
+                        1,
+                        0
+                    ]
+                }
+            }
+        },
+        {
+            "id": 61,
+            "idStr": "FURNACE",
+            "name": "Furnace",
+            "texture": {
+                "0": {
+                    "FRONT": [
+                        9,
+                        8
+                    ],
+                    "TOP": [
+                        6,
+                        8
+                    ],
+                    "SIDE": [
+                        7,
+                        8
+                    ]
+                }
+            }
+        },
+        {
+            "id": 62,
+            "idStr": "BURNING_FURNACE",
+            "name": "Furnace (burning)",
+            "texture": {
+                "0": {
+                    "FRONT": [
+                        8,
+                        8
+                    ],
+                    "TOP": [
+                        6,
+                        8
+                    ],
+                    "SIDE": [
+                        7,
+                        8
+                    ]
+                }
+            }
+        },
+        {
+            "id": 63,
+            "idStr": "SIGNPOST",
+            "name": "Sign",
+            "texture": {
+                "0": {
+                    "FRONT": [
+                        5,
+                        0
+                    ]
+                }
+            },
+            "type": "SIGNPOST"
+        },
+        {
+            "id": 64,
+            "idStr": "WOODEN_DOOR",
+            "name": "Wooden Door",
+            "texture": {
+                "0": {
+                    "TOP": [
+                        11,
+                        8
+                    ],
+                    "BOTTOM": [
+                        10,
+                        8
+                    ]
+                }
+            },
+            "type": "DOOR"
+        },
+        {
+            "id": 65,
+            "idStr": "LADDER",
+            "name": "Ladder",
+            "texture": {
+                "0": {
+                    "FRONT": [
+                        12,
+                        8
+                    ]
+                }
+            },
+            "type": "LADDER"
+        },
+        {
+            "id": 66,
+            "idStr": "MINECART_TRACKS",
+            "name": "Rail",
+            "texture": {
+                "0": {
+                    "NORMAL": [
+                        13,
+                        8
+                    ],
+                    "TURNED": [
+                        14,
+                        8
+                    ]
+                }
+            },
+            "type": "MINECART_TRACKS"
+        },
+        {
+            "id": 67,
+            "idStr": "COBBLESTONE_STAIRS",
+            "name": "Cobblestone Stairs",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        4,
+                        0
+                    ]
+                }
+            },
+            "type": "STAIRS"
+        },
+        {
+            "id": 68,
+            "idStr": "WALL_SIGN",
+            "name": "Wall Sign",
+            "texture": {
+                "0": {
+                    "FRONT": [
+                        5,
+                        0
+                    ]
+                }
+            },
+            "type": "WALLSIGN"
+        },
+        {
+            "id": 69,
+            "idStr": "LEVER",
+            "name": "Lever",
+            "texture": {
+                "0": {
+                    "BASE": [
+                        0,
+                        0
+                    ],
+                    "LEVER": [
+                        15,
+                        8
+                    ]
+                }
+            },
+            "type": "LEVER"
+        },
+        {
+            "id": 70,
+            "idStr": "STONE_PRESSURE_PLATE",
+            "name": "Stone Pressure Plate",
+            "texture": {
+                "0": {
+                    "TOP": [
+                        0,
+                        0
+                    ]
+                }
+            },
+            "type": "PRESSURE_PLATE"
+        },
+        {
+            "id": 71,
+            "idStr": "IRON_DOOR",
+            "name": "Iron Door",
+            "texture": {
+                "0": {
+                    "TOP": [
+                        4,
+                        20
+                    ],
+                    "BOTTOM": [
+                        3,
+                        20
+                    ]
+                }
+            },
+            "type": "DOOR"
+        },
+        {
+            "id": 72,
+            "idStr": "WOODEN_PRESSURE_PLATE",
+            "name": "Wooden Pressure Plate",
+            "texture": {
+                "0": {
+                    "TOP": [
+                        5,
+                        0
+                    ]
+                }
+            },
+            "type": "PRESSURE_PLATE"
+        },
+        {
+            "id": 73,
+            "idStr": "REDSTONE_ORE",
+            "name": "Redstone Ore",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        0,
+                        9
+                    ]
+                }
+            }
+        },
+        {
+            "id": 74,
+            "idStr": "GLOWING_REDSTONE_ORE",
+            "name": "Glowing Redstone",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        0,
+                        9
+                    ]
+                }
+            }
+        },
+        {
+            "id": 75,
+            "idStr": "REDSTONE_TORCH_OFF",
+            "name": "Redstone Torch (off)",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        1,
+                        9
+                    ]
+                }
+            },
+            "type": "TORCH"
+        },
+        {
+            "id": 76,
+            "idStr": "REDSTONE_TORCH_ON",
+            "name": "Redstone Torch (on)",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        2,
+                        9
+                    ]
+                }
+            },
+            "type": "TORCH"
+        },
+        {
+            "id": 77,
+            "idStr": "STONE_BUTTON",
+            "name": "Stone Button",
+            "texture": {
+                "0": {
+                    "FRONT": [
+                        0,
+                        0
+                    ]
+                }
+            },
+            "type": "BUTTON"
+        },
+        {
+            "id": 78,
+            "idStr": "SNOW",
+            "name": "Snow",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        3,
+                        9
+                    ]
+                }
+            },
+            "type": "SNOW"
+        },
+        {
+            "id": 79,
+            "idStr": "ICE",
+            "name": "Ice",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        4,
+                        9
+                    ]
+                }
+            },
+            "type": "WATER"
+        },
+        {
+            "id": 80,
+            "idStr": "SNOW_BLOCK",
+            "name": "Snow Block",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        3,
+                        9
+                    ]
+                }
+            }
+        },
+        {
+            "id": 81,
+            "idStr": "CACTUS",
+            "name": "Cactus",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        6,
+                        9
+                    ],
+                    "TOP": [
+                        7,
+                        9
+                    ],
+                    "BOTTOM": [
+                        5,
+                        9
+                    ]
+                }
+            }
+        },
+        {
+            "id": 82,
+            "idStr": "CLAY",
+            "name": "Clay",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        8,
+                        9
+                    ]
+                }
+            }
+        },
+        {
+            "id": 83,
+            "idStr": "SUGARCANE",
+            "name": "Sugarcane",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        9,
+                        9
+                    ]
+                }
+            },
+            "type": "DECORATION_CROSS"
+        },
+        {
+            "id": 84,
+            "idStr": "JUKEBOX",
+            "name": "Jukebox",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        10,
+                        9
+                    ],
+                    "TOP": [
+                        11,
+                        9
+                    ],
+                    "BOTTOM": [
+                        10,
+                        9
+                    ]
+                }
+            }
+        },
+        {
+            "id": 85,
+            "idStr": "FENCE",
+            "name": "Fence",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        5,
+                        0
+                    ]
+                }
+            },
+            "type": "FENCE"
+        },
+        {
+            "id": 86,
+            "idStr": "PUMPKIN",
+            "name": "Pumpkin",
+            "texture": {
+                "0": {
+                    "FRONT": [
+                        14,
+                        9
+                    ],
+                    "BACK": [
+                        13,
+                        9
+                    ],
+                    "SIDE": [
+                        13,
+                        9
+                    ],
+                    "TOP": [
+                        12,
+                        9
+                    ]
+                }
+            }
+        },
+        {
+            "id": 87,
+            "idStr": "NETHERRACK",
+            "name": "Netherrack",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        0,
+                        10
+                    ]
+                }
+            }
+        },
+        {
+            "id": 88,
+            "idStr": "SOUL_SAND",
+            "name": "Soul Sand",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        1,
+                        10
+                    ]
+                }
+            }
+        },
+        {
+            "id": 89,
+            "idStr": "GLOWSTONE",
+            "name": "Glowstone",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        2,
+                        10
+                    ]
+                }
+            }
+        },
+        {
+            "id": 90,
+            "idStr": "PORTAL",
+            "name": "Portal",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        3,
+                        10
+                    ]
+                }
+            },
+            "type": "PORTAL"
+        },
+        {
+            "id": 91,
+            "idStr": "JACK_O_LANTERN",
+            "name": "Jack O Lantern",
+            "texture": {
+                "0": {
+                    "FRONT": [
+                        15,
+                        9
+                    ],
+                    "BACK": [
+                        13,
+                        9
+                    ],
+                    "SIDE": [
+                        13,
+                        9
+                    ],
+                    "TOP": [
+                        12,
+                        9
+                    ]
+                }
+            }
+        },
+        {
+            "id": 92,
+            "idStr": "CAKE",
+            "name": "Cake",
+            "texture": {
+                "0": {
+                    "INNER": [
+                        5,
+                        10
+                    ],
+                    "BOTTOM": [
+                        7,
+                        10
+                    ],
+                    "SIDE": [
+                        6,
+                        10
+                    ],
+                    "TOP": [
+                        4,
+                        10
+                    ]
+                }
+            },
+            "type": "CAKE"
+        },
+        {
+            "id": 93,
+            "idStr": "REDSTONE_REPEATER_OFF",
+            "name": "Repeater (off)",
+            "texture": {
+                "0": {
+                    "TOP": [
+                        8,
+                        10
+                    ]
+                }
+            },
+            "type": "PRESSURE_PLATE"
+        },
+        {
+            "id": 94,
+            "idStr": "REDSTONE_REPEATER_ON",
+            "name": "Repeater (on)",
+            "texture": {
+                "0": {
+                    "TOP": [
+                        9,
+                        10
+                    ]
+                }
+            },
+            "type": "PRESSURE_PLATE"
+        },
+        {
+            "id": 95,
+            "idStr": "STAINED_GLASS",
+            "name": "Stained Glass",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        7,
+                        2
+                    ]
+                },
+                "1": {
+                    "SIDE": [
+                        11,
+                        10
+                    ]
+                },
+                "2": {
+                    "SIDE": [
+                        12,
+                        10
+                    ]
+                },
+                "3": {
+                    "SIDE": [
+                        13,
+                        10
+                    ]
+                },
+                "4": {
+                    "SIDE": [
+                        14,
+                        10
+                    ]
+                },
+                "5": {
+                    "SIDE": [
+                        15,
+                        10
+                    ]
+                },
+                "6": {
+                    "SIDE": [
+                        0,
+                        11
+                    ]
+                },
+                "7": {
+                    "SIDE": [
+                        1,
+                        11
+                    ]
+                },
+                "8": {
+                    "SIDE": [
+                        2,
+                        11
+                    ]
+                },
+                "9": {
+                    "SIDE": [
+                        3,
+                        11
+                    ]
+                },
+                "10": {
+                    "SIDE": [
+                        4,
+                        11
+                    ]
+                },
+                "11": {
+                    "SIDE": [
+                        5,
+                        11
+                    ]
+                },
+                "12": {
+                    "SIDE": [
+                        6,
+                        11
+                    ]
+                },
+                "13": {
+                    "SIDE": [
+                        7,
+                        11
+                    ]
+                },
+                "14": {
+                    "SIDE": [
+                        8,
+                        11
+                    ]
+                },
+                "15": {
+                    "SIDE": [
+                        9,
+                        11
+                    ]
+                }
+            },
+            "type": "GLASS"
+        },
+        {
+            "id": 96,
+            "idStr": "TRAPDOOR",
+            "name": "Trapdoor",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        10,
+                        11
+                    ]
+                }
+            },
+            "type": "TRAPDOOR"
+        },
+        {
+            "id": 97,
+            "idStr": "SILVERFISH",
+            "name": "Silverfish",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        0,
+                        0
+                    ]
+                },
+                "1": {
+                    "SIDE": [
+                        4,
+                        0
+                    ]
+                },
+                "2": {
+                    "SIDE": [
+                        11,
+                        11
+                    ]
+                },
+                "3": {
+                    "SIDE": [
+                        12,
+                        11
+                    ]
+                },
+                "4": {
+                    "SIDE": [
+                        13,
+                        11
+                    ]
+                },
+                "5": {
+                    "SIDE": [
+                        14,
+                        11
+                    ]
+                }
+            }
+        },
+        {
+            "id": 98,
+            "idStr": "STONE_BRICK",
+            "name": "Stone Brick",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        11,
+                        11
+                    ]
+                },
+                "1": {
+                    "SIDE": [
+                        12,
+                        11
+                    ]
+                },
+                "2": {
+                    "SIDE": [
+                        13,
+                        11
+                    ]
+                },
+                "3": {
+                    "SIDE": [
+                        14,
+                        11
+                    ]
+                }
+            }
+        },
+        {
+            "id": 99,
+            "idStr": "HUGE_BROWN_MUSHROOM",
+            "name": "Huge Brown Mushroom",
+            "texture": {
+                "0": {
+                    "SKIN": [
+                        1,
+                        12
+                    ],
+                    "STEM": [
+                        0,
+                        12
+                    ],
+                    "INSIDE": [
+                        15,
+                        11
+                    ]
+                }
+            },
+            "type": "HUGE_MUSHROOM"
+        },
+        {
+            "id": 100,
+            "idStr": "HUGE_RED_MUSHROOM",
+            "name": "Huge Red Mushroom",
+            "texture": {
+                "0": {
+                    "SKIN": [
+                        2,
+                        12
+                    ],
+                    "STEM": [
+                        0,
+                        12
+                    ],
+                    "INSIDE": [
+                        15,
+                        11
+                    ]
+                }
+            }
+        },
+        {
+            "id": 101,
+            "idStr": "IRON_BARS",
+            "name": "Iron Bars",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        3,
+                        12
+                    ]
+                }
+            },
+            "type": "SOLID_PANE"
+        },
+        {
+            "id": 102,
+            "idStr": "GLASS_PANE",
+            "name": "Glass Pane",
+            "texture": {
+                "0": {
+                    "FRONT": [
+                        7,
+                        2
+                    ],
+                    "SIDE": [
+                        4,
+                        12
+                    ],
+                    "TOP": [
+                        4,
+                        12
+                    ]
+                }
+            },
+            "type": "SOLID_PANE"
+        },
+        {
+            "id": 103,
+            "idStr": "MELON",
+            "name": "Melon",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        5,
+                        12
+                    ],
+                    "TOP": [
+                        6,
+                        12
+                    ]
+                }
+            }
+        },
+        {
+            "id": 104,
+            "idStr": "PUMPKIN_STEM",
+            "name": "Pumpkin Stem",
+            "texture": {
+                "0": {
+                    "CONNECTED": [
+                        8,
+                        12
+                    ],
+                    "DISCONNECTED": [
+                        7,
+                        12
+                    ]
+                }
+            },
+            "type": "STEM"
+        },
+        {
+            "id": 105,
+            "idStr": "MELON_STEM",
+            "name": "Melon Stem",
+            "texture": {
+                "0": {
+                    "CONNECTED": [
+                        10,
+                        12
+                    ],
+                    "DISCONNECTED": [
+                        9,
+                        12
+                    ]
+                }
+            },
+            "type": "STEM"
+        },
+        {
+            "id": 106,
+            "idStr": "VINE",
+            "name": "Vine",
+            "texture": {
+                "0": {
+                    "FRONT": [
+                        11,
+                        12
+                    ]
+                }
+            },
+            "type": "VINE"
+        },
+        {
+            "id": 107,
+            "idStr": "FENCE_GATE",
+            "name": "Gate",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        5,
+                        0
+                    ]
+                }
+            },
+            "type": "FENCE_GATE"
+        },
+        {
+            "id": 108,
+            "idStr": "BRICK_STAIRS",
+            "name": "Brick Stairs",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        5,
+                        6
+                    ]
+                }
+            },
+            "type": "STAIRS"
+        },
+        {
+            "id": 109,
+            "idStr": "STONE_BRICK_STAIRS",
+            "name": "Stone Brick Stairs",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        11,
+                        11
+                    ]
+                }
+            },
+            "type": "STAIRS"
+        },
+        {
+            "id": 110,
+            "idStr": "MYCELIUM",
+            "name": "Mycelium",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        12,
+                        12
+                    ],
+                    "TOP": [
+                        13,
+                        12
+                    ],
+                    "BOTTOM": [
+                        1,
+                        0
+                    ]
+                }
+            }
+        },
+        {
+            "id": 111,
+            "idStr": "LILY_PAD",
+            "name": "Lilypad",
+            "texture": {
+                "0": {
+                    "TOP": [
+                        14,
+                        12
+                    ]
+                }
+            },
+            "type": "FLOOR"
+        },
+        {
+            "id": 112,
+            "idStr": "NETHER_BRICK",
+            "name": "Nether Brick",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        15,
+                        12
+                    ]
+                }
+            }
+        },
+        {
+            "id": 113,
+            "idStr": "NETHER_FENCE",
+            "name": "Nether Fence",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        15,
+                        12
+                    ]
+                }
+            },
+            "type": "FENCE"
+        },
+        {
+            "id": 114,
+            "idStr": "NETHER_STAIRS",
+            "name": "Nether Stairs",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        15,
+                        12
+                    ]
+                }
+            },
+            "type": "STAIRS"
+        },
+        {
+            "id": 115,
+            "idStr": "NETHER_WART",
+            "name": "Nether Wart",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        0,
+                        13
+                    ]
+                },
+                "1": {
+                    "SIDE": [
+                        1,
+                        13
+                    ]
+                },
+                "2": {
+                    "SIDE": [
+                        2,
+                        13
+                    ]
+                }
+            },
+            "type": "DECORATION_GRID"
+        },
+        {
+            "id": 116,
+            "idStr": "ENCHANTMENT_TABLE",
+            "name": "Table",
+            "aka": "Enchantment Table",
+            "texture": {
+                "0": {
+                    "TOP": [
+                        5,
+                        13
+                    ],
+                    "SIDE": [
+                        4,
+                        13
+                    ],
+                    "BOTTOM": [
+                        3,
+                        13
+                    ]
+                }
+            },
+            "type": "ENCHANTMENT_TABLE"
+        },
+        {
+            "id": 117,
+            "idStr": "BREWING_STAND",
+            "name": "Brewing Stand",
+            "texture": {
+                "0": {
+                    "TOP": [
+                        6,
+                        13
+                    ],
+                    "BASE": [
+                        7,
+                        13
+                    ]
+                }
+            },
+            "type": "BREWING_STAND"
+        },
+        {
+            "id": 118,
+            "idStr": "CAULDRON",
+            "name": "Cauldron",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        10,
+                        13
+                    ],
+                    "TOP": [
+                        11,
+                        13
+                    ],
+                    "INNER": [
+                        9,
+                        13
+                    ],
+                    "BOTTOM": [
+                        8,
+                        13
+                    ]
+                }
+            },
+            "type": "CAULDRON"
+        },
+        {
+            "id": 119,
+            "idStr": "END_PORTAL",
+            "name": "Ender Portal",
+            "texture": {
+                "0": {
+                    "TOP": [
+                        21,
+                        2
+                    ]
+                }
+            },
+            "type": "END_PORTAL"
+        },
+        {
+            "id": 120,
+            "idStr": "END_PORTAL_FRAME",
+            "name": "Ender Portal Frame",
+            "texture": {
+                "0": {
+                    "TOP": [
+                        13,
+                        13
+                    ],
+                    "SIDE": [
+                        12,
+                        13
+                    ],
+                    "BOTTOM": [
+                        15,
+                        13
+                    ],
+                    "EYE": [
+                        14,
+                        13
+                    ]
+                }
+            },
+            "type": "END_PORTAL_FRAME"
+        },
+        {
+            "id": 121,
+            "idStr": "END_STONE",
+            "name": "Ender Stone",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        15,
+                        13
+                    ]
+                }
+            }
+        },
+        {
+            "id": 122,
+            "idStr": "DRAGON_EGG",
+            "name": "Dragon Egg",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        0,
+                        14
+                    ]
+                }
+            },
+            "type": "DRAGON_EGG"
+        },
+        {
+            "id": 123,
+            "idStr": "REDSTONE_LAMP_OFF",
+            "name": "Redstone Lamp (off)",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        1,
+                        14
+                    ]
+                }
+            }
+        },
+        {
+            "id": 124,
+            "idStr": "REDSTONE_LAMP_ON",
+            "name": "Redstone Lamp (on)",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        2,
+                        14
+                    ]
+                }
+            }
+        },
+        {
+            "id": 125,
+            "idStr": "DOUBLE_WOODEN_SLAB",
+            "name": "Wooden Double Slab",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        0,
+                        5
+                    ]
+                },
+                "1": {
+                    "SIDE": [
+                        0,
+                        6
+                    ]
+                },
+                "2": {
+                    "SIDE": [
+                        0,
+                        7
+                    ]
+                },
+                "3": {
+                    "SIDE": [
+                        0,
+                        8
+                    ]
+                },
+                "4": {
+                    "SIDE": [
+                        0,
+                        9
+                    ]
+                },
+                "5": {
+                    "SIDE": [
+                        0,
+                        10
+                    ]
+                }
+            }
+        },
+        {
+            "id": 126,
+            "idStr": "WOODEN_SLAB",
+            "name": "Wooden Slab",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        0,
+                        5
+                    ]
+                },
+                "1": {
+                    "SIDE": [
+                        0,
+                        6
+                    ]
+                },
+                "2": {
+                    "SIDE": [
+                        0,
+                        7
+                    ]
+                },
+                "3": {
+                    "SIDE": [
+                        0,
+                        8
+                    ]
+                },
+                "4": {
+                    "SIDE": [
+                        0,
+                        9
+                    ]
+                },
+                "5": {
+                    "SIDE": [
+                        0,
+                        10
+                    ]
+                }
+            }
+        },
+        {
+            "id": 127,
+            "idStr": "COCOA",
+            "name": "Cocoa",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        14,
+                        3
+                    ]
+                },
+                "1": {
+                    "SIDE": [
+                        14,
+                        4
+                    ]
+                },
+                "2": {
+                    "SIDE": [
+                        14,
+                        5
+                    ]
+                }
+            }
+        },
+        {
+            "id": 128,
+            "idStr": "SANDSTONE_STAIRS",
+            "name": "Sandstone Stairs",
+            "texture": {
+                "0": {
+                    "TOP": [
+                        12,
+                        2
+                    ],
+                    "SIDE": [
+                        14,
+                        2
+                    ],
+                    "BOTTOM": [
+                        12,
+                        2
+                    ]
+                }
+            },
+            "type": "STAIRS"
+        },
+        {
+            "id": 129,
+            "idStr": "EMERALD_ORE",
+            "name": "Emerald Ore",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        14,
+                        6
+                    ]
+                }
+            }
+        },
+        {
+            "id": 130,
+            "idStr": "ENDER_CHEST",
+            "name": "Ender Chest",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        20,
+                        14
+                    ],
+                    "TOP": [
+                        20,
+                        15
+                    ],
+                    "BOTTOM": [
+                        20,
+                        13
+                    ],
+                    "FRONT": [
+                        20,
+                        12
+                    ]
+                }
+            }
+        },
+        {
+            "id": 131,
+            "idStr": "TRIPWIRE_HOOK",
+            "name": "Tripwire Hook",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        14,
+                        7
+                    ]
+                }
+            }
+        },
+        {
+            "id": 132,
+            "idStr": "TRIPWIRE",
+            "name": "Tripwire",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        14,
+                        8
+                    ]
+                }
+            }
+        },
+        {
+            "id": 133,
+            "idStr": "EMERALD_BLOCK",
+            "name": "Emerald Block",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        14,
+                        9
+                    ]
+                }
+            }
+        },
+        {
+            "id": 134,
+            "idStr": "SPRUCE_STAIRS",
+            "name": "Spruce Stairs",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        0,
+                        6
+                    ]
+                }
+            },
+            "type": "STAIRS"
+        },
+        {
+            "id": 135,
+            "idStr": "BIRCH_STAIRS",
+            "name": "Birch Stairs",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        0,
+                        7
+                    ]
+                }
+            },
+            "type": "STAIRS"
+        },
+        {
+            "id": 136,
+            "idStr": "JUNGLE_STAIRS",
+            "name": "Jungle Stairs",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        0,
+                        8
+                    ]
+                }
+            },
+            "type": "STAIRS"
+        },
+        {
+            "id": 137,
+            "idStr": "COMMAND_BLOCK",
+            "name": "Command Block",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        10,
+                        14
+                    ]
+                }
+            }
+        },
+        {
+            "id": 138,
+            "idStr": "BEACON",
+            "name": "Beacon",
+            "texture": {
+                "0": {
+                    "INSIDE": [
+                        11,
+                        14
+                    ],
+                    "OUTSIDE": [
+                        7,
+                        2
+                    ],
+                    "SOCKET": [
+                        11,
+                        6
+                    ]
+                }
+            },
+            "type": "BEACON"
+        },
+        {
+            "id": 139,
+            "idStr": "COBBLESTONE_WALL",
+            "name": "Cobblestone Wall",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        4,
+                        0
+                    ]
+                },
+                "1": {
+                    "SIDE": [
+                        10,
+                        6
+                    ]
+                }
+            }
+        },
+        {
+            "id": 140,
+            "idStr": "FLOWER_POT",
+            "name": "Flower Pot",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        12,
+                        14
+                    ]
+                }
+            },
+            "type": "FLOWERPOT"
+        },
+        {
+            "id": 141,
+            "idStr": "CARROTS",
+            "name": "Carrots",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        13,
+                        14
+                    ]
+                },
+                "1": {
+                    "SIDE": [
+                        13,
+                        14
+                    ]
+                },
+                "2": {
+                    "SIDE": [
+                        14,
+                        14
+                    ]
+                },
+                "3": {
+                    "SIDE": [
+                        14,
+                        14
+                    ]
+                },
+                "4": {
+                    "SIDE": [
+                        15,
+                        14
+                    ]
+                },
+                "5": {
+                    "SIDE": [
+                        15,
+                        14
+                    ]
+                },
+                "6": {
+                    "SIDE": [
+                        15,
+                        14
+                    ]
+                },
+                "7": {
+                    "SIDE": [
+                        0,
+                        15
+                    ]
+                }
+            }
+        },
+        {
+            "id": 142,
+            "idStr": "POTATOES",
+            "name": "Potatoes",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        13,
+                        14
+                    ]
+                },
+                "1": {
+                    "SIDE": [
+                        13,
+                        14
+                    ]
+                },
+                "2": {
+                    "SIDE": [
+                        14,
+                        14
+                    ]
+                },
+                "3": {
+                    "SIDE": [
+                        14,
+                        14
+                    ]
+                },
+                "4": {
+                    "SIDE": [
+                        15,
+                        14
+                    ]
+                },
+                "5": {
+                    "SIDE": [
+                        15,
+                        14
+                    ]
+                },
+                "6": {
+                    "SIDE": [
+                        15,
+                        14
+                    ]
+                },
+                "7": {
+                    "SIDE": [
+                        8,
+                        20
+                    ]
+                }
+            }
+        },
+        {
+            "id": 143,
+            "idStr": "WOODEN_BUTTON",
+            "name": "Wooden Button",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        5,
+                        0
+                    ]
+                }
+            }
+        },
+        {
+            "id": 144,
+            "idStr": "SKULL",
+            "name": "Mob Head",
+            "texture": {
+                "0": {
+                    "SIDE_TOP": [
+                        0,
+                        21
+                    ],
+                    "FRONT_BACK": [
+                        1,
+                        21
+                    ]
+                }
+            },
+            "type": "HEAD"
+        },
+        {
+            "id": 145,
+            "idStr": "ANVIL",
+            "name": "Anvil",
+            "texture": {
+                "0": {
+                    "BODY": [
+                        2,
+                        15
+                    ],
+                    "TOP": [
+                        1,
+                        15
+                    ]
+                },
+                "1": {
+                    "BODY": [
+                        3,
+                        15
+                    ],
+                    "TOP": [
+                        1,
+                        15
+                    ]
+                },
+                "2": {
+                    "BODY": [
+                        4,
+                        15
+                    ],
+                    "TOP": [
+                        1,
+                        15
+                    ]
+                }
+            },
+            "type": "ANVIL"
+        },
+        {
+            "id": 146,
+            "idStr": "TRAPPED_CHEST",
+            "name": "Trapped Chest",
+            "texture": {
+                "0": {
+                    "FRONT": [
+                        5,
+                        20
+                    ],
+                    "SIDE": [
+                        0,
+                        7
+                    ],
+                    "BOTTOM": [
+                        1,
+                        7
+                    ],
+                    "FRONT_LEFT": [
+                        6,
+                        20
+                    ],
+                    "FRONT_RIGHT": [
+                        7,
+                        20
+                    ],
+                    "BACK_LEFT": [
+                        2,
+                        7
+                    ],
+                    "BACK_RIGHT": [
+                        3,
+                        7
+                    ]
+                }
+            },
+            "type": "CHEST"
+        },
+        {
+            "id": 147,
+            "idStr": "LIGHT_WEIGHTED_PRESSURE_PLATE",
+            "name": "Light Weighted Pressure Plate",
+            "texture": {
+                "0": {
+                    "TOP": [
+                        1,
+                        6
+                    ]
+                }
+            },
+            "type": "PRESSURE_PLATE"
+        },
+        {
+            "id": 148,
+            "idStr": "HEAVY_WEIGHTED_PRESSURE_PLATE",
+            "name": "Heavy Weighted Pressure Plate",
+            "texture": {
+                "0": {
+                    "TOP": [
+                        2,
+                        6
+                    ]
+                }
+            },
+            "type": "PRESSURE_PLATE"
+        },
+        {
+            "id": 149,
+            "idStr": "UNPOWERED_COMPERATOR",
+            "name": "Comperator (off)",
+            "texture": {
+                "0": {
+                    "TOP": [
+                        6,
+                        15
+                    ]
+                }
+            },
+            "type": "PRESSURE_PLATE"
+        },
+        {
+            "id": 150,
+            "idStr": "POWERED_COMPERATOR",
+            "name": "Comperator (on)",
+            "texture": {
+                "0": {
+                    "TOP": [
+                        7,
+                        15
+                    ]
+                }
+            },
+            "type": "PRESSURE_PLATE"
+        },
+        {
+            "id": 151,
+            "idStr": "DAYLIGHT_DETECTOR",
+            "name": "Daylight Detector",
+            "texture": {
+                "0": {
+                    "TOP": [
+                        9,
+                        15
+                    ],
+                    "SIDE": [
+                        8,
+                        15
+                    ]
+                }
+            },
+            "type": "HALFHEIGHT"
+        },
+        {
+            "id": 152,
+            "idStr": "REDSTONE_BLOCK",
+            "name": "Redstone Block",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        10,
+                        15
+                    ]
+                }
+            }
+        },
+        {
+            "id": 153,
+            "idStr": "QUARTZ_ORE",
+            "name": "Quartz Ore",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        11,
+                        15
+                    ]
+                }
+            }
+        },
+        {
+            "id": 154,
+            "idStr": "HOPPER",
+            "name": "Hopper",
+            "texture": {
+                "0": {
+                    "TOP": [
+                        14,
+                        15
+                    ],
+                    "INSIDE": [
+                        12,
+                        15
+                    ],
+                    "SIDE": [
+                        13,
+                        15
+                    ]
+                }
+            },
+            "type": "HOPPER"
+        },
+        {
+            "id": 155,
+            "idStr": "QUARTZ_BLOCK",
+            "name": "Quartz BLOCK",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        0,
+                        16
+                    ]
+                },
+                "1": {
+                    "SIDE": [
+                        2,
+                        16
+                    ],
+                    "TOP": [
+                        3,
+                        16
+                    ],
+                    "BOTTOM": [
+                        3,
+                        16
+                    ]
+                },
+                "2": {
+                    "SIDE": [
+                        4,
+                        16
+                    ],
+                    "TOP": [
+                        5,
+                        16
+                    ],
+                    "BOTTOM": [
+                        5,
+                        16
+                    ]
+                },
+                "3": {
+                    "SIDE": [
+                        4,
+                        16
+                    ],
+                    "FRONT": [
+                        5,
+                        16
+                    ],
+                    "BACK": [
+                        5,
+                        16
+                    ]
+                },
+                "4": {
+                    "SIDE": [
+                        4,
+                        16
+                    ],
+                    "FRONT": [
+                        5,
+                        16
+                    ],
+                    "BACK": [
+                        5,
+                        16
+                    ]
+                }
+            },
+            "type": "QUARTZ"
+        },
+        {
+            "id": 156,
+            "idStr": "QUARTZ_STAIRS",
+            "name": "Quartz Stairs",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        15,
+                        15
+                    ]
+                }
+            },
+            "type": "STAIRS"
+        },
+        {
+            "id": 157,
+            "idStr": "ACTIVATOR_RAIL",
+            "name": "Activator Rail",
+            "texture": {
+                "0": {
+                    "OFF": [
+                        6,
+                        16
+                    ],
+                    "ON": [
+                        6,
+                        17
+                    ]
+                }
+            },
+            "type": "SIMPLE_RAIL"
+        },
+        {
+            "id": 158,
+            "idStr": "DROPPER",
+            "name": "Dropper",
+            "texture": {
+                "0": {
+                    "FRONT": [
+                        8,
+                        16
+                    ],
+                    "TOP": [
+                        6,
+                        8
+                    ],
+                    "BOTTOM": [
+                        6,
+                        8
+                    ],
+                    "SIDE": [
+                        7,
+                        8
+                    ]
+                }
+            }
+        },
+        {
+            "id": 159,
+            "idStr": "STAINED_CLAY",
+            "name": "Stained Clay",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        10,
+                        16
+                    ]
+                },
+                "1": {
+                    "SIDE": [
+                        11,
+                        16
+                    ]
+                },
+                "2": {
+                    "SIDE": [
+                        12,
+                        16
+                    ]
+                },
+                "3": {
+                    "SIDE": [
+                        13,
+                        16
+                    ]
+                },
+                "4": {
+                    "SIDE": [
+                        14,
+                        16
+                    ]
+                },
+                "5": {
+                    "SIDE": [
+                        15,
+                        16
+                    ]
+                },
+                "6": {
+                    "SIDE": [
+                        0,
+                        17
+                    ]
+                },
+                "7": {
+                    "SIDE": [
+                        1,
+                        17
+                    ]
+                },
+                "8": {
+                    "SIDE": [
+                        2,
+                        17
+                    ]
+                },
+                "9": {
+                    "SIDE": [
+                        3,
+                        17
+                    ]
+                },
+                "10": {
+                    "SIDE": [
+                        4,
+                        17
+                    ]
+                },
+                "11": {
+                    "SIDE": [
+                        5,
+                        17
+                    ]
+                },
+                "12": {
+                    "SIDE": [
+                        6,
+                        17
+                    ]
+                },
+                "13": {
+                    "SIDE": [
+                        7,
+                        17
+                    ]
+                },
+                "14": {
+                    "SIDE": [
+                        8,
+                        17
+                    ]
+                },
+                "15": {
+                    "SIDE": [
+                        9,
+                        17
+                    ]
+                }
+            }
+        },
+        {
+            "id": 102,
+            "idStr": "STAINED_GLASS_PANE",
+            "name": "Stained Glass Pane",
+            "texture": {
+                "0": {
+                    "FRONT": [
+                        7,
+                        2
+                    ],
+                    "SIDE": [
+                        10,
+                        17
+                    ],
+                    "TOP": [
+                        10,
+                        17
+                    ]
+                },
+                "1": {
+                    "FRONT": [
+                        11,
+                        10
+                    ],
+                    "SIDE": [
+                        11,
+                        17
+                    ],
+                    "TOP": [
+                        11,
+                        17
+                    ]
+                },
+                "2": {
+                    "FRONT": [
+                        12,
+                        10
+                    ],
+                    "SIDE": [
+                        12,
+                        17
+                    ],
+                    "TOP": [
+                        12,
+                        17
+                    ]
+                },
+                "3": {
+                    "FRONT": [
+                        13,
+                        10
+                    ],
+                    "SIDE": [
+                        13,
+                        17
+                    ],
+                    "TOP": [
+                        13,
+                        17
+                    ]
+                },
+                "4": {
+                    "FRONT": [
+                        14,
+                        10
+                    ],
+                    "SIDE": [
+                        14,
+                        17
+                    ],
+                    "TOP": [
+                        14,
+                        17
+                    ]
+                },
+                "5": {
+                    "FRONT": [
+                        15,
+                        10
+                    ],
+                    "SIDE": [
+                        15,
+                        17
+                    ],
+                    "TOP": [
+                        15,
+                        17
+                    ]
+                },
+                "6": {
+                    "FRONT": [
+                        0,
+                        11
+                    ],
+                    "SIDE": [
+                        0,
+                        18
+                    ],
+                    "TOP": [
+                        0,
+                        18
+                    ]
+                },
+                "7": {
+                    "FRONT": [
+                        1,
+                        11
+                    ],
+                    "SIDE": [
+                        1,
+                        18
+                    ],
+                    "TOP": [
+                        1,
+                        18
+                    ]
+                },
+                "8": {
+                    "FRONT": [
+                        2,
+                        11
+                    ],
+                    "SIDE": [
+                        2,
+                        18
+                    ],
+                    "TOP": [
+                        2,
+                        18
+                    ]
+                },
+                "9": {
+                    "FRONT": [
+                        3,
+                        11
+                    ],
+                    "SIDE": [
+                        3,
+                        18
+                    ],
+                    "TOP": [
+                        3,
+                        18
+                    ]
+                },
+                "10": {
+                    "FRONT": [
+                        4,
+                        11
+                    ],
+                    "SIDE": [
+                        4,
+                        18
+                    ],
+                    "TOP": [
+                        4,
+                        18
+                    ]
+                },
+                "11": {
+                    "FRONT": [
+                        5,
+                        11
+                    ],
+                    "SIDE": [
+                        5,
+                        18
+                    ],
+                    "TOP": [
+                        5,
+                        18
+                    ]
+                },
+                "12": {
+                    "FRONT": [
+                        6,
+                        11
+                    ],
+                    "SIDE": [
+                        6,
+                        18
+                    ],
+                    "TOP": [
+                        6,
+                        18
+                    ]
+                },
+                "13": {
+                    "FRONT": [
+                        7,
+                        11
+                    ],
+                    "SIDE": [
+                        7,
+                        18
+                    ],
+                    "TOP": [
+                        7,
+                        18
+                    ]
+                },
+                "14": {
+                    "FRONT": [
+                        8,
+                        11
+                    ],
+                    "SIDE": [
+                        8,
+                        18
+                    ],
+                    "TOP": [
+                        8,
+                        18
+                    ]
+                },
+                "15": {
+                    "FRONT": [
+                        9,
+                        11
+                    ],
+                    "SIDE": [
+                        9,
+                        18
+                    ],
+                    "TOP": [
+                        9,
+                        18
+                    ]
+                }
+            },
+            "type": "SOLID_PANE"
+        },
+        {
+            "id": 161,
+            "idStr": "LEAVES2",
+            "name": "Leaves2",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        10,
+                        18
+                    ]
+                },
+                "1": {
+                    "SIDE": [
+                        11,
+                        18
+                    ]
+                }
+            },
+            "texture_data_bits": 2
+        },
+        {
+            "id": 162,
+            "idStr": "WOOD2",
+            "name": "Log2",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        12,
+                        18
+                    ],
+                    "TOP": [
+                        13,
+                        18
+                    ]
+                },
+                "1": {
+                    "SIDE": [
+                        14,
+                        18
+                    ],
+                    "TOP": [
+                        15,
+                        18
+                    ]
+                }
+            },
+            "type": "LOG"
+        },
+        {
+            "id": 163,
+            "idStr": "ACACIA_STAIRS",
+            "name": "Acacia Stairs",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        9,
+                        0
+                    ]
+                }
+            },
+            "type": "STAIRS"
+        },
+        {
+            "id": 164,
+            "idStr": "DARK_OAK_STAIRS",
+            "name": "Dark Oak Stairs",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        10,
+                        0
+                    ]
+                }
+            },
+            "type": "STAIRS"
+        },
+        {
+            "id": 165,
+            "idStr": "SLIME",
+            "name": "Slime",
+            "texture": {
+                "0": {
+                    "INSIDE": [
+                        15,
+                        16
+                    ],
+                    "OUTSIDE": [
+                        9,
+                        20
+                    ]
+                }
+            },
+            "type": "SLIME"
+        },
+        {
+            "id": 166,
+            "idStr": "BARRIER",
+            "name": "Barrier",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        11,
+                        20
+                    ]
+                }
+            },
+            "type": "BARRIER"
+        },
+        {
+            "id": 167,
+            "idStr": "IRON_TRAPDOOR",
+            "name": "Iron Trapdoor",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        10,
+                        20
+                    ]
+                }
+            },
+            "type": "TRAPDOOR"
+        },
+        {
+            "id": 170,
+            "idStr": "HAY_BLOCK",
+            "name": "Hay Block",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        0,
+                        19
+                    ],
+                    "TOP": [
+                        1,
+                        19
+                    ]
+                }
+            }
+        },
+        {
+            "id": 171,
+            "idStr": "CARPET",
+            "name": "Carpet",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        5,
+                        4
+                    ]
+                },
+                "1": {
+                    "SIDE": [
+                        6,
+                        4
+                    ]
+                },
+                "2": {
+                    "SIDE": [
+                        7,
+                        4
+                    ]
+                },
+                "3": {
+                    "SIDE": [
+                        8,
+                        4
+                    ]
+                },
+                "4": {
+                    "SIDE": [
+                        9,
+                        4
+                    ]
+                },
+                "5": {
+                    "SIDE": [
+                        10,
+                        4
+                    ]
+                },
+                "6": {
+                    "SIDE": [
+                        11,
+                        4
+                    ]
+                },
+                "7": {
+                    "SIDE": [
+                        12,
+                        4
+                    ]
+                },
+                "8": {
+                    "SIDE": [
+                        13,
+                        4
+                    ]
+                },
+                "9": {
+                    "SIDE": [
+                        14,
+                        4
+                    ]
+                },
+                "10": {
+                    "SIDE": [
+                        15,
+                        4
+                    ]
+                },
+                "11": {
+                    "SIDE": [
+                        0,
+                        5
+                    ]
+                },
+                "12": {
+                    "SIDE": [
+                        1,
+                        5
+                    ]
+                },
+                "13": {
+                    "SIDE": [
+                        2,
+                        5
+                    ]
+                },
+                "14": {
+                    "SIDE": [
+                        3,
+                        5
+                    ]
+                },
+                "15": {
+                    "SIDE": [
+                        4,
+                        5
+                    ]
+                }
+            },
+            "type": "CARPET"
+        },
+        {
+            "id": 172,
+            "idStr": "HARDENED_CLAY",
+            "name": "Hardened Clay",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        2,
+                        19
+                    ]
+                }
+            }
+        },
+        {
+            "id": 173,
+            "idStr": "COAL_BLOCK",
+            "name": "Coal Block",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        3,
+                        19
+                    ]
+                }
+            }
+        },
+        {
+            "id": 174,
+            "idStr": "PACKED_ICE",
+            "name": "Packed Ice",
+            "texture": {
+                "0": {
+                    "SIDE": [
+                        4,
+                        19
+                    ]
+                }
+            },
+            "type": "WATER"
+        }
+    ]
+}

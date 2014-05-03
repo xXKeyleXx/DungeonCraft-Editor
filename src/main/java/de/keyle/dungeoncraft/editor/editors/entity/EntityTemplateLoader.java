@@ -109,7 +109,7 @@ public class EntityTemplateLoader {
                                             comp = new MeeleDamageComponent(Double.parseDouble(parameter.get("damage").toString()));
                                         } else if (className.contains("RangedDamage")) {
                                             Map<String, Double> tmpMap = new HashMap<String, Double>();
-                                            tmpMap.put(parameter.get("projectile").toString(), Double.parseDouble(parameter.get("damage").toString()));
+                                            //tmpMap.put(parameter.get("projectile").toString(), Double.parseDouble(parameter.get("damage").toString()));
                                             comp = new RangeDamageComponent(tmpMap);
                                         } else if (className.contains("AgeCom")) {
                                             comp = new AgeComponent(Integer.parseInt(parameter.get("age").toString()));

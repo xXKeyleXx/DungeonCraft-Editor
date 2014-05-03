@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2012, Vincent Vollers and Christopher J. Kucera
+ * Copyright (c) 2010-2012, Christopher J. Kucera
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,63 +26,50 @@
  */
 package de.keyle.dungeoncraft.editor.editors.world.render;
 
-/**
- * @author Vincent Vollers
- *         <p/>
- *         A Block in the minecraft world
- *         wildly abused :( for its 'simple' integer x,y,z properties
- */
-public class Block implements Comparable<Block> {
-    public int x;
-    public int y;
-    public int z;
-    public int t;
-    public int cx;
-    public int cz;
+import de.keyle.dungeoncraft.editor.editors.world.render.dialog.ExceptionDialog;
 
-    public Block(int x, int y, int z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.cx = -x / 16;
-        this.cz = -z / 16;
+public class TextureLoadException extends Exception {
+    private Exception origException;
+    private String extraStatus1;
+    private String extraStatus2;
+
+    public TextureLoadException(String message) {
+        super(message);
+        this.origException = null;
+        this.extraStatus1 = ExceptionDialog.getExtraStatus1();
+        this.extraStatus2 = ExceptionDialog.getExtraStatus2();
     }
 
-    public int compareTo(Block a) {
-        if (a.x > x) {
-            return 1;
-        }
-        if (a.x < x) {
-            return -1;
-        }
-        if (a.z > z) {
-            return 1;
-        }
-        if (a.z < z) {
-            return -1;
-        }
-        if (a.y > y) {
-            return 1;
-        }
-        if (a.y < y) {
-            return -1;
-        }
-        return 0;
+    public TextureLoadException(String message, Exception origException) {
+        super(message);
+        this.origException = origException;
+        this.extraStatus1 = ExceptionDialog.getExtraStatus1();
+        this.extraStatus2 = ExceptionDialog.getExtraStatus2();
     }
 
-    public boolean equals(Object o) {
-        if (!(o instanceof Block)) {
-            return false;
-        }
-        Block p = (Block) o;
-        return this.x == p.x && this.y == p.y && this.z == p.z;
-    }
-
-    public boolean equals(Block p) {
-        return this.x == p.x && this.y == p.y && this.z == p.z;
+    @SuppressWarnings("unused")
+    public Exception getOrigException() {
+        return this.origException;
     }
 
     public String toString() {
-        return "Point( x=" + x + ", y=" + y + ", z=" + z + ")";
+        StringBuilder errStr = new StringBuilder();
+        if (this.extraStatus1 != null) {
+            errStr.append(this.extraStatus1).append(" - ");
+        }
+        if (this.extraStatus2 != null) {
+            errStr.append(this.extraStatus2).append(" - ");
+        }
+        if (this.getMessage() != null) {
+            errStr.append(this.getMessage()).append(" - ");
+        }
+        if (this.origException != null && this.origException.toString() != null) {
+            errStr.append(this.origException.toString());
+        }
+        if (errStr.toString().endsWith(" - ")) {
+            return errStr.toString().substring(0, errStr.length() - 3);
+        } else {
+            return errStr.toString();
+        }
     }
 }

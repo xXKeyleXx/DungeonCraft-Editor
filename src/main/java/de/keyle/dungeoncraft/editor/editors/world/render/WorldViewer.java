@@ -85,8 +85,7 @@ public class WorldViewer extends Thread {
     private int mouseY;
 
     // the sprite sheet for all textures
-    public ArrayList<Texture> minecraftTextures;
-    public Texture paintingTexture;
+    public Texture minecraftTextures;
     public Texture loadingTextTexture;
     public Texture chunkBorderTexture;
     public Texture outOfRangeTexture;
@@ -194,8 +193,6 @@ public class WorldViewer extends Thread {
     public boolean jump_dialog_trigger = false;
     public int open_dialog_trigger = 0;
 
-    public static HashMap<Integer, TextureDecorationStats> decorationStats;
-
     public static Logger logger = Logger.getLogger("XRay.class");
 
     private volatile boolean loadNewSchematic = false;
@@ -205,7 +202,7 @@ public class WorldViewer extends Thread {
 
     public WorldViewer(WorldOverview worldOverviewEditor) {
         this.worldOverviewEditor = worldOverviewEditor;
-        this.emptyLevel = new MinecraftLevel(new Schematic(new byte[0], new byte[0], (short) 0, (short) 0, (short) 0), new ArrayList<Texture>(), null);
+        this.emptyLevel = new MinecraftLevel(new Schematic(new byte[0], new byte[0], (short) 0, (short) 0, (short) 0));
     }
 
     // go
@@ -277,7 +274,6 @@ public class WorldViewer extends Thread {
 
                 if (loadNewSchematic) {
                     this.savePreferences();
-                    this.open_dialog_trigger = 0;
 
                     // A full reinitialization is kind of overkill, but whatever.
                     // TODO: code duplicated from switchDimension
@@ -480,22 +476,6 @@ public class WorldViewer extends Thread {
     }
 
     /**
-     * Alters our grass texture_dir_map to include or not include the fancier
-     * grass rendering, in case anyone wants that behavior on occasion.
-     */
-    private void setAccurateGrass() {
-        if (accurateGrass) {
-            if (BLOCK_GRASS.texture_dir_map == null) {
-                BLOCK_GRASS.texture_dir_map = grassDirectionMap;
-            }
-        } else {
-            if (BLOCK_GRASS.texture_dir_map != null) {
-                BLOCK_GRASS.texture_dir_map = null;
-            }
-        }
-    }
-
-    /**
      * Initialize the basic openGL environment
      */
     private void initGL() {
@@ -572,70 +552,13 @@ public class WorldViewer extends Thread {
             renderDetailsTexture = TextureTool.allocateTexture(256, 256);
 
             // minecraft textures
-            minecraftTextures = new ArrayList<Texture>();
-            ArrayList<BufferedImage> textureImages = MinecraftEnvironment.getMinecraftTexture();
-            if (textureImages != null) {
-                for (BufferedImage image : textureImages) {
-                    Texture newtex = TextureTool.allocateTexture(image, GL11.GL_NEAREST);
-                    newtex.update();
-                    minecraftTextures.add(newtex);
-                }
+            BufferedImage textureImage = MinecraftEnvironment.getMinecraftTexture();
+            if (textureImage != null) {
+                Texture newtex = TextureTool.allocateTexture(textureImage, GL11.GL_NEAREST);
+                newtex.update();
+                minecraftTextures = newtex;
+                MinecraftConstants.TEX_Y = 1.0f / textureImage.getHeight() / 16f;
             }
-            Texture minecraftTexture = minecraftTextures.get(0);
-
-            // Get a list of block types organized by type
-            HashMap<BLOCK_TYPE, ArrayList<BlockType>> reverse_block_type_map = new HashMap<BLOCK_TYPE, ArrayList<BlockType>>();
-            for (BlockType block : blockCollection.getBlocksFull()) {
-                if (!reverse_block_type_map.containsKey(block.type)) {
-                    reverse_block_type_map.put(block.type, new ArrayList<BlockType>());
-                }
-                reverse_block_type_map.get(block.type).add(block);
-            }
-
-            // Compute some information about some decorative textures
-            decorationStats = new HashMap<Integer, TextureDecorationStats>();
-            for (BLOCK_TYPE decBlockType : DECORATION_BLOCKS) {
-                for (BlockType decBlock : reverse_block_type_map.get(decBlockType)) {
-                    // First the basic data map
-                    if (decBlock.texture_data_map != null) {
-                        for (int textureId : decBlock.texture_data_map.values()) {
-                            if (!decorationStats.containsKey(textureId)) {
-                                decorationStats.put(textureId, new TextureDecorationStats(minecraftTexture, textureId));
-                            }
-                        }
-                    }
-
-                    // Now the directional map
-                    if (decBlock.texture_dir_map != null) {
-                        for (int textureId : decBlock.texture_dir_map.values()) {
-                            if (!decorationStats.containsKey(textureId)) {
-                                decorationStats.put(textureId, new TextureDecorationStats(minecraftTexture, textureId));
-                            }
-                        }
-                    }
-
-                    // Now any "extra" textures which might exist for the block type
-                    if (blockTypeExtraTexturesReq.containsKey(decBlock.type)) {
-                        for (String key : blockTypeExtraTexturesReq.get(decBlock.type)) {
-                            int textureId = decBlock.texture_extra_map.get(key);
-                            if (!decorationStats.containsKey(textureId)) {
-                                decorationStats.put(textureId, new TextureDecorationStats(minecraftTexture, textureId));
-                            }
-                        }
-                    }
-
-                    // Now the "base" texture, if we didn't already do it
-                    if (!decorationStats.containsKey(decBlock.tex_idx)) {
-                        int textureId = decBlock.tex_idx;
-                        decorationStats.put(textureId, new TextureDecorationStats(minecraftTexture, textureId));
-                    }
-                }
-            }
-
-            // painting textures
-            BufferedImage minecraftPaintingImage = MinecraftEnvironment.getMinecraftPaintings();
-            paintingTexture = TextureTool.allocateTexture(minecraftPaintingImage, GL11.GL_NEAREST);
-            paintingTexture.update();
 
             // Chunk border texture
             int chunkBorderWidth = 256;
@@ -661,7 +584,6 @@ public class WorldViewer extends Thread {
 
         // Extra things we have to do
         this.prepareNewWorld();
-        setAccurateGrass();
 
         // set mouse grabbed so we can get x/y coordinates
         Mouse.setGrabbed(true);
@@ -709,7 +631,7 @@ public class WorldViewer extends Thread {
             this.level = emptyLevel;
             return;
         }
-        this.level = new MinecraftLevel(schematic, minecraftTextures, paintingTexture);
+        this.level = new MinecraftLevel(schematic);
 
         // determine which chunks are available in this world
 
@@ -893,12 +815,6 @@ public class WorldViewer extends Thread {
                         toggle.highlightRegions = HIGHLIGHT_TYPE.DISCO;
                     }
                     updateRenderDetails();
-                } else if (key == key_mapping.get(KEY_ACTION.TOGGLE_ACCURATE_GRASS)) {
-                    // Toggle the drawing of accurate grass
-                    accurateGrass = !accurateGrass;
-                    setAccurateGrass();
-                    invalidateSelectedChunks(true);
-                    updateRenderDetails();
                 } else if (key == key_mapping.get(KEY_ACTION.MOVE_TO_SPAWN)) {
                     // Move camera to spawn point
                     moveCameraToSpawnPoint();
@@ -919,12 +835,6 @@ public class WorldViewer extends Thread {
                 } else if (key == key_mapping.get(KEY_ACTION.TOGGLE_WATER)) {
                     // Toggle water rendering
                     toggle.render_water = !toggle.render_water;
-                    invalidateSelectedChunks(true);
-                    updateRenderDetails();
-                } else if (key == key_mapping.get(KEY_ACTION.TOGGLE_BETA19_FENCES)) {
-                    // Toggle "new" fence rendering
-                    toggle.beta19_fences = !toggle.beta19_fences;
-                    invalidateSelectedChunks(true);
                     updateRenderDetails();
                 } else if (key == key_mapping.get(KEY_ACTION.TOGGLE_CAMERA_LOCK)) {
                     // Toggle camera lock
@@ -1006,22 +916,6 @@ public class WorldViewer extends Thread {
         if (this.jump_dialog_trigger) {
             moveCameraToArbitraryPosition();
         }
-
-        // Also check to see if we should be opening a new map.  This is
-        // incredibly hokey...  We're using a counter-like var here only because
-        // we started doing that highlight "BgBox" thing around our text, for
-        // readability, and the bit which takes a screenshot in order to make
-        // it look nice and pretty would otherwise end up getting the Open dialog
-        // in with the screenshot, which looks ugly.  This way, we know that there's
-        // been one rendering pass since the dialog was closed, so it'll look nicer.
-        // Ah, vanity!
-        if (this.open_dialog_trigger > 0) {
-            if (this.open_dialog_trigger == 2) {
-                openNewSchematic();
-            } else {
-                this.open_dialog_trigger += 1;
-            }
-        }
     }
 
     /**
@@ -1030,20 +924,11 @@ public class WorldViewer extends Thread {
      * TODO: Stop playing stupid games with JumpDialog.
      */
     private void jumpToNearestLoaded() {
-        Chunk k = level.getChunk(currentLevelX, currentLevelZ);
-        if (k == null) {
-            JumpDialog.selectedX = 8;
-            JumpDialog.selectedZ = 8;
+        if (level == emptyLevel) {
+            JumpDialog.selectedX = 0;
+            JumpDialog.selectedZ = 0;
             this.moveCameraToArbitraryPosition();
         }
-    }
-
-    private void invalidateSelectedChunks() {
-        level.invalidateSelected(false);
-    }
-
-    private void invalidateSelectedChunks(boolean main_dirty) {
-        level.invalidateSelected(main_dirty);
     }
 
     private void setLightMode(boolean lightMode) {
@@ -1088,31 +973,6 @@ public class WorldViewer extends Thread {
         float currentCameraPosZ = -camera.getPosition().z;
         reportBlockX = currentCameraPosX + .5f;
         reportBlockZ = currentCameraPosZ + .5f;
-        int tempX = (int) Math.floor(reportBlockX);
-        int tempZ = (int) Math.floor(reportBlockZ);
-
-        // determine if we need to load new map chunks
-        if (tempX != levelBlockX || tempZ != levelBlockZ || needToReloadWorld) {
-            levelBlockX = tempX;
-            levelBlockZ = tempZ;
-            currentLevelX = MinecraftLevel.getChunkX(levelBlockX);
-            currentLevelZ = MinecraftLevel.getChunkZ(levelBlockZ);
-        }
-
-        // Get a list of chunks that we'll iterate over, on our various passes
-        ArrayList<Chunk> chunkList = new ArrayList<Chunk>();
-        Chunk curChunk = null;
-        for (int lx = currentLevelX - visible_chunk_range; lx <= currentLevelX + visible_chunk_range; lx++) {
-            for (int lz = currentLevelZ - visible_chunk_range; lz <= currentLevelZ + visible_chunk_range; lz++) {
-                Chunk k = level.getChunk(lx, lz);
-                if (k != null) {
-                    chunkList.add(k);
-                    if (lx == currentLevelX && lz == currentLevelZ) {
-                        curChunk = k;
-                    }
-                }
-            }
-        }
 
         // Now do various passes
         GL11.glEnable(GL11.GL_TEXTURE_2D);
@@ -1120,64 +980,17 @@ public class WorldViewer extends Thread {
         int last_tex = -1;
         int i;
 
-        /* //ToDo PAINTINGS!!!
-        // May as well render paintings first; they'll be "behind" everything then.
-        for (Chunk k : chunkList) {
-            if (k.hasPaintings()) {
-                if (last_tex != -2) {
-                    paintingTexture.bind();
-                }
-                k.renderPaintings();
-                last_tex = -2;
-            }
-        }
-        */
-
         // Now our regular blocks
-        for (i = 0; i < this.minecraftTextures.size(); i++) {
-            for (Chunk k : chunkList) {
-                if (k.usesSheet(i)) {
-                    if (last_tex != i) {
-                        minecraftTextures.get(i).bind();
-                        last_tex = i;
-                    }
-                    k.renderSolid(i);
-                    k.renderSelected(i);
-                }
-            }
-        }
 
-        // Now nonstandard blocks
-        for (i = 0; i < this.minecraftTextures.size(); i++) {
-            for (Chunk k : chunkList) {
-                if (k.usesSheet(i)) {
-                    if (last_tex != i) {
-                        minecraftTextures.get(i).bind();
-                        last_tex = i;
-                    }
-                    k.renderNonstandard(i);
-                }
-            }
-        }
-
-        // Now Glass, or anything else we consider glassy
-        for (i = 0; i < this.minecraftTextures.size(); i++) {
-            for (Chunk k : chunkList) {
-                if (k.usesSheet(i)) {
-                    if (last_tex != i) {
-                        minecraftTextures.get(i).bind();
-                        last_tex = i;
-                    }
-                    k.renderGlass(i);
-                }
-            }
-        }
+        //ToDo get texture id
+        ChunkSchematic c = level.getChunk();
+        minecraftTextures.bind();
+        c.renderWorld();
 
         // Now chunk borders
-        if (renderChunkBorders && curChunk != null) {
+        if (renderChunkBorders) {
             chunkBorderTexture.bind();
-            curChunk.renderBorder();
-            last_tex = -1;
+            c.renderBorder();
         }
 
         // And now, if we're highlighting regions, highlight them.
@@ -1224,8 +1037,9 @@ public class WorldViewer extends Thread {
 
         GL11.glPopMatrix();
 
+        /*
         // Stuff
-        if (curChunk == null) {
+        if (currChunk == null) {
             int x = (int) (Display.getWidth() - outOfRangeWidth) / 2;
             // TODO: "104" comes from barHeight*2-20 from drawMineralToggle(), should be controlled
             // with constants
@@ -1235,6 +1049,7 @@ public class WorldViewer extends Thread {
             SpriteTool.drawSpriteAbsoluteXY(outOfRangeTexture, x, y);
             setOrthoOff(); // back to 3d mode
         }
+        */
 
         // draw the user interface (fps and map)
         drawUI();
@@ -1247,12 +1062,12 @@ public class WorldViewer extends Thread {
         float xMax = region.getMax().getBlockX() + 1 - .52f;
         float yMax = region.getMax().getBlockY() + 1 - .52f;
         float zMax = region.getMax().getBlockZ() + 1 - .52f;
-        Chunk.renderNonstandardVertical(0, 0, 1, 1, xMin, yMax, zMin, xMax, yMin, zMin);
-        Chunk.renderNonstandardVertical(0, 0, 1, 1, xMin, yMax, zMax, xMax, yMin, zMax);
-        Chunk.renderNonstandardVertical(0, 0, 1, 1, xMin, yMax, zMin, xMin, yMin, zMax);
-        Chunk.renderNonstandardVertical(0, 0, 1, 1, xMax, yMax, zMin, xMax, yMin, zMax);
-        Chunk.renderNonstandardHorizontal(0, 0, 1, 1, xMin, zMin, xMax, zMax, yMax);
-        Chunk.renderNonstandardHorizontal(0, 0, 1, 1, xMin, zMin, xMax, zMax, yMin);
+        Renderer.renderNonstandardVertical(0, 0, 1, 1, xMin, yMax, zMin, xMax, yMin, zMin);
+        Renderer.renderNonstandardVertical(0, 0, 1, 1, xMin, yMax, zMax, xMax, yMin, zMax);
+        Renderer.renderNonstandardVertical(0, 0, 1, 1, xMin, yMax, zMin, xMin, yMin, zMax);
+        Renderer.renderNonstandardVertical(0, 0, 1, 1, xMax, yMax, zMin, xMax, yMin, zMax);
+        Renderer.renderNonstandardHorizontal(0, 0, 1, 1, xMin, zMin, xMax, zMax, yMax);
+        Renderer.renderNonstandardHorizontal(0, 0, 1, 1, xMin, zMin, xMax, zMax, yMin);
     }
 
     /**

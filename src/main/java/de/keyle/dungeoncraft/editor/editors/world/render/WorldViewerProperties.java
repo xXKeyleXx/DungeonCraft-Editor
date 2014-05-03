@@ -39,10 +39,6 @@ import java.util.Vector;
  * http://www.rgagnon.com/javadetails/java-0614.html
  */
 public class WorldViewerProperties extends Properties {
-
-    // Added at the behest of Eclipse (or, well, presumably Java itself)
-    private static final long serialVersionUID = 2578311914423692774L;
-
     /**
      * Overrides, called by the store method.
      */

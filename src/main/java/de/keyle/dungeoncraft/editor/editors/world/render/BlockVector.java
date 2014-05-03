@@ -26,29 +26,63 @@
  */
 package de.keyle.dungeoncraft.editor.editors.world.render;
 
-import de.keyle.knbt.TagByte;
-import de.keyle.knbt.TagCompound;
-import de.keyle.knbt.TagInt;
-import de.keyle.knbt.TagString;
+/**
+ * @author Vincent Vollers
+ *         <p/>
+ *         A Block in the minecraft world
+ *         wildly abused :( for its 'simple' integer x,y,z properties
+ */
+public class BlockVector implements Comparable<BlockVector> {
+    public int x;
+    public int y;
+    public int z;
+    public int t;
+    public int cx;
+    public int cz;
 
-public class PaintingEntity {
-    public float tile_x;
-    public float tile_y;
-    public float tile_z;
-    public String name;
-    public byte dir;
+    public BlockVector(int x, int y, int z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.cx = -x / 16;
+        this.cz = -z / 16;
+    }
 
-    public PaintingEntity(TagCompound t) {
-        TagInt tile_x = t.getAs("TileX", TagInt.class);
-        TagInt tile_y = t.getAs("TileY", TagInt.class);
-        TagInt tile_z = t.getAs("TileZ", TagInt.class);
-        TagString name = t.getAs("Motive", TagString.class);
-        TagByte dir = t.getAs("Dir", TagByte.class);
+    public int compareTo(BlockVector a) {
+        if (a.x > x) {
+            return 1;
+        }
+        if (a.x < x) {
+            return -1;
+        }
+        if (a.z > z) {
+            return 1;
+        }
+        if (a.z < z) {
+            return -1;
+        }
+        if (a.y > y) {
+            return 1;
+        }
+        if (a.y < y) {
+            return -1;
+        }
+        return 0;
+    }
 
-        this.tile_x = tile_x.getIntData();
-        this.tile_y = tile_y.getIntData();
-        this.tile_z = tile_z.getIntData();
-        this.name = name.getStringData();
-        this.dir = dir.getByteData();
+    public boolean equals(Object o) {
+        if (!(o instanceof BlockVector)) {
+            return false;
+        }
+        BlockVector p = (BlockVector) o;
+        return this.x == p.x && this.y == p.y && this.z == p.z;
+    }
+
+    public boolean equals(BlockVector p) {
+        return this.x == p.x && this.y == p.y && this.z == p.z;
+    }
+
+    public String toString() {
+        return "Point( x=" + x + ", y=" + y + ", z=" + z + ")";
     }
 }

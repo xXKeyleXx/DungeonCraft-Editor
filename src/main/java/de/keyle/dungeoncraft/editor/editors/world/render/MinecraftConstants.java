@@ -26,13 +26,16 @@
  */
 package de.keyle.dungeoncraft.editor.editors.world.render;
 
+import de.keyle.dungeoncraft.editor.GuiMain;
+import de.keyle.dungeoncraft.editor.editors.world.render.block.Block;
 import de.keyle.dungeoncraft.editor.editors.world.render.dialog.ExceptionDialog;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
+import java.io.*;
 
 
 /**
@@ -41,17 +44,14 @@ import java.util.HashMap;
  * @author Vincent
  */
 public class MinecraftConstants {
-
-    // translation table (precalc) from sprite sheet index to texture coordinates
-    public static float[] precalcSpriteSheetToTextureX;
-    public static float[] precalcSpriteSheetToTextureY;
-
     public static final float TEX16 = 1.0f / 16.0f;
     public static final float TEX32 = 1.0f / 32.0f;
     public static final float TEX64 = 1.0f / 64.0f;
     public static final float TEX128 = 1.0f / 128.0f;
     public static final float TEX256 = 1.0f / 256.0f;
     public static final float TEX512 = 1.0f / 512.0f;
+
+    public static float TEX_Y = TEX32;
 
     // sensitivity and speed mouse configuration
     public static final float MOUSE_SENSITIVITY = 0.05f; // mouse delta is multiplied by this
@@ -67,106 +67,10 @@ public class MinecraftConstants {
     // some convenience statics regarding time calculation
     public static final long NANOSPERSECOND = 1000000000;
     public static final long MILLISPERSECOND = 1000;
-    public static final long NANOSPERMILLIS = NANOSPERSECOND / MILLISPERSECOND;
+    public static final long NANOSPERMILLIS = 1000000L;
 
-    // Types of blocks
-    public static enum BLOCK_TYPE {
-        NORMAL,
-        TORCH,
-        DECORATION_CROSS,
-        DECORATION_GRID,
-        LADDER,
-        FLOOR,
-        PRESSURE_PLATE,
-        HALFHEIGHT,
-        CAKE,
-        BED,
-        SNOW,
-        DOOR,
-        STAIRS,
-        SIGNPOST,
-        WALLSIGN,
-        FENCE,
-        FENCE_GATE,
-        LEVER,
-        BUTTON,
-        PORTAL,
-        MINECART_TRACKS,
-        SIMPLE_RAIL,
-        WATER,
-        SEMISOLID,
-        GLASS,
-        TRAPDOOR,
-        PISTON_BODY,
-        PISTON_HEAD,
-        VINE,
-        HUGE_MUSHROOM,
-        SOLID_PANE,
-        CHEST,
-        STEM,
-        END_PORTAL,
-        END_PORTAL_FRAME,
-        CAULDRON,
-        ENCHANTMENT_TABLE,
-        BREWING_STAND,
-        DRAGON_EGG
-    }
 
-    // Extra textures specified by various block types
-    public static HashMap<BLOCK_TYPE, String[]> blockTypeExtraTexturesReq =
-            new HashMap<BLOCK_TYPE, String[]>();
-
-    static {
-        blockTypeExtraTexturesReq.put(BLOCK_TYPE.DOOR, new String[]{"bottom"});
-        blockTypeExtraTexturesReq.put(BLOCK_TYPE.MINECART_TRACKS, new String[]{"curve"});
-        blockTypeExtraTexturesReq.put(BLOCK_TYPE.SIMPLE_RAIL, new String[]{"powered"}); // actually just for powered rails, but whatever
-        blockTypeExtraTexturesReq.put(BLOCK_TYPE.CAKE, new String[]{"side_uncut", "side_cut", "bottom"});
-        blockTypeExtraTexturesReq.put(BLOCK_TYPE.BED, new String[]{"foot_top", "head_side", "foot_side", "foot", "head"});
-        blockTypeExtraTexturesReq.put(BLOCK_TYPE.PISTON_BODY, new String[]{"head", "back", "front"});
-        blockTypeExtraTexturesReq.put(BLOCK_TYPE.PISTON_HEAD, new String[]{"head_sticky", "body"});
-        blockTypeExtraTexturesReq.put(BLOCK_TYPE.CHEST, new String[]{"side_small", "top",
-                "front_big_left", "front_big_right",
-                "back_big_left", "back_big_right"});
-        blockTypeExtraTexturesReq.put(BLOCK_TYPE.HUGE_MUSHROOM, new String[]{"stem", "pores"});
-        blockTypeExtraTexturesReq.put(BLOCK_TYPE.STEM, new String[]{"curve"});
-        blockTypeExtraTexturesReq.put(BLOCK_TYPE.CAULDRON, new String[]{"inside", "top"});
-        blockTypeExtraTexturesReq.put(BLOCK_TYPE.ENCHANTMENT_TABLE, new String[]{"sides", "bottom"});
-        blockTypeExtraTexturesReq.put(BLOCK_TYPE.BREWING_STAND, new String[]{"base"});
-        blockTypeExtraTexturesReq.put(BLOCK_TYPE.LEVER, new String[]{"base"});
-        blockTypeExtraTexturesReq.put(BLOCK_TYPE.END_PORTAL_FRAME, new String[]{"sides", "bottom", "eye"});
-    }
-
-    // Our BLOCK structure is no longer an Enum, since we're reading it from a file
-    public static BlockTypeCollection blockCollection = new BlockTypeCollection();
-
-    // Just to omit one extra level of lookups, we'll also keep a reference to our
-    // block collection's ID-based array
-    public static BlockType[] blockArray;
-
-    // There are a few blocks that we know we need references to.
-    public static BlockType BLOCK_BEDROCK;
-    public static BlockType BLOCK_GRASS;
-    public static BlockType BLOCK_PORTAL;
-    public static BlockType BLOCK_END_PORTAL;
-    public static BlockType BLOCK_FIRE;
-    public static BlockType BLOCK_WATER;
-    public static BlockType BLOCK_STATIONARY_WATER;
-    public static BlockType BLOCK_IRON_BARS;
-    public static BlockType BLOCK_PISTON_HEAD;
-    public static BlockType BLOCK_PISTON_STICKY_BODY;
-
-    // A meta-block to use for unknown block types
-    public static BlockType BLOCK_UNKNOWN;
-
-    // Some data to save for grass
-    public static HashMap<BlockType.DIRECTION_REL, Integer> grassDirectionMap;
-
-    // Block types to compute decoration information for
-    public static final BLOCK_TYPE[] DECORATION_BLOCKS = new BLOCK_TYPE[]{
-            BLOCK_TYPE.LEVER, BLOCK_TYPE.TORCH, BLOCK_TYPE.DECORATION_CROSS,
-            BLOCK_TYPE.DECORATION_GRID, BLOCK_TYPE.STEM,
-            BLOCK_TYPE.END_PORTAL_FRAME, BLOCK_TYPE.BREWING_STAND
-    };
+    private static BlockTypes blockTypes;
 
     // Keyboard action categories
     public static enum ACTION_CAT {
@@ -234,224 +138,54 @@ public class MinecraftConstants {
         }
     }
 
-    public static final Block[] SURROUNDINGBLOCKS = new Block[]{
-            new Block(+1, 0, 0),
-            new Block(-1, 0, 0),
-            new Block(0, +1, 0),
-            new Block(0, -1, 0),
-            new Block(0, 0, +1),
-            new Block(0, 0, -1),
-    };
-
-    // Vars for painting information
-    public static HashMap<String, PaintingInfo> paintings;
-    public static PaintingInfo paintingback;
+    public static final BlockVector[] SURROUNDINGBLOCKS = new BlockVector[]{new BlockVector(+1, 0, 0), new BlockVector(-1, 0, 0), new BlockVector(0, +1, 0), new BlockVector(0, -1, 0), new BlockVector(0, 0, +1), new BlockVector(0, 0, -1),};
 
     static void initialize() throws BlockTypeLoadException {
-        loadMainBlocks();
-        initSpriteSheetToTextureTable();
-        initPaintings();
-
-        // For now...
-        //BlockTypeCollection blockinfo = loadBlocks("blockdefs/aether.yaml");
-        //blockCollection.importFrom(blockinfo, true);
-
-        //TODO: Exceptions generated should really be saving our static state information (for later reporting)
-        for (BlockTypeCollection coll : MinecraftEnvironment.getBlockTypeCollectionFiles()) {
-            String g = "user";
-            if (coll.getGlobal()) {
-                g = "built-in";
-            }
-            if (coll.getException() == null) {
-                // I think I will actually keep this the way it is, rather than create a GUI for
-                // loading these.  As I noticed during the 1.8 prerelease stuff, as I had been
-                // testing Aethermod things, people using mods might be fairly likely to shuffle
-                // their minecraft.jar file around quite a bit.  If I had gone forward with my
-                // previous plans, this would mean that whenever folks switched from, say, Aethermod
-                // to 1.8 (assuming here that Aethermod might take a little while to get updated
-                // to the 1.8 codebase), our stuff would disable Aether, and users would have to
-                // continually be going into that dialog to re-enable stuff.
-                //
-                // If we just auto-load everything all the time, then it should hopefully error
-                // out harmlessly on the ones that didn't load, and pick them up again once they
-                // can.  Of course, this DOES open ourselves up to issues if two mods use the same
-                // block ID, and a user is switching back and forth between them.  I feel okay
-                // requiring the user to manually swap out some blockdef files in that case, though.
-                try {
-                    // Do it without importing first.  If there are some obvious errors then we'd catch
-                    // them before potentially polluting our blockCollection with partial blockdef files
-                    blockCollection.importFrom(coll, false);
-                    blockCollection.importFrom(coll, true);
-                    WorldViewer.logger.info("Got " + g + " blockdef " + coll.getName() + " (" + coll.getFile().getName() + "), " + coll.usedTextureCount() + " sheet textures, " + coll.getFilenameTextureCount() + " file textures");
-                } catch (BlockTypeLoadException e) {
-                    WorldViewer.logger.info("Error loading " + g + " blockdef at " + coll.getFile().getName() + ": " + e.toString());
-                }
-            } else {
-                WorldViewer.logger.info("Error in " + g + " blockdef at " + coll.getFile().getName() + ": " + coll.getException().toString());
-            }
-        }
-    }
-
-    /**
-     * Reads in our default, base Minecraft texture data, and run a number of
-     * sanity checks on the data that we get.
-     * <p/>
-     * TODO: should this (or maybe just loadBlocks()) be in MinecraftEnvironment, maybe?
-     */
-    public static void loadMainBlocks() throws BlockTypeLoadException {
-        // First load the blocks
-        BlockTypeCollection blockinfo = loadBlocks("blockdefs/minecraft.yaml", true);
-
-        // Import into blockCollection
-        blockCollection.importFrom(blockinfo, true);
-
-        // A number of blocks that we require be present
-        BLOCK_BEDROCK = blockCollection.getByName("BEDROCK");
-        if (BLOCK_BEDROCK == null) {
-            throw new BlockTypeLoadException("BEDROCK block definition not found");
-        }
-        BLOCK_GRASS = blockCollection.getByName("GRASS");
-        if (BLOCK_GRASS == null) {
-            throw new BlockTypeLoadException("GRASS block definition not found");
-        }
-        BLOCK_PORTAL = blockCollection.getByName("PORTAL");
-        if (BLOCK_PORTAL == null) {
-            throw new BlockTypeLoadException("PORTAL block definition not found");
-        }
-        BLOCK_END_PORTAL = blockCollection.getByName("END_PORTAL");
-        if (BLOCK_END_PORTAL == null) {
-            throw new BlockTypeLoadException("END_PORTAL block definition not found");
-        }
-        BLOCK_FIRE = blockCollection.getByName("FIRE");
-        if (BLOCK_FIRE == null) {
-            throw new BlockTypeLoadException("FIRE block definition not found");
-        }
-        BLOCK_WATER = blockCollection.getByName("WATER");
-        if (BLOCK_WATER == null) {
-            throw new BlockTypeLoadException("WATER block definition not found");
-        }
-        BLOCK_STATIONARY_WATER = blockCollection.getByName("STATIONARY_WATER");
-        if (BLOCK_STATIONARY_WATER == null) {
-            throw new BlockTypeLoadException("STATIONARY_WATER block definition not found");
-        }
-        BLOCK_IRON_BARS = blockCollection.getByName("IRON_BARS");
-        if (BLOCK_IRON_BARS == null) {
-            throw new BlockTypeLoadException("IRON_BARS block definition not found");
-        }
-        BLOCK_PISTON_HEAD = blockCollection.getByName("PISTON_HEAD");
-        if (BLOCK_PISTON_HEAD == null) {
-            throw new BlockTypeLoadException("PISTON_HEAD block definition not found");
-        }
-        BLOCK_PISTON_STICKY_BODY = blockCollection.getByName("PISTON_STICKY_BODY");
-        if (BLOCK_PISTON_STICKY_BODY == null) {
-            throw new BlockTypeLoadException("PISTON_STICKY_BODY block definition not found");
-        }
-
-        // We also define a "special" block for unknown block types, so that instead
-        // of empty space, they'll show up as purple blocks.
-        BLOCK_UNKNOWN = new BlockType();
-        BLOCK_UNKNOWN.setIdStr("SPECIAL_UNKNOWN");
-        BLOCK_UNKNOWN.setName("Internal Special Unknown Block");
-        BLOCK_UNKNOWN.color = new Color(214, 127, 255);
-        BLOCK_UNKNOWN.setType(BLOCK_TYPE.NORMAL);
-
-        // For grass, in particular, for its rendering toggle, we'll save some info
-        // that we can later tear out if need be.
-        grassDirectionMap = BLOCK_GRASS.texture_dir_map;
-
-        // Set our blockArray
-        blockArray = blockCollection.blockArray;
-
-        // Clean up.
-        ExceptionDialog.clearExtraStatus();
+        loadBlocks("minecraft.json");
     }
 
     /**
      * Reads in block information from a YAML file.
      * TODO: should probably go elsewhere
      */
-    public static BlockTypeCollection loadBlocks(String filename, boolean global) throws BlockTypeLoadException {
+    public static BlockTypes loadBlocks(String filename) throws BlockTypeLoadException {
         ExceptionDialog.clearExtraStatus();
         ExceptionDialog.setExtraStatus1("Loading blocks from " + filename);
 
-        // First load the actual YAML
-        BlockTypeCollection blockinfo;
-        try {
-            blockinfo = BlockTypeCollection.loadFromYaml(filename, global);
-        } catch (Exception e) {
-            throw new BlockTypeLoadException("Could not load " + filename + ": " + e.toString(), e);
-        }
-
-        // Check to make sure our texfile exists, if it's defined
-        if (blockinfo.getTexfile() != null) {
+        File blockFile = new File(filename);
+        InputStream input = null;
+        if (!blockFile.exists()) {
+            input = GuiMain.class.getResourceAsStream("/editor/world/minecraft.json");
+        } else {
             try {
-                InputStream stream = MinecraftEnvironment.getMinecraftTexturepackData(blockinfo.getTexfile());
-                if (stream == null) {
-                    throw new BlockTypeLoadException("File " + blockinfo.getTexfile() + " is not found");
-                }
-                stream.close();
-            } catch (IOException e) {
-                throw new BlockTypeLoadException("Error while opening " + blockinfo.getTexfile() + ": " + e.toString(), e);
+                input = new FileInputStream(blockFile);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
         }
-
-        // Run through and normalize everything
-        blockinfo.normalizeBlocks();
+        if (input == null) {
+            throw new BlockTypeLoadException("Could not open minecraft.json!");
+        }
+        InputStreamReader isr = new InputStreamReader(input);
+        JSONParser p = new JSONParser();
+        JSONObject data;
+        try {
+            data = (JSONObject) p.parse(isr);
+        } catch (IOException e) {
+            throw new BlockTypeLoadException("Could not load " + filename + ": " + e, e);
+        } catch (ParseException e) {
+            throw new BlockTypeLoadException("Could not load " + filename + ": " + e, e);
+        }
+        // First load the actual JSON
+        //try {
+        blockTypes = new BlockTypes(data);
+        /*} catch (Exception e) {
+            throw new BlockTypeLoadException("Could not load " + filename + ": " + e, e);
+        }
+        */
 
         // Return the blocks that we read
-        return blockinfo;
-    }
-
-    /**
-     * Sprite sheet texture index to texture coordinates
-     */
-    public static void initSpriteSheetToTextureTable() {
-        precalcSpriteSheetToTextureX = new float[512];
-        precalcSpriteSheetToTextureY = new float[512];
-        for (int i = 0; i < 512; i++) {
-            float texYy = i / 16 / 32.0f;
-            float texXx = i % 16 / 16.0f;
-            precalcSpriteSheetToTextureX[i] = texXx;
-            precalcSpriteSheetToTextureY[i] = texYy;
-        }
-    }
-
-    /**
-     * Initialize our paintings.  Note that our hashmap exepects to be
-     * in lowercase.
-     */
-    public static void initPaintings() {
-        // I put these in here in the same order that they appeared at
-        // http://www.minecraftwiki.net/wiki/Painting
-        paintings = new HashMap<String, PaintingInfo>();
-
-        paintings.put("kebab", new PaintingInfo(1, 1, 0, 0));
-        paintings.put("aztec", new PaintingInfo(1, 1, 1, 0));
-        paintings.put("alban", new PaintingInfo(1, 1, 2, 0));
-        paintings.put("aztec2", new PaintingInfo(1, 1, 3, 0));
-        paintings.put("bomb", new PaintingInfo(1, 1, 4, 0));
-        paintings.put("plant", new PaintingInfo(1, 1, 5, 0));
-        paintings.put("wasteland", new PaintingInfo(1, 1, 6, 0));
-        paintings.put("wanderer", new PaintingInfo(1, 2, 0, 4));
-        paintings.put("graham", new PaintingInfo(1, 2, 1, 4));
-        paintings.put("pool", new PaintingInfo(2, 1, 0, 2));
-        paintings.put("courbet", new PaintingInfo(2, 1, 2, 2));
-        paintings.put("sunset", new PaintingInfo(2, 1, 6, 2));
-        paintings.put("sea", new PaintingInfo(2, 1, 4, 2));
-        paintings.put("creebet", new PaintingInfo(2, 1, 8, 2));
-        paintings.put("match", new PaintingInfo(2, 2, 0, 8));
-        paintings.put("bust", new PaintingInfo(2, 2, 2, 8));
-        paintings.put("stage", new PaintingInfo(2, 2, 4, 8));
-        paintings.put("void", new PaintingInfo(2, 2, 6, 8));
-        paintings.put("skullandroses", new PaintingInfo(2, 2, 8, 8));
-        paintings.put("fighters", new PaintingInfo(4, 2, 0, 6));
-        paintings.put("skeleton", new PaintingInfo(4, 3, 12, 4));
-        paintings.put("donkeykong", new PaintingInfo(4, 3, 12, 7));
-        paintings.put("pointer", new PaintingInfo(4, 4, 0, 12));
-        paintings.put("pigscene", new PaintingInfo(4, 4, 4, 12));
-        paintings.put("burningskull", new PaintingInfo(4, 4, 8, 12));
-
-        paintingback = new PaintingInfo(4, 4, 12, 0);
+        return blockTypes;
     }
 
     /**
@@ -521,5 +255,9 @@ public class MinecraftConstants {
      */
     public static String getKeyFullText(KEY_ACTION action, int bound_key) {
         return getKeyExtraBefore(action) + getKeyEnglish(bound_key) + getKeyExtraAfter(action, bound_key);
+    }
+
+    public static Block getBlockType(short id) {
+        return blockTypes.getBlock(id);
     }
 }
