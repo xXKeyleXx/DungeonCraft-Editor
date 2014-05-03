@@ -88,12 +88,12 @@ public class ChunkSchematic {
      * bound before we get in here.
      */
     public void renderBorder() {
-        float x = -.49f;
-        float z = -.49f;
+        float x = -.05f;
+        float z = -.05f;
         float top = this.maxHeight + 1f;
         float bottom = -1f;
-        float width = this.maxWidth + .49f;
-        float length = this.maxLength + .49f;
+        float width = this.maxWidth + .05f;
+        float length = this.maxLength + .05f;
         Renderer.renderNonstandardVertical(0, 0, 1, 1, x, top, z, x + width, bottom, z);
         Renderer.renderNonstandardVertical(0, 0, 1, 1, x, top, z + length, x + width, bottom, z + length);
         Renderer.renderNonstandardVertical(0, 0, 1, 1, x, top, z, x, bottom, z + width);
