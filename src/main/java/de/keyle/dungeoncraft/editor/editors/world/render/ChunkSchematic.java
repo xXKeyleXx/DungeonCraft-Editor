@@ -134,7 +134,7 @@ public class ChunkSchematic {
                 for (int zC = 0; zC < maxLength; zC++) {
                     blockIndex = getSchematicIndex(xC, yC, zC, maxLength, maxWidth, maxHeight);
                     if (blockIndex != -1 && blockIndex < schematicBlocks.length) {
-                        blockId[xC][yC][zC] = schematicBlocks[blockIndex];
+                        blockId[xC][yC][zC] = (short) (schematicBlocks[blockIndex] & 0xff);
                         blockData[xC][yC][zC] = schematicBlockDatas[blockIndex];
                     }
                 }
