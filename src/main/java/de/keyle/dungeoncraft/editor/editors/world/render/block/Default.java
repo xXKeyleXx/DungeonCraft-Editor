@@ -51,23 +51,23 @@ public class Default extends Block {
                     JSONObject textureObject = (JSONObject) textures.get(key);
                     if (textureObject.containsKey("BOTTOM")) {
                         JSONArray feedEnd = (JSONArray) textureObject.get("BOTTOM");
-                        dataDimensions[BLOCK_FACE.BOTTOM.ordinal()] = new TextureDimensions(26, (byte) 0, Integer.parseInt(feedEnd.get(0).toString()), Integer.parseInt(feedEnd.get(1).toString()), TEX16, TEX_Y, false);
+                        dataDimensions[BLOCK_FACE.BOTTOM.ordinal()] = new TextureDimensions(this.id, data, Integer.parseInt(feedEnd.get(0).toString()), Integer.parseInt(feedEnd.get(1).toString()), TEX16, TEX_Y, false);
                     }
                     if (textureObject.containsKey("TOP")) {
                         JSONArray feedEnd = (JSONArray) textureObject.get("TOP");
-                        dataDimensions[BLOCK_FACE.TOP.ordinal()] = new TextureDimensions(26, (byte) 0, Integer.parseInt(feedEnd.get(0).toString()), Integer.parseInt(feedEnd.get(1).toString()), TEX16, TEX_Y, false);
+                        dataDimensions[BLOCK_FACE.TOP.ordinal()] = new TextureDimensions(this.id, data, Integer.parseInt(feedEnd.get(0).toString()), Integer.parseInt(feedEnd.get(1).toString()), TEX16, TEX_Y, false);
                     }
                     if (textureObject.containsKey("SIDE")) {
                         JSONArray feedEnd = (JSONArray) textureObject.get("SIDE");
-                        dataDimensions[BLOCK_FACE.SIDES.ordinal()] = new TextureDimensions(26, (byte) 0, Integer.parseInt(feedEnd.get(0).toString()), Integer.parseInt(feedEnd.get(1).toString()), TEX16, TEX_Y, false);
+                        dataDimensions[BLOCK_FACE.SIDES.ordinal()] = new TextureDimensions(this.id, data, Integer.parseInt(feedEnd.get(0).toString()), Integer.parseInt(feedEnd.get(1).toString()), TEX16, TEX_Y, false);
                     }
                     if (textureObject.containsKey("BACK")) {
                         JSONArray feedEnd = (JSONArray) textureObject.get("BACK");
-                        dataDimensions[BLOCK_FACE.BACK.ordinal()] = new TextureDimensions(26, (byte) 0, Integer.parseInt(feedEnd.get(0).toString()), Integer.parseInt(feedEnd.get(1).toString()), TEX16, TEX_Y, false);
+                        dataDimensions[BLOCK_FACE.BACK.ordinal()] = new TextureDimensions(this.id, data, Integer.parseInt(feedEnd.get(0).toString()), Integer.parseInt(feedEnd.get(1).toString()), TEX16, TEX_Y, false);
                     }
                     if (textureObject.containsKey("FRONT")) {
                         JSONArray feedEnd = (JSONArray) textureObject.get("FRONT");
-                        dataDimensions[BLOCK_FACE.FRONT.ordinal()] = new TextureDimensions(26, (byte) 0, Integer.parseInt(feedEnd.get(0).toString()), Integer.parseInt(feedEnd.get(1).toString()), TEX16, TEX_Y, false);
+                        dataDimensions[BLOCK_FACE.FRONT.ordinal()] = new TextureDimensions(this.id, data, Integer.parseInt(feedEnd.get(0).toString()), Integer.parseInt(feedEnd.get(1).toString()), TEX16, TEX_Y, false);
                     }
 
                     while (Util.arrayContains(dataDimensions, null)) {

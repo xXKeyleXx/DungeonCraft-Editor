@@ -95,6 +95,39 @@ public class Renderer {
         GL11.glEnd();
     }
 
+    public static void renderVertical(TextureDimensions dimensions, float x1, float z1, float x2, float z2, float y, float height) {
+        renderVertical(dimensions.getTexLeft(), dimensions.getTexTop(), dimensions.getTexWidth(), dimensions.getTexHeight(), x1, z1, x2, z2, y, height);
+    }
+
+    /**
+     * Renders a somewhat-arbitrary vertical rectangle.  Pass in (x, z) pairs for the endpoints,
+     * and information about the height.  The texture variables given are in terms of 1/16ths of
+     * the texture square, which means that for the default Minecraft 16x16 texture, they're in
+     * pixels.
+     *
+     * @param x1
+     * @param z1
+     * @param x2
+     * @param z2
+     * @param y      The lower part of the rectangle
+     * @param height Height of the rectangle.
+     */
+    public static void renderVertical(float tx, float ty, float tdx, float tdy, float x1, float z1, float x2, float z2, float y, float height) {
+        GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
+        GL11.glTexCoord2f(tx, ty);
+        GL11.glVertex3f(x1, y + height, z1);
+
+        GL11.glTexCoord2f(tx + tdx, ty);
+        GL11.glVertex3f(x2, y + height, z2);
+
+        GL11.glTexCoord2f(tx, ty + tdy);
+        GL11.glVertex3f(x1, y, z1);
+
+        GL11.glTexCoord2f(tx + tdx, ty + tdy);
+        GL11.glVertex3f(x2, y, z2);
+        GL11.glEnd();
+    }
+
     /**
      * Renders an arbitrary horizontal rectangle (will be orthogonal).  The texture parameters
      * are specified in terms of 1/16ths of the texture (which equates to one pixel, when using
@@ -196,6 +229,44 @@ public class Renderer {
 
         GL11.glTexCoord2f(tx + tdx, ty + tdy);
         GL11.glVertex3f(x2, y, z2);
+        GL11.glEnd();
+    }
+
+    public static void renderHorizontalAskew(TextureDimensions dimensions, float x1, float z1, float x2, float z2, float x3, float z3, float x4, float z4, float y) {
+        renderHorizontalAskew(dimensions.getTexLeft(), dimensions.getTexTop(), dimensions.getTexWidth(), dimensions.getTexHeight(), x1, z1, x2, z2, x3, z3, x4, z4, y);
+    }
+
+    /**
+     * Render a surface on a horizontal plane; pass in all four verticies.  This can result,
+     * obviously, in non-rectangular and non-orthogonal shapes.
+     *
+     * @param tx
+     * @param ty
+     * @param tdx
+     * @param tdy
+     * @param x1
+     * @param z1
+     * @param x2
+     * @param z2
+     * @param x3
+     * @param z3
+     * @param x4
+     * @param z4
+     * @param y
+     */
+    public static void renderHorizontalAskew(float tx, float ty, float tdx, float tdy, float x1, float z1, float x2, float z2, float x3, float z3, float x4, float z4, float y) {
+        GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
+        GL11.glTexCoord2f(tx, ty);
+        GL11.glVertex3f(x1, y, z1);
+
+        GL11.glTexCoord2f(tx + tdx, ty);
+        GL11.glVertex3f(x2, y, z2);
+
+        GL11.glTexCoord2f(tx, ty + tdy);
+        GL11.glVertex3f(x3, y, z3);
+
+        GL11.glTexCoord2f(tx + tdx, ty + tdy);
+        GL11.glVertex3f(x4, y, z4);
         GL11.glEnd();
     }
 

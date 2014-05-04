@@ -52,13 +52,13 @@ public class Log extends Block {
                     JSONObject textureObject = (JSONObject) textures.get(key);
                     if (textureObject.containsKey("TOP")) {
                         JSONArray sideArray = (JSONArray) textureObject.get("TOP");
-                        top[data] = new TextureDimensions(id, data, Integer.parseInt(sideArray.get(0).toString()), Integer.parseInt(sideArray.get(1).toString()), TEX16, TEX_Y, false);
+                        top[data] = new TextureDimensions(this.id, data, Integer.parseInt(sideArray.get(0).toString()), Integer.parseInt(sideArray.get(1).toString()), TEX16, TEX_Y, false);
                     } else {
                         throw new BlockTypeLoadException(id + " is missing TOP texture.");
                     }
                     if (textureObject.containsKey("SIDE")) {
                         JSONArray sideArray = (JSONArray) textureObject.get("SIDE");
-                        side[data] = new TextureDimensions(id, data, Integer.parseInt(sideArray.get(0).toString()), Integer.parseInt(sideArray.get(1).toString()), TEX16, TEX_Y, false);
+                        side[data] = new TextureDimensions(this.id, data, Integer.parseInt(sideArray.get(0).toString()), Integer.parseInt(sideArray.get(1).toString()), TEX16, TEX_Y, false);
                     } else {
                         throw new BlockTypeLoadException(id + " is missing SIDE texture.");
                     }

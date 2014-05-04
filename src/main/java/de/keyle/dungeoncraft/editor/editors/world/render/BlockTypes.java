@@ -43,6 +43,9 @@ public class BlockTypes {
         blockTypes.put("WATER", Water.class);
         blockTypes.put("CACTUS", Cactus.class);
         blockTypes.put("DECORATION_GRID", DecorationGrid.class);
+        blockTypes.put("ENCHANTMENT_TABLE", EnchantmentTable.class);
+        blockTypes.put("SIGNPOST", Signpost.class);
+        blockTypes.put("END_PORTAL_FRAME", EndPortalFrame.class);
         //blockTypes.put("BED", Bed.class);
         //blockTypes.put("BREWING_STAND", BrewingStand.class);
         //blockTypes.put("BUTTON", Button.class);

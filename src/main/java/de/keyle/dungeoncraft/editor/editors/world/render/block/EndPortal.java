@@ -50,7 +50,7 @@ public class EndPortal extends Block {
                     JSONObject textureObject = (JSONObject) textures.get(key);
                     if (textureObject.containsKey("TOP")) {
                         JSONArray sideArray = (JSONArray) textureObject.get("TOP");
-                        dimensions = new TextureDimensions(id, data, Integer.parseInt(sideArray.get(0).toString()), Integer.parseInt(sideArray.get(1).toString()), TEX16, TEX_Y, false);
+                        dimensions = new TextureDimensions(this.id, data, Integer.parseInt(sideArray.get(0).toString()), Integer.parseInt(sideArray.get(1).toString()), TEX16, TEX_Y, false);
                     } else {
                         throw new BlockTypeLoadException(id + " TOP texture.");
                     }
