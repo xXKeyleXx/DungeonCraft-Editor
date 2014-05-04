@@ -27,16 +27,12 @@ import de.keyle.dungeoncraft.editor.editors.world.render.TextureDimensions;
 import de.keyle.dungeoncraft.editor.util.Util;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.lwjgl.opengl.GL11;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static de.keyle.dungeoncraft.editor.editors.world.render.MinecraftConstants.TEX16;
 import static de.keyle.dungeoncraft.editor.editors.world.render.MinecraftConstants.TEX_Y;
 
 public class Default extends Block {
-    protected final Map<Byte, Map<BLOCK_FACE, TextureDimensions>> dimensions = new HashMap<Byte, Map<BLOCK_FACE, TextureDimensions>>();
+    protected final TextureDimensions[][] dimensions = new TextureDimensions[16][];
 
     public Default(short id) {
         super(id);
@@ -51,62 +47,63 @@ public class Default extends Block {
             if (textures.get(key) instanceof JSONObject) {
                 if (Util.isByte(key.toString())) {
                     byte data = Byte.parseByte(key.toString());
-                    Map<BLOCK_FACE, TextureDimensions> dataDimensions = new HashMap<BLOCK_FACE, TextureDimensions>();
+                    TextureDimensions[] dataDimensions = new TextureDimensions[BLOCK_FACE.values().length];
                     JSONObject textureObject = (JSONObject) textures.get(key);
                     if (textureObject.containsKey("BOTTOM")) {
                         JSONArray feedEnd = (JSONArray) textureObject.get("BOTTOM");
-                        dataDimensions.put(BLOCK_FACE.BOTTOM, new TextureDimensions(26, (byte) 0, Integer.parseInt(feedEnd.get(0).toString()), Integer.parseInt(feedEnd.get(1).toString()), TEX16, TEX_Y, false));
+                        dataDimensions[BLOCK_FACE.BOTTOM.ordinal()] = new TextureDimensions(26, (byte) 0, Integer.parseInt(feedEnd.get(0).toString()), Integer.parseInt(feedEnd.get(1).toString()), TEX16, TEX_Y, false);
                     }
                     if (textureObject.containsKey("TOP")) {
                         JSONArray feedEnd = (JSONArray) textureObject.get("TOP");
-                        dataDimensions.put(BLOCK_FACE.TOP, new TextureDimensions(26, (byte) 0, Integer.parseInt(feedEnd.get(0).toString()), Integer.parseInt(feedEnd.get(1).toString()), TEX16, TEX_Y, false));
+                        dataDimensions[BLOCK_FACE.TOP.ordinal()] = new TextureDimensions(26, (byte) 0, Integer.parseInt(feedEnd.get(0).toString()), Integer.parseInt(feedEnd.get(1).toString()), TEX16, TEX_Y, false);
                     }
                     if (textureObject.containsKey("SIDE")) {
                         JSONArray feedEnd = (JSONArray) textureObject.get("SIDE");
-                        dataDimensions.put(BLOCK_FACE.SIDES, new TextureDimensions(26, (byte) 0, Integer.parseInt(feedEnd.get(0).toString()), Integer.parseInt(feedEnd.get(1).toString()), TEX16, TEX_Y, false));
+                        dataDimensions[BLOCK_FACE.SIDES.ordinal()] = new TextureDimensions(26, (byte) 0, Integer.parseInt(feedEnd.get(0).toString()), Integer.parseInt(feedEnd.get(1).toString()), TEX16, TEX_Y, false);
                     }
                     if (textureObject.containsKey("BACK")) {
                         JSONArray feedEnd = (JSONArray) textureObject.get("BACK");
-                        dataDimensions.put(BLOCK_FACE.BACK, new TextureDimensions(26, (byte) 0, Integer.parseInt(feedEnd.get(0).toString()), Integer.parseInt(feedEnd.get(1).toString()), TEX16, TEX_Y, false));
+                        dataDimensions[BLOCK_FACE.BACK.ordinal()] = new TextureDimensions(26, (byte) 0, Integer.parseInt(feedEnd.get(0).toString()), Integer.parseInt(feedEnd.get(1).toString()), TEX16, TEX_Y, false);
                     }
                     if (textureObject.containsKey("FRONT")) {
                         JSONArray feedEnd = (JSONArray) textureObject.get("FRONT");
-                        dataDimensions.put(BLOCK_FACE.FRONT, new TextureDimensions(26, (byte) 0, Integer.parseInt(feedEnd.get(0).toString()), Integer.parseInt(feedEnd.get(1).toString()), TEX16, TEX_Y, false));
+                        dataDimensions[BLOCK_FACE.FRONT.ordinal()] = new TextureDimensions(26, (byte) 0, Integer.parseInt(feedEnd.get(0).toString()), Integer.parseInt(feedEnd.get(1).toString()), TEX16, TEX_Y, false);
                     }
-                    while (dataDimensions.size() < 5) {
-                        if (!dataDimensions.containsKey(BLOCK_FACE.BOTTOM) && dataDimensions.containsKey(BLOCK_FACE.TOP)) {
-                            dataDimensions.put(BLOCK_FACE.BOTTOM, dataDimensions.get(BLOCK_FACE.TOP));
+
+                    while (Util.arrayContains(dataDimensions, null)) {
+                        if (dataDimensions[BLOCK_FACE.BOTTOM.ordinal()] == null && dataDimensions[BLOCK_FACE.TOP.ordinal()] != null) {
+                            dataDimensions[BLOCK_FACE.BOTTOM.ordinal()] = dataDimensions[BLOCK_FACE.TOP.ordinal()];
                         }
-                        if (!dataDimensions.containsKey(BLOCK_FACE.TOP) && dataDimensions.containsKey(BLOCK_FACE.BOTTOM)) {
-                            dataDimensions.put(BLOCK_FACE.TOP, dataDimensions.get(BLOCK_FACE.BOTTOM));
+                        if (dataDimensions[BLOCK_FACE.TOP.ordinal()] == null && dataDimensions[BLOCK_FACE.BOTTOM.ordinal()] != null) {
+                            dataDimensions[BLOCK_FACE.TOP.ordinal()] = dataDimensions[BLOCK_FACE.BOTTOM.ordinal()];
                         }
-                        if (!dataDimensions.containsKey(BLOCK_FACE.BACK) && dataDimensions.containsKey(BLOCK_FACE.FRONT)) {
-                            dataDimensions.put(BLOCK_FACE.BACK, dataDimensions.get(BLOCK_FACE.FRONT));
+                        if (dataDimensions[BLOCK_FACE.BACK.ordinal()] == null && dataDimensions[BLOCK_FACE.FRONT.ordinal()] != null) {
+                            dataDimensions[BLOCK_FACE.BACK.ordinal()] = dataDimensions[BLOCK_FACE.FRONT.ordinal()];
                         }
-                        if (!dataDimensions.containsKey(BLOCK_FACE.FRONT) && dataDimensions.containsKey(BLOCK_FACE.BACK)) {
-                            dataDimensions.put(BLOCK_FACE.FRONT, dataDimensions.get(BLOCK_FACE.BACK));
+                        if (dataDimensions[BLOCK_FACE.FRONT.ordinal()] == null && dataDimensions[BLOCK_FACE.BACK.ordinal()] != null) {
+                            dataDimensions[BLOCK_FACE.FRONT.ordinal()] = dataDimensions[BLOCK_FACE.BACK.ordinal()];
                         }
-                        if (!dataDimensions.containsKey(BLOCK_FACE.FRONT) && dataDimensions.containsKey(BLOCK_FACE.SIDES)) {
-                            dataDimensions.put(BLOCK_FACE.FRONT, dataDimensions.get(BLOCK_FACE.SIDES));
+                        if (dataDimensions[BLOCK_FACE.FRONT.ordinal()] == null && dataDimensions[BLOCK_FACE.SIDES.ordinal()] != null) {
+                            dataDimensions[BLOCK_FACE.FRONT.ordinal()] = dataDimensions[BLOCK_FACE.SIDES.ordinal()];
                         }
-                        if (!dataDimensions.containsKey(BLOCK_FACE.BACK) && dataDimensions.containsKey(BLOCK_FACE.SIDES)) {
-                            dataDimensions.put(BLOCK_FACE.BACK, dataDimensions.get(BLOCK_FACE.SIDES));
+                        if (dataDimensions[BLOCK_FACE.BACK.ordinal()] == null && dataDimensions[BLOCK_FACE.SIDES.ordinal()] != null) {
+                            dataDimensions[BLOCK_FACE.BACK.ordinal()] = dataDimensions[BLOCK_FACE.SIDES.ordinal()];
                         }
-                        if (!dataDimensions.containsKey(BLOCK_FACE.SIDES) && dataDimensions.containsKey(BLOCK_FACE.FRONT)) {
-                            dataDimensions.put(BLOCK_FACE.SIDES, dataDimensions.get(BLOCK_FACE.FRONT));
+                        if (dataDimensions[BLOCK_FACE.SIDES.ordinal()] == null && dataDimensions[BLOCK_FACE.FRONT.ordinal()] != null) {
+                            dataDimensions[BLOCK_FACE.SIDES.ordinal()] = dataDimensions[BLOCK_FACE.FRONT.ordinal()];
                         }
-                        if (!dataDimensions.containsKey(BLOCK_FACE.SIDES) && dataDimensions.containsKey(BLOCK_FACE.BACK)) {
-                            dataDimensions.put(BLOCK_FACE.SIDES, dataDimensions.get(BLOCK_FACE.BACK));
+                        if (dataDimensions[BLOCK_FACE.SIDES.ordinal()] == null && dataDimensions[BLOCK_FACE.BACK.ordinal()] != null) {
+                            dataDimensions[BLOCK_FACE.SIDES.ordinal()] = dataDimensions[BLOCK_FACE.BACK.ordinal()];
                         }
-                        if (!dataDimensions.containsKey(BLOCK_FACE.BOTTOM) && dataDimensions.containsKey(BLOCK_FACE.SIDES)) {
-                            dataDimensions.put(BLOCK_FACE.BOTTOM, dataDimensions.get(BLOCK_FACE.SIDES));
+                        if (dataDimensions[BLOCK_FACE.BOTTOM.ordinal()] == null && dataDimensions[BLOCK_FACE.SIDES.ordinal()] != null) {
+                            dataDimensions[BLOCK_FACE.BOTTOM.ordinal()] = dataDimensions[BLOCK_FACE.SIDES.ordinal()];
                         }
-                        if (!dataDimensions.containsKey(BLOCK_FACE.TOP) && dataDimensions.containsKey(BLOCK_FACE.SIDES)) {
-                            dataDimensions.put(BLOCK_FACE.TOP, dataDimensions.get(BLOCK_FACE.SIDES));
+                        if (dataDimensions[BLOCK_FACE.TOP.ordinal()] == null && dataDimensions[BLOCK_FACE.SIDES.ordinal()] != null) {
+                            dataDimensions[BLOCK_FACE.TOP.ordinal()] = dataDimensions[BLOCK_FACE.SIDES.ordinal()];
                         }
                     }
 
-                    dimensions.put(data, dataDimensions);
+                    dimensions[data] = dataDimensions;
                 }
             }
         }
@@ -119,34 +116,29 @@ public class Default extends Block {
 
     @Override
     public void render(byte blockData, int x, int y, int z, ChunkSchematic chunk) {
-        if (!dimensions.containsKey(blockData)) {
+        if (dimensions[blockData] == null) {
             blockData = 0;
         }
-        Map<BLOCK_FACE, TextureDimensions> dataDimensions = dimensions.get(blockData);
+        TextureDimensions[] dataDimensions = dimensions[blockData];
 
-        GL11.glPushMatrix();
-        GL11.glTranslatef(x, y, z);
-
-        if (x > 0 && !chunk.getBlockType(x - 1, y, z).isSolid() || x == 0) {
-            Renderer.renderNonstandardVertical(dataDimensions.get(BLOCK_FACE.SIDES), 0, 0, 0, 0, 1, 1);
+        if (x > 0 && !chunk.getBlockType(x - 1, y, z).isSolid()) {
+            Renderer.renderNonstandardVertical(dataDimensions[BLOCK_FACE.SIDES.ordinal()], x, y, z, x, y + 1, z + 1);
         }
-        if (x < chunk.getMaxWidth() && !chunk.getBlockType(x + 1, y, z).isSolid() || x == chunk.getMaxWidth()) {
-            Renderer.renderNonstandardVertical(dataDimensions.get(BLOCK_FACE.SIDES), 1, 0, 0, 1, 1, 1);
+        if (x < chunk.getMaxWidth() && !chunk.getBlockType(x + 1, y, z).isSolid()) {
+            Renderer.renderNonstandardVertical(dataDimensions[BLOCK_FACE.SIDES.ordinal()], x + 1, y, z, x + 1, y + 1, z + 1);
         }
-        if (y > 0 && !chunk.getBlockType(x, y - 1, z).isSolid() || y == 0) {
-            Renderer.renderHorizontal(dataDimensions.get(BLOCK_FACE.BOTTOM), 0, 0, 1, 1, 0, false);
+        if (y > 0 && !chunk.getBlockType(x, y - 1, z).isSolid()) {
+            Renderer.renderHorizontal(dataDimensions[BLOCK_FACE.BOTTOM.ordinal()], x, z, x + 1, z + 1, y, false);
         }
-        if (y < chunk.getMaxHeight() && !chunk.getBlockType(x, y + 1, z).isSolid() || y == chunk.getMaxHeight()) {
-            Renderer.renderHorizontal(dataDimensions.get(BLOCK_FACE.TOP), 0, 0, 1, 1, 1, false);
+        if (y < chunk.getMaxHeight() && !chunk.getBlockType(x, y + 1, z).isSolid()) {
+            Renderer.renderHorizontal(dataDimensions[BLOCK_FACE.TOP.ordinal()], x, z, x + 1, z + 1, y + 1, false);
         }
-        if (z > 0 && !chunk.getBlockType(x, y, z - 1).isSolid() || z == 0) {
-            Renderer.renderNonstandardVertical(dataDimensions.get(BLOCK_FACE.FRONT), 0, 0, 0, 1, 1, 0);
+        if (z > 0 && !chunk.getBlockType(x, y, z - 1).isSolid()) {
+            Renderer.renderNonstandardVertical(dataDimensions[BLOCK_FACE.FRONT.ordinal()], x, y, z, x + 1, y + 1, z);
         }
-        if (z < chunk.getMaxLength() && !chunk.getBlockType(x, y, z + 1).isSolid() || z == chunk.getMaxLength()) {
-            Renderer.renderNonstandardVertical(dataDimensions.get(BLOCK_FACE.BACK), 0, 0, 1, 1, 1, 1);
+        if (z < chunk.getMaxLength() && !chunk.getBlockType(x, y, z + 1).isSolid()) {
+            Renderer.renderNonstandardVertical(dataDimensions[BLOCK_FACE.BACK.ordinal()], x, y, z + 1, x + 1, y + 1, z + 1);
         }
-
-        GL11.glPopMatrix();
     }
 
     @Override

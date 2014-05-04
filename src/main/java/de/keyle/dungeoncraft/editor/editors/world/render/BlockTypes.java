@@ -30,7 +30,8 @@ import java.util.Map;
 
 public class BlockTypes {
     private Map<String, Class<? extends Block>> blockTypes = new HashMap<String, Class<? extends Block>>();
-    private Map<Short, Block> blocks = new HashMap<Short, Block>();
+    private Block[] blocks = new Block[255];
+    public static final Block unknownBlock = new Unknown();
 
     public BlockTypes(JSONObject blockTypeObject) {
         blockTypes.put("DEFAULT", Default.class);
@@ -49,8 +50,7 @@ public class BlockTypes {
         //blockTypes.put("CAULDRON", Cauldron.class);
         //blockTypes.put("CHEST", Chest.class);
 
-        blocks.put((short) 0, new Air());
-        blocks.put((short) -1, new Unknown());
+        blocks[0] = new Air();
 
         loadBlocks(blockTypeObject);
     }
@@ -68,7 +68,7 @@ public class BlockTypes {
                 } else {
                     continue;
                 }
-                if (blocks.containsKey(id)) {
+                if (blocks[id] != null) {
                     continue;
                 }
                 if (!blockObject.containsKey("texture")) {
@@ -104,12 +104,22 @@ public class BlockTypes {
                     e.printStackTrace();
                     continue;
                 }
-                blocks.put(id, b);
+                blocks[id] = b;
             }
         }
     }
 
     public Block getBlock(short id) {
-        return blocks.get(id);
+        if (id < 0) {
+            return unknownBlock;
+        }
+        return blocks[id];
+    }
+
+    public Block getBlock(int id) {
+        if (id < 0) {
+            return unknownBlock;
+        }
+        return blocks[id];
     }
 }

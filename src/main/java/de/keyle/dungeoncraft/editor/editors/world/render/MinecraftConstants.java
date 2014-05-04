@@ -260,4 +260,8 @@ public class MinecraftConstants {
     public static Block getBlockType(short id) {
         return blockTypes.getBlock(id);
     }
+
+    public static Block getBlockType(int id) {
+        return blockTypes.getBlock(id);
+    }
 }

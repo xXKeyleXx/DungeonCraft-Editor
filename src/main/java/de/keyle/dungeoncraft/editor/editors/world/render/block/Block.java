@@ -30,8 +30,6 @@ public abstract class Block {
     public enum BLOCK_FACE {
         FRONT,
         BACK,
-        WEST,
-        EAST,
         TOP,
         BOTTOM,
         SIDES

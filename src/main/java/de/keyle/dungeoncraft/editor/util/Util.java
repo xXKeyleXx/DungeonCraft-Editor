@@ -94,4 +94,13 @@ public class Util {
         }
         System.exit(0);
     }
+
+    public static boolean arrayContains(Object[] array, Object value) {
+        for (Object o : array) {
+            if (o == value) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

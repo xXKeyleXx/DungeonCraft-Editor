@@ -98,6 +98,10 @@ public class WorldViewer extends Thread {
 
     protected WorldOverview worldOverviewEditor;
 
+    boolean drawChunk = true;
+    int solidList = -1;
+    int nonSolidList = -1;
+
     public enum HIGHLIGHT_TYPE {
         DISCO("Disco", Color.GREEN.darker()),
         WHITE("White", Color.GREEN.darker()),
@@ -636,6 +640,8 @@ public class WorldViewer extends Thread {
         // determine which chunks are available in this world
 
         moveCameraToSpawnPoint();
+
+        drawChunk = true;
     }
 
     /**
@@ -985,8 +991,21 @@ public class WorldViewer extends Thread {
         //ToDo get texture id
         ChunkSchematic c = level.getChunk();
         minecraftTextures.bind();
-        c.renderWorld(camera, true);
-        c.renderWorld(camera, false);
+        if (drawChunk) {
+            drawChunk = false;
+            if (solidList == -1) {
+                solidList = GL11.glGenLists(1);
+                nonSolidList = GL11.glGenLists(1);
+            }
+            GL11.glNewList(solidList, GL11.GL_COMPILE);
+            c.renderWorld(true);
+            GL11.glEndList();
+            GL11.glNewList(nonSolidList, GL11.GL_COMPILE);
+            c.renderWorld(false);
+            GL11.glEndList();
+        }
+        GL11.glCallList(solidList);
+        GL11.glCallList(nonSolidList);
 
         // Now chunk borders
         if (renderChunkBorders) {

@@ -25,7 +25,6 @@ import de.keyle.dungeoncraft.editor.editors.world.render.ChunkSchematic;
 import de.keyle.dungeoncraft.editor.editors.world.render.Renderer;
 import de.keyle.dungeoncraft.editor.editors.world.render.TextureDimensions;
 import org.json.simple.JSONObject;
-import org.lwjgl.opengl.GL11;
 
 public class Unknown extends Block {
     TextureDimensions dimesions = new TextureDimensions(-1, (byte) 0, 5, 15);
@@ -46,17 +45,12 @@ public class Unknown extends Block {
 
     @Override
     public void render(byte blockData, int x, int y, int z, ChunkSchematic chunk) {
-        GL11.glPushMatrix();
-        GL11.glTranslatef(x, y, z);
-
-        Renderer.renderNonstandardVertical(dimesions, 0, 0, 0, 0, 1, 1);
-        Renderer.renderNonstandardVertical(dimesions, 1, 0, 0, 1, 1, 1);
-        Renderer.renderHorizontal(dimesions, 0, 0, 1, 1, 0, false);
-        Renderer.renderHorizontal(dimesions, 0, 0, 1, 1, 1, false);
-        Renderer.renderNonstandardVertical(dimesions, 0, 0, 0, 1, 1, 0);
-        Renderer.renderNonstandardVertical(dimesions, 0, 0, 1, 1, 1, 1);
-
-        GL11.glPopMatrix();
+        Renderer.renderNonstandardVertical(dimesions, x, y, z, x, y + 1, z + 1);
+        Renderer.renderNonstandardVertical(dimesions, x + 1, y, z, x + 1, y + 1, z + 1);
+        Renderer.renderHorizontal(dimesions, x, z, x + 1, z + 1, y, false);
+        Renderer.renderHorizontal(dimesions, x, z, x + 1, z + 1, y + 1, false);
+        Renderer.renderNonstandardVertical(dimesions, x, y, z, x + 1, y + 1, z);
+        Renderer.renderNonstandardVertical(dimesions, x, y, z + 1, x + 1, y + 1, z + 1);
     }
 
     @Override

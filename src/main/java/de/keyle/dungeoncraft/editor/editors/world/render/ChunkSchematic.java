@@ -33,15 +33,12 @@ public class ChunkSchematic {
     int maxWidth;
     int maxLength;
 
-    int renderDistance = 100;
-
     protected int lx, ly, lz;
     private int fromX = 0;
+    private int fromY = 0;
     private int fromZ = 0;
-    private int toX = renderDistance * 2;
-    private int toZ = renderDistance * 2;
 
-    public ChunkSchematic(MinecraftLevel level, Schematic schematic) {
+    public ChunkSchematic(Schematic schematic) {
         this.maxHeight = schematic.getHeight();
         this.maxLength = schematic.getLenght();
         this.maxWidth = schematic.getWidth();
@@ -49,12 +46,11 @@ public class ChunkSchematic {
         this.parseSchematic(schematic);
     }
 
-    public void renderWorld(FirstPersonCameraController center, boolean solid) {
+    public void renderWorld(boolean solid) {
         Block block;
         short t;
         byte data;
 
-        this.setLoopBorders(center);
         this.rewindLoop();
         t = 0;
 
@@ -69,7 +65,7 @@ public class ChunkSchematic {
             block = MinecraftConstants.getBlockType(t);
             if (block == null) {
                 //XRay.logger.debug("Unknown block ID: " + t);
-                block = MinecraftConstants.getBlockType((short) -1);
+                block = BlockTypes.unknownBlock;
                 data = 0;
             } else {
                 data = getData(this.lx, this.ly, this.lz);
@@ -90,19 +86,9 @@ public class ChunkSchematic {
      * "Rewinds" our looping over blocks.
      */
     protected void rewindLoop() {
-        this.lx = fromX;
+        this.lx = 0;
         this.ly = 0;
-        this.lz = fromZ;
-    }
-
-    /**
-     * sets looping borders.
-     */
-    protected void setLoopBorders(FirstPersonCameraController center) {
-        this.fromX = (int) Math.max(0, -center.getPosition().getX() - renderDistance);
-        this.fromZ = (int) Math.max(0, -center.getPosition().getZ() - renderDistance);
-        this.toX = (int) Math.min(maxWidth, -center.getPosition().getX() + renderDistance);
-        this.toZ = (int) Math.min(maxLength, -center.getPosition().getZ() + renderDistance);
+        this.lz = 0;
     }
 
     /**
@@ -114,12 +100,13 @@ public class ChunkSchematic {
         float z = -.05f;
         float top = this.maxHeight + 1f;
         float bottom = -1f;
-        float width = this.maxWidth + .05f;
-        float length = this.maxLength + .05f;
-        Renderer.renderNonstandardVertical(0, 0, 1, 1, x, top, z, x + width, bottom, z);
-        Renderer.renderNonstandardVertical(0, 0, 1, 1, x, top, z + length, x + width, bottom, z + length);
-        Renderer.renderNonstandardVertical(0, 0, 1, 1, x, top, z, x, bottom, z + width);
-        Renderer.renderNonstandardVertical(0, 0, 1, 1, x + width, top, z, x + width, bottom, z + length);
+        float width = this.maxWidth + .1f;
+        float length = this.maxLength + .1f;
+
+        Renderer.renderNonstandardVertical(0, 0, 1, 1, x, bottom, z, x + width, top, z);
+        Renderer.renderNonstandardVertical(0, 0, 1, 1, x, bottom, z + length, x + width, top, z + length);
+        Renderer.renderNonstandardVertical(0, 0, 1, 1, x, bottom, z, x, top, z + length);
+        Renderer.renderNonstandardVertical(0, 0, 1, 1, x + width, bottom, z, x + width, top, z + length);
     }
 
     private void parseSchematic(Schematic schematic) {
@@ -235,9 +222,9 @@ public class ChunkSchematic {
 
     public Block getBlockType(int x, int y, int z) {
         Block type = null;
-        if (x >= 0 && x < blockId.length) {
-            if (y >= 0 && y < blockId[x].length) {
-                if (z >= 0 && z < blockId[x][y].length) {
+        if (x >= 0 && x < maxWidth) {
+            if (y >= 0 && y < maxHeight) {
+                if (z >= 0 && z < maxLength) {
                     type = MinecraftConstants.getBlockType(blockId[x][y][z]);
                 }
             }
@@ -245,7 +232,7 @@ public class ChunkSchematic {
         if (type != null) {
             return type;
         }
-        return MinecraftConstants.getBlockType((short) -1);
+        return BlockTypes.unknownBlock;
     }
 
     public byte getData(int x, int y, int z) {
@@ -260,11 +247,11 @@ public class ChunkSchematic {
     }
 
     protected short nextBlock() {
-        if (++this.lx > toX) {
+        if (++this.lx > maxWidth) {
             this.lx = fromX;
-            if (++this.lz > toZ) {
+            if (++this.lz > maxLength) {
                 this.lz = fromZ;
-                if (++this.ly >= maxHeight) {
+                if (++this.ly > maxHeight) {
                     return -2;
                 }
             }

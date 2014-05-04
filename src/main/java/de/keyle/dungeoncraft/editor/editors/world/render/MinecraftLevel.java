@@ -60,7 +60,7 @@ public class MinecraftLevel {
     }
 
     public void loadSchematic() {
-        chunk = new ChunkSchematic(this, schematic);
+        chunk = new ChunkSchematic(schematic);
     }
 
     public ChunkSchematic getChunk() {

@@ -26,8 +26,6 @@ import de.keyle.dungeoncraft.editor.editors.world.render.Renderer;
 import de.keyle.dungeoncraft.editor.editors.world.render.TextureDimensions;
 import org.lwjgl.opengl.GL11;
 
-import java.util.Map;
-
 public class Cactus extends Default {
     public Cactus(short id) throws BlockTypeLoadException {
         super(id);
@@ -40,30 +38,30 @@ public class Cactus extends Default {
 
     @Override
     public void render(byte blockData, int x, int y, int z, ChunkSchematic chunk) {
-        if (!dimensions.containsKey(blockData)) {
+        if (dimensions[blockData] == null) {
             blockData = 0;
         }
-        Map<BLOCK_FACE, TextureDimensions> dataDimensions = dimensions.get(blockData);
+        TextureDimensions[] dataDimensions = dimensions[blockData];
 
         GL11.glPushMatrix();
         GL11.glTranslatef(x, y, z);
 
-        Renderer.renderNonstandardVertical(dataDimensions.get(BLOCK_FACE.SIDES), 0.0625f, 0, 0, 0.0625f, 1, 1);
-        Renderer.renderNonstandardVertical(dataDimensions.get(BLOCK_FACE.SIDES), 0.9f, 0, 0, 0.9375f, 1, 1);
+        Renderer.renderNonstandardVertical(dataDimensions[BLOCK_FACE.SIDES.ordinal()], 0.0625f, 0, 0, 0.0625f, 1, 1);
+        Renderer.renderNonstandardVertical(dataDimensions[BLOCK_FACE.SIDES.ordinal()], 0.9f, 0, 0, 0.9375f, 1, 1);
         if ((y > 0 && shouldRender(x, y - 1, z, chunk)) || y == 0) {
-            Renderer.renderHorizontal(dataDimensions.get(BLOCK_FACE.BOTTOM), 0.0625f, 0.0625f, 0.9375f, 0.9375f, 0, false);
+            Renderer.renderHorizontal(dataDimensions[BLOCK_FACE.BOTTOM.ordinal()], 0.0625f, 0.0625f, 0.9375f, 0.9375f, 0, false);
         }
         if ((y < chunk.getMaxHeight() && shouldRender(x, y + 1, z, chunk)) || y == chunk.getMaxHeight()) {
-            Renderer.renderHorizontal(dataDimensions.get(BLOCK_FACE.TOP), 0.0625f, 0.0625f, 0.9375f, 0.9375f, 1, false);
+            Renderer.renderHorizontal(dataDimensions[BLOCK_FACE.TOP.ordinal()], 0.0625f, 0.0625f, 0.9375f, 0.9375f, 1, false);
         }
-        Renderer.renderNonstandardVertical(dataDimensions.get(BLOCK_FACE.FRONT), 0, 0, 0.0625f, 1, 1, 0.0625f);
-        Renderer.renderNonstandardVertical(dataDimensions.get(BLOCK_FACE.BACK), 0, 0, 0.9375f, 1, 1, 0.9375f);
+        Renderer.renderNonstandardVertical(dataDimensions[BLOCK_FACE.FRONT.ordinal()], 0, 0, 0.0625f, 1, 1, 0.0625f);
+        Renderer.renderNonstandardVertical(dataDimensions[BLOCK_FACE.BACK.ordinal()], 0, 0, 0.9375f, 1, 1, 0.9375f);
 
         GL11.glPopMatrix();
     }
 
     private boolean shouldRender(int x, int y, int z, ChunkSchematic chunk) {
-        if (chunk.getBlockType(x, y, z).getBlockId() != this.id) {
+        if (chunk.getBlockId(x, y, z) != this.id) {
             if (chunk.getBlockType(x, y, z).isSolid()) {
                 return false;
             }
