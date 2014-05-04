@@ -33,7 +33,13 @@ public class ChunkSchematic {
     int maxWidth;
     int maxLength;
 
+    int renderDistance = 100;
+
     protected int lx, ly, lz;
+    private int fromX = 0;
+    private int fromZ = 0;
+    private int toX = renderDistance * 2;
+    private int toZ = renderDistance * 2;
 
     public ChunkSchematic(MinecraftLevel level, Schematic schematic) {
         this.maxHeight = schematic.getHeight();
@@ -43,12 +49,12 @@ public class ChunkSchematic {
         this.parseSchematic(schematic);
     }
 
-    public void renderWorld() {
-        boolean draw = false;
+    public void renderWorld(FirstPersonCameraController center, boolean solid) {
         Block block;
         short t;
         byte data;
 
+        this.setLoopBorders(center);
         this.rewindLoop();
         t = 0;
 
@@ -68,9 +74,15 @@ public class ChunkSchematic {
             } else {
                 data = getData(this.lx, this.ly, this.lz);
             }
-
-            // Continue on to the actual rendering
-            block.render(data, this.lx, this.ly, this.lz, this);
+            if (solid == block.isSolid()) {
+                // Continue on to the actual rendering
+                try {
+                    block.render(data, this.lx, this.ly, this.lz, this);
+                } catch (Exception e) {
+                    System.out.println("Excaption cought while rendering block with ID " + block.getBlockId() + ":" + data + " (" + block.getBlockType() + ")");
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -78,9 +90,19 @@ public class ChunkSchematic {
      * "Rewinds" our looping over blocks.
      */
     protected void rewindLoop() {
-        this.lx = 0;
+        this.lx = fromX;
         this.ly = 0;
-        this.lz = 0;
+        this.lz = fromZ;
+    }
+
+    /**
+     * sets looping borders.
+     */
+    protected void setLoopBorders(FirstPersonCameraController center) {
+        this.fromX = (int) Math.max(0, -center.getPosition().getX() - renderDistance);
+        this.fromZ = (int) Math.max(0, -center.getPosition().getZ() - renderDistance);
+        this.toX = (int) Math.min(maxWidth, -center.getPosition().getX() + renderDistance);
+        this.toZ = (int) Math.min(maxLength, -center.getPosition().getZ() + renderDistance);
     }
 
     /**
@@ -238,10 +260,10 @@ public class ChunkSchematic {
     }
 
     protected short nextBlock() {
-        if (++this.lx > maxWidth) {
-            this.lx = 0;
-            if (++this.lz > maxLength) {
-                this.lz = 0;
+        if (++this.lx > toX) {
+            this.lx = fromX;
+            if (++this.lz > toZ) {
+                this.lz = fromZ;
                 if (++this.ly >= maxHeight) {
                     return -2;
                 }

@@ -985,7 +985,8 @@ public class WorldViewer extends Thread {
         //ToDo get texture id
         ChunkSchematic c = level.getChunk();
         minecraftTextures.bind();
-        c.renderWorld();
+        c.renderWorld(camera, true);
+        c.renderWorld(camera, false);
 
         // Now chunk borders
         if (renderChunkBorders) {
