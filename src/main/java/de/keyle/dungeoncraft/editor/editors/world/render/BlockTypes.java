@@ -20,10 +20,7 @@
 
 package de.keyle.dungeoncraft.editor.editors.world.render;
 
-import de.keyle.dungeoncraft.editor.editors.world.render.block.Air;
-import de.keyle.dungeoncraft.editor.editors.world.render.block.Block;
-import de.keyle.dungeoncraft.editor.editors.world.render.block.Default;
-import de.keyle.dungeoncraft.editor.editors.world.render.block.Unknown;
+import de.keyle.dungeoncraft.editor.editors.world.render.block.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -38,6 +35,13 @@ public class BlockTypes {
     public BlockTypes(JSONObject blockTypeObject) {
         blockTypes.put("DEFAULT", Default.class);
         blockTypes.put("UNKNWON", Unknown.class);
+        blockTypes.put("DECORATION_CROSS", DecorationCross.class);
+        blockTypes.put("LOG", Log.class);
+        blockTypes.put("END_PORTAL", EndPortal.class);
+        blockTypes.put("SEMISOLID", SemiSolid.class);
+        blockTypes.put("WATER", Water.class);
+        blockTypes.put("CACTUS", Cactus.class);
+        blockTypes.put("DECORATION_GRID", DecorationGrid.class);
         //blockTypes.put("BED", Bed.class);
         //blockTypes.put("BREWING_STAND", BrewingStand.class);
         //blockTypes.put("BUTTON", Button.class);

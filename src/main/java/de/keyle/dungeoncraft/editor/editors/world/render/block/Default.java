@@ -73,35 +73,37 @@ public class Default extends Block {
                         JSONArray feedEnd = (JSONArray) textureObject.get("FRONT");
                         dataDimensions.put(BLOCK_FACE.FRONT, new TextureDimensions(26, (byte) 0, Integer.parseInt(feedEnd.get(0).toString()), Integer.parseInt(feedEnd.get(1).toString()), TEX16, TEX_Y, false));
                     }
-                    if (!dataDimensions.containsKey(BLOCK_FACE.BOTTOM) && dataDimensions.containsKey(BLOCK_FACE.TOP)) {
-                        dataDimensions.put(BLOCK_FACE.BOTTOM, dataDimensions.get(BLOCK_FACE.TOP));
-                    }
-                    if (!dataDimensions.containsKey(BLOCK_FACE.TOP) && dataDimensions.containsKey(BLOCK_FACE.BOTTOM)) {
-                        dataDimensions.put(BLOCK_FACE.TOP, dataDimensions.get(BLOCK_FACE.BOTTOM));
-                    }
-                    if (!dataDimensions.containsKey(BLOCK_FACE.BACK) && dataDimensions.containsKey(BLOCK_FACE.FRONT)) {
-                        dataDimensions.put(BLOCK_FACE.BACK, dataDimensions.get(BLOCK_FACE.FRONT));
-                    }
-                    if (!dataDimensions.containsKey(BLOCK_FACE.FRONT) && dataDimensions.containsKey(BLOCK_FACE.BACK)) {
-                        dataDimensions.put(BLOCK_FACE.FRONT, dataDimensions.get(BLOCK_FACE.BACK));
-                    }
-                    if (!dataDimensions.containsKey(BLOCK_FACE.FRONT) && dataDimensions.containsKey(BLOCK_FACE.SIDES)) {
-                        dataDimensions.put(BLOCK_FACE.FRONT, dataDimensions.get(BLOCK_FACE.SIDES));
-                    }
-                    if (!dataDimensions.containsKey(BLOCK_FACE.BACK) && dataDimensions.containsKey(BLOCK_FACE.SIDES)) {
-                        dataDimensions.put(BLOCK_FACE.BACK, dataDimensions.get(BLOCK_FACE.SIDES));
-                    }
-                    if (!dataDimensions.containsKey(BLOCK_FACE.SIDES) && dataDimensions.containsKey(BLOCK_FACE.FRONT)) {
-                        dataDimensions.put(BLOCK_FACE.SIDES, dataDimensions.get(BLOCK_FACE.FRONT));
-                    }
-                    if (!dataDimensions.containsKey(BLOCK_FACE.SIDES) && dataDimensions.containsKey(BLOCK_FACE.BACK)) {
-                        dataDimensions.put(BLOCK_FACE.SIDES, dataDimensions.get(BLOCK_FACE.BACK));
-                    }
-                    if (!dataDimensions.containsKey(BLOCK_FACE.BOTTOM) && dataDimensions.containsKey(BLOCK_FACE.SIDES)) {
-                        dataDimensions.put(BLOCK_FACE.BOTTOM, dataDimensions.get(BLOCK_FACE.SIDES));
-                    }
-                    if (!dataDimensions.containsKey(BLOCK_FACE.TOP) && dataDimensions.containsKey(BLOCK_FACE.SIDES)) {
-                        dataDimensions.put(BLOCK_FACE.TOP, dataDimensions.get(BLOCK_FACE.SIDES));
+                    while (dataDimensions.size() < 5) {
+                        if (!dataDimensions.containsKey(BLOCK_FACE.BOTTOM) && dataDimensions.containsKey(BLOCK_FACE.TOP)) {
+                            dataDimensions.put(BLOCK_FACE.BOTTOM, dataDimensions.get(BLOCK_FACE.TOP));
+                        }
+                        if (!dataDimensions.containsKey(BLOCK_FACE.TOP) && dataDimensions.containsKey(BLOCK_FACE.BOTTOM)) {
+                            dataDimensions.put(BLOCK_FACE.TOP, dataDimensions.get(BLOCK_FACE.BOTTOM));
+                        }
+                        if (!dataDimensions.containsKey(BLOCK_FACE.BACK) && dataDimensions.containsKey(BLOCK_FACE.FRONT)) {
+                            dataDimensions.put(BLOCK_FACE.BACK, dataDimensions.get(BLOCK_FACE.FRONT));
+                        }
+                        if (!dataDimensions.containsKey(BLOCK_FACE.FRONT) && dataDimensions.containsKey(BLOCK_FACE.BACK)) {
+                            dataDimensions.put(BLOCK_FACE.FRONT, dataDimensions.get(BLOCK_FACE.BACK));
+                        }
+                        if (!dataDimensions.containsKey(BLOCK_FACE.FRONT) && dataDimensions.containsKey(BLOCK_FACE.SIDES)) {
+                            dataDimensions.put(BLOCK_FACE.FRONT, dataDimensions.get(BLOCK_FACE.SIDES));
+                        }
+                        if (!dataDimensions.containsKey(BLOCK_FACE.BACK) && dataDimensions.containsKey(BLOCK_FACE.SIDES)) {
+                            dataDimensions.put(BLOCK_FACE.BACK, dataDimensions.get(BLOCK_FACE.SIDES));
+                        }
+                        if (!dataDimensions.containsKey(BLOCK_FACE.SIDES) && dataDimensions.containsKey(BLOCK_FACE.FRONT)) {
+                            dataDimensions.put(BLOCK_FACE.SIDES, dataDimensions.get(BLOCK_FACE.FRONT));
+                        }
+                        if (!dataDimensions.containsKey(BLOCK_FACE.SIDES) && dataDimensions.containsKey(BLOCK_FACE.BACK)) {
+                            dataDimensions.put(BLOCK_FACE.SIDES, dataDimensions.get(BLOCK_FACE.BACK));
+                        }
+                        if (!dataDimensions.containsKey(BLOCK_FACE.BOTTOM) && dataDimensions.containsKey(BLOCK_FACE.SIDES)) {
+                            dataDimensions.put(BLOCK_FACE.BOTTOM, dataDimensions.get(BLOCK_FACE.SIDES));
+                        }
+                        if (!dataDimensions.containsKey(BLOCK_FACE.TOP) && dataDimensions.containsKey(BLOCK_FACE.SIDES)) {
+                            dataDimensions.put(BLOCK_FACE.TOP, dataDimensions.get(BLOCK_FACE.SIDES));
+                        }
                     }
 
                     dimensions.put(data, dataDimensions);
@@ -112,7 +114,7 @@ public class Default extends Block {
 
     @Override
     public String getBlockType() {
-        return "Default";
+        return "DEFAULT";
     }
 
     @Override
