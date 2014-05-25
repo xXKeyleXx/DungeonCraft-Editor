@@ -219,7 +219,7 @@ public class WarningDialog extends JFrame {
         }
 
         this.setSize(width, height);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setMinimumSize(new Dimension(width, height));
 
         centerDialogOnScreen();

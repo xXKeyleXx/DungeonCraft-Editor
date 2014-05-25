@@ -44,7 +44,6 @@ public class SpriteTool {
      */
     public static void drawSpriteAbsoluteXY(Texture texture, float x, float y) {
         //manager.bindTexture(spriteName);
-        //XRay.logger.debug(texture.getImage().getWidth() + " " + texture.getImage().getHeight());
 
         int width = texture.getImage().getWidth();
         int height = texture.getImage().getHeight();

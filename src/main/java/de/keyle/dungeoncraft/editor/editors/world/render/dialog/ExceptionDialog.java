@@ -291,7 +291,7 @@ public class ExceptionDialog extends JFrame {
         }
 
         this.setSize(FRAMEWIDTH, FRAMEHEIGHT);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setMinimumSize(new Dimension(FRAMEWIDTH, FRAMEHEIGHT));
 
         centerDialogOnScreen();

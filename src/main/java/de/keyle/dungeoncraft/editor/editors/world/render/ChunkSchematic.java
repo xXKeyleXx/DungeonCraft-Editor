@@ -64,7 +64,6 @@ public class ChunkSchematic {
             // Get the actual BlockType object
             block = MinecraftConstants.getBlockType(t);
             if (block == null) {
-                //XRay.logger.debug("Unknown block ID: " + t);
                 block = BlockTypes.unknownBlock;
                 data = 0;
             } else {
@@ -272,6 +271,6 @@ public class ChunkSchematic {
     }
 
     public Block getBlock(short blockID) {
-        return  MinecraftConstants.getBlockType(blockID);
+        return MinecraftConstants.getBlockType(blockID);
     }
 }

@@ -83,7 +83,6 @@ public class Texture {
     private int textureId = -1;
 
     public Texture(BufferedImage image) {
-        // XRay.logger.trace(image.hashCode());
         this.image = image;
         this.frameNum = -1;
         this.playTime = -1;

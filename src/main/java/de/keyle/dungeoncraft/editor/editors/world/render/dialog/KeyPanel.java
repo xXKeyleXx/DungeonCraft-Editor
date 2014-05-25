@@ -41,10 +41,6 @@ import static de.keyle.dungeoncraft.editor.editors.world.render.MinecraftConstan
  * will.
  */
 public class KeyPanel extends JPanel {
-    private String beforeStr;
-    private String keyStr;
-    private String afterStr;
-
     private KeyHelpDialog kh;
 
     private KEY_ACTION action;
@@ -106,14 +102,14 @@ public class KeyPanel extends JPanel {
      */
     public void setBoundKey(int bound_key) {
         this.bound_key = bound_key;
-        this.keyStr = getKeyEnglish(bound_key);
-        this.beforeStr = getKeyExtraBefore(this.action);
-        this.afterStr = getKeyExtraAfter(this.action, bound_key);
+        String keyStr = getKeyEnglish(bound_key);
+        String beforeStr = getKeyExtraBefore(this.action);
+        String afterStr = getKeyExtraAfter(this.action, bound_key);
 
-        this.beforeLabel.setText(this.beforeStr);
-        this.afterLabel.setText(this.afterStr);
-        this.keyLabel.setText(this.keyStr);
-        this.keyEdit.setText(this.keyStr);
+        this.beforeLabel.setText(beforeStr);
+        this.afterLabel.setText(afterStr);
+        this.keyLabel.setText(keyStr);
+        this.keyEdit.setText(keyStr);
     }
 
     /**

@@ -97,18 +97,11 @@ public class MinecraftConstants {
         SPEED_DECREASE(ACTION_CAT.MOVEMENT, Keyboard.KEY_RSHIFT, "Move Slower"),
 
         MOVE_TO_SPAWN(ACTION_CAT.CAMERA, Keyboard.KEY_HOME, "Jump to Spawnpoint"),
-        MOVE_TO_PLAYER(ACTION_CAT.CAMERA, Keyboard.KEY_END, "Jump to Player Position"),
-        MOVE_NEXT_CAMERAPOS(ACTION_CAT.CAMERA, Keyboard.KEY_INSERT, "Jump to Next Camera Preset"),
-        MOVE_PREV_CAMERAPOS(ACTION_CAT.CAMERA, Keyboard.KEY_DELETE, "Jump to Previous Camera Preset"),
         JUMP(ACTION_CAT.CAMERA, Keyboard.KEY_J, "Jump to Abritrary Position"),
-        JUMP_NEAREST(ACTION_CAT.CAMERA, Keyboard.KEY_MINUS, "Jump to nearest existing chunk"),
-        DIMENSION_NEXT(ACTION_CAT.CAMERA, Keyboard.KEY_N, "Jump to Next Dimension"),
-        DIMENSION_PREV(ACTION_CAT.CAMERA, Keyboard.KEY_P, "Jump to Previous Dimension"),
         TOGGLE_CAMERA_LOCK(ACTION_CAT.CAMERA, Keyboard.KEY_L, "Lock Camera to Vertical Axis"),
 
         TOGGLE_REGION_HIGHLIGHTING(ACTION_CAT.RENDERING, Keyboard.KEY_H, "Toggle Region Highlight Glow"),
         TOGGLE_FULLBRIGHT(ACTION_CAT.RENDERING, Keyboard.KEY_F, "Toggle Fullbright"),
-        TOGGLE_BEDROCK(ACTION_CAT.RENDERING, Keyboard.KEY_B, "Toggle Bedrock"),
         TOGGLE_WATER(ACTION_CAT.RENDERING, Keyboard.KEY_T, "Toggle Water"),
         LIGHT_INCREASE(ACTION_CAT.RENDERING, Keyboard.KEY_ADD, "Increase Lighting Range"),
         LIGHT_DECREASE(ACTION_CAT.RENDERING, Keyboard.KEY_SUBTRACT, "Decrease Lighting Range"),
@@ -118,8 +111,6 @@ public class MinecraftConstants {
         CHUNK_RANGE_4(ACTION_CAT.RENDERING, Keyboard.KEY_NUMPAD4, "Visibility Range 4"),
         CHUNK_RANGE_5(ACTION_CAT.RENDERING, Keyboard.KEY_NUMPAD5, "Visibility Range 5"),
         CHUNK_RANGE_6(ACTION_CAT.RENDERING, Keyboard.KEY_NUMPAD6, "Visibility Range 6"),
-        TOGGLE_ACCURATE_GRASS(ACTION_CAT.RENDERING, Keyboard.KEY_G, "Toggle Accurate Grass"),
-        TOGGLE_BETA19_FENCES(ACTION_CAT.RENDERING, Keyboard.KEY_C, "Toggle Beta 1.9 Fences"),
         TOGGLE_CHUNK_BORDERS(ACTION_CAT.RENDERING, Keyboard.KEY_U, "Toggle Chunk Borders"),
 
         TOGGLE_POSITION_INFO(ACTION_CAT.OTHER, Keyboard.KEY_K, "Toggle Level Info"),

@@ -283,9 +283,7 @@ public class Renderer {
     }
 
     /**
-     * Renders a rectangular decoration.  This will require an entry in XRay.decorationStats for
-     * the given textureId.  Optionally pass in some parameters for rotation, currently used
-     * for torches and levers.
+     * Renders a rectangular decoration.
      *
      * @param dimensions     Dimension of the Texture
      * @param x              Block X

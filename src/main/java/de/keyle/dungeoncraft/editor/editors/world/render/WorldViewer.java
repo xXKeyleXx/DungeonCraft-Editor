@@ -170,7 +170,7 @@ public class WorldViewer extends Thread {
     private boolean renderChunkBorders = false;
 
     private HashMap<KEY_ACTION, Integer> key_mapping;
-    private WorldViewerProperties xray_properties;
+    private WorldViewerProperties world_viewer_properties;
 
     public boolean jump_dialog_trigger = false;
 
@@ -207,11 +207,11 @@ public class WorldViewer extends Thread {
             ArrayList<String> errors = loadPreferences();
             if (errors.size() > 0) {
                 StringBuilder errorText = new StringBuilder();
-                errorText.append("The following errors were encountered while loading xray.properties:\n\n");
+                errorText.append("The following errors were encountered while loading dungeon-craft-editor.properties:\n\n");
                 for (String error : errors) {
                     errorText.append(" * ").append(error).append("\n");
                 }
-                WarningDialog.presentDialog("Errors in xray.properties", errorText.toString(), false, 600, 250);
+                WarningDialog.presentDialog("Errors in dungeon-craft-editor.properties", errorText.toString(), false, 600, 250);
             }
 
             // prompt for the resolution and initialize the window
@@ -312,13 +312,13 @@ public class WorldViewer extends Thread {
      * not overridden somewhere.
      */
     public ArrayList<String> loadPreferences() {
-        xray_properties = new WorldViewerProperties();
+        world_viewer_properties = new WorldViewerProperties();
         ArrayList<String> errors = new ArrayList<String>();
         String error;
 
         // First load our defaults into the prefs object
         for (KEY_ACTION action : KEY_ACTION.values()) {
-            xray_properties.setProperty("KEY_" + action.toString(), Keyboard.getKeyName(this.key_mapping.get(action)));
+            world_viewer_properties.setProperty("KEY_" + action.toString(), Keyboard.getKeyName(this.key_mapping.get(action)));
         }
 
         // Here's where we would load from our prefs file
@@ -326,7 +326,7 @@ public class WorldViewer extends Thread {
         File prefs = MinecraftEnvironment.getWorldViewerConfigFile();
         if (prefs.exists() && prefs.canRead()) {
             try {
-                xray_properties.load(new FileInputStream(prefs));
+                world_viewer_properties.load(new FileInputStream(prefs));
             } catch (IOException e) {
                 // Just report and continue
                 logger.warning("Could not load configuration file: " + e.toString());
@@ -338,7 +338,7 @@ public class WorldViewer extends Thread {
         int newkey;
         String prefskey;
         for (KEY_ACTION action : KEY_ACTION.values()) {
-            prefskey = xray_properties.getProperty("KEY_" + action.toString());
+            prefskey = world_viewer_properties.getProperty("KEY_" + action.toString());
             if (prefskey.equalsIgnoreCase("none")) {
                 // If the user actually specified "NONE" in the config file,
                 // unbind the key
@@ -371,7 +371,7 @@ public class WorldViewer extends Thread {
      */
     public void updateKeyMapping() {
         for (Map.Entry<KEY_ACTION, Integer> entry : key_mapping.entrySet()) {
-            xray_properties.setProperty("KEY_" + entry.getKey().toString(), Keyboard.getKeyName(entry.getValue()));
+            world_viewer_properties.setProperty("KEY_" + entry.getKey().toString(), Keyboard.getKeyName(entry.getValue()));
         }
         this.savePreferences();
 
@@ -390,7 +390,7 @@ public class WorldViewer extends Thread {
     public void savePreferences() {
         File prefs = MinecraftEnvironment.getWorldViewerConfigFile();
         try {
-            xray_properties.store(new FileOutputStream(prefs), "Feel free to edit.  Use \"NONE\" to disable an action.  Keys taken from http://www.lwjgl.org/javadoc/constant-values.html#org.lwjgl.input.Keyboard.KEY_1");
+            world_viewer_properties.store(new FileOutputStream(prefs), "Feel free to edit.  Use \"NONE\" to disable an action.  Keys taken from http://www.lwjgl.org/javadoc/constant-values.html#org.lwjgl.input.Keyboard.KEY_1");
         } catch (IOException e) {
             // Just report on the console and move on
             logger.warning("Could not save preferences to file: " + e.toString());
@@ -825,11 +825,6 @@ public class WorldViewer extends Thread {
                 } else if (key == key_mapping.get(KEY_ACTION.KEY_HELP)) {
                     // Launch the dialog
                     launchKeyHelpDialog();
-                } else if (key == key_mapping.get(KEY_ACTION.JUMP_NEAREST)) {
-                    // Jump to the nearest actually-loaded chunk
-                    // This actually only launches a dialog if there's no map
-                    // data anywhere in our dir.
-                    jumpToNearestLoaded();
                 }
             }
         }
@@ -847,19 +842,6 @@ public class WorldViewer extends Thread {
         // check to see if we should be jumping to a new position
         if (this.jump_dialog_trigger) {
             moveCameraToArbitraryPosition();
-        }
-    }
-
-    /**
-     * Jump to the nearest chunk that actually has data.  We're playing some stupid games with
-     * JumpDialog to do this.
-     * TODO: Stop playing stupid games with JumpDialog.
-     */
-    private void jumpToNearestLoaded() {
-        if (level == emptyLevel) {
-            JumpDialog.selectedX = 0;
-            JumpDialog.selectedZ = 0;
-            this.moveCameraToArbitraryPosition();
         }
     }
 
@@ -1199,17 +1181,17 @@ public class WorldViewer extends Thread {
             Font outFont = DETAILVALUEFONT;
             BufferedImage outOfRangeImage = new BufferedImage(1024, 256, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2d = outOfRangeImage.createGraphics();
-            int key = this.key_mapping.get(KEY_ACTION.JUMP_NEAREST);
+            int key = this.key_mapping.get(KEY_ACTION.MOVE_TO_SPAWN);
             String message = "You are out of the existing map area.";
             String message2;
             if (key != Keyboard.KEY_NONE) {
-                message2 = "Press '" + MinecraftConstants.getKeyFullText(KEY_ACTION.JUMP_NEAREST, key) + "' to jump to the nearest valid chunk.";
+                message2 = "Press '" + MinecraftConstants.getKeyFullText(KEY_ACTION.MOVE_TO_SPAWN, key) + "' to jump to the spawn.";
             } else {
                 key = this.key_mapping.get(KEY_ACTION.JUMP);
                 if (key != Keyboard.KEY_NONE) {
                     message2 = "Press '" + MinecraftConstants.getKeyFullText(KEY_ACTION.JUMP, key) + "' to jump to any arbitrary location.";
                 } else {
-                    message2 = "Assign a key to the 'Jump Nearest' action for an easy way to jump to the nearest valid chunk.";
+                    message2 = "Assign a key to the 'Jump to Spawnpoint' action for an easy way to jump to the spawnpoint.";
                 }
             }
             Rectangle2D bounds = outFont.getStringBounds(message, g2d.getFontRenderContext());
@@ -1349,14 +1331,14 @@ public class WorldViewer extends Thread {
      * than here, because they only actually apply on a per-world basis.
      */
     private void saveOptionStates() {
-        xray_properties.setBooleanProperty("STATE_WATER", toggle.render_water);
-        xray_properties.setBooleanProperty("STATE_CAMERA_LOCK", camera_lock);
-        xray_properties.setBooleanProperty("STATE_LIGHTING", lightMode);
-        xray_properties.setBooleanProperty("STATE_LEVEL_INFO", levelInfoToggle);
-        xray_properties.setBooleanProperty("STATE_RENDER_DETAILS", renderDetailsToggle);
-        xray_properties.setBooleanProperty("STATE_ACCURATE_GRASS", accurateGrass);
-        xray_properties.setBooleanProperty("STATE_CHUNK_BORDERS", renderChunkBorders);
-        xray_properties.setIntProperty("STATE_LIGHT_LEVEL", currentLightLevel);
+        world_viewer_properties.setBooleanProperty("STATE_WATER", toggle.render_water);
+        world_viewer_properties.setBooleanProperty("STATE_CAMERA_LOCK", camera_lock);
+        world_viewer_properties.setBooleanProperty("STATE_LIGHTING", lightMode);
+        world_viewer_properties.setBooleanProperty("STATE_LEVEL_INFO", levelInfoToggle);
+        world_viewer_properties.setBooleanProperty("STATE_RENDER_DETAILS", renderDetailsToggle);
+        world_viewer_properties.setBooleanProperty("STATE_ACCURATE_GRASS", accurateGrass);
+        world_viewer_properties.setBooleanProperty("STATE_CHUNK_BORDERS", renderChunkBorders);
+        world_viewer_properties.setIntProperty("STATE_LIGHT_LEVEL", currentLightLevel);
         savePreferences();
     }
 
@@ -1366,14 +1348,14 @@ public class WorldViewer extends Thread {
      * is loaded, not when the application starts up.
      */
     private void loadOptionStates() {
-        toggle.render_water = xray_properties.getBooleanProperty("STATE_WATER", toggle.render_water);
-        camera_lock = xray_properties.getBooleanProperty("STATE_CAMERA_LOCK", camera_lock);
-        lightMode = xray_properties.getBooleanProperty("STATE_LIGHTING", lightMode);
-        levelInfoToggle = xray_properties.getBooleanProperty("STATE_LEVEL_INFO", levelInfoToggle);
-        renderDetailsToggle = xray_properties.getBooleanProperty("STATE_RENDER_DETAILS", renderDetailsToggle);
-        accurateGrass = xray_properties.getBooleanProperty("STATE_ACCURATE_GRASS", accurateGrass);
-        renderChunkBorders = xray_properties.getBooleanProperty("STATE_CHUNK_BORDERS", renderChunkBorders);
-        currentLightLevel = xray_properties.getIntProperty("STATE_LIGHT_LEVEL", currentLightLevel);
+        toggle.render_water = world_viewer_properties.getBooleanProperty("STATE_WATER", toggle.render_water);
+        camera_lock = world_viewer_properties.getBooleanProperty("STATE_CAMERA_LOCK", camera_lock);
+        lightMode = world_viewer_properties.getBooleanProperty("STATE_LIGHTING", lightMode);
+        levelInfoToggle = world_viewer_properties.getBooleanProperty("STATE_LEVEL_INFO", levelInfoToggle);
+        renderDetailsToggle = world_viewer_properties.getBooleanProperty("STATE_RENDER_DETAILS", renderDetailsToggle);
+        accurateGrass = world_viewer_properties.getBooleanProperty("STATE_ACCURATE_GRASS", accurateGrass);
+        renderChunkBorders = world_viewer_properties.getBooleanProperty("STATE_CHUNK_BORDERS", renderChunkBorders);
+        currentLightLevel = world_viewer_properties.getIntProperty("STATE_LIGHT_LEVEL", currentLightLevel);
     }
 
     /**

@@ -52,12 +52,11 @@ public class KeyHelpDialog
     private static final int FRAMEWIDTH = 540;
     private static final int FRAMEHEIGHT = 620;
 
-    private static String window_title = "X-Ray Keyboard Reference";
+    private static String window_title = "DungeonCraft Worldviewer Keyboard Reference";
     private JButton okButton;
     private JButton actionButton;
 
     private GridBagLayout gridBagLayoutManager;
-    private JPanel basicPanel;
     private JLabel statusLabel;
     private String defaultStatusText;
 
@@ -645,7 +644,7 @@ public class KeyHelpDialog
     }
 
     /**
-     * Saves the mapping stored in our dialog to the master XRay class, and write out our
+     * Saves the mapping stored in our dialog to the master WorldViewer class, and write out our
      * properties file if need be.
      */
     private void saveMapping() {
@@ -659,7 +658,6 @@ public class KeyHelpDialog
             bound_key_new = panel.getBoundKey();
             if (bound_key_orig != bound_key_new) {
                 changed = true;
-                //XRay.logger.debug("Action " + action.toString() + " has changed from " + Keyboard.getKeyName(bound_key_orig) + " to " + Keyboard.getKeyName(bound_key_new));
                 this.key_mapping.put(action, bound_key_new);
             }
         }

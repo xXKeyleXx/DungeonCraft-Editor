@@ -49,7 +49,7 @@ public class JumpDialog extends JFrame {
 
     private GridBagLayout gridBagLayoutManager;
 
-    private static WorldViewer xray_obj;
+    private static WorldViewer worldViewer;
     private static boolean dialog_showing = false;
     private static JumpDialog jump_dialog;
 
@@ -149,9 +149,6 @@ public class JumpDialog extends JFrame {
         addComponent(basicPanel, xLabel, c);
 
         // Add the X spinner
-        // TODO: Minecaft coordinates are technically Longs, so we should be using that.  However,
-        // X-Ray only supports up to Integer values, and Minecraft itself bugs way out long before
-        // then anyway.  So we should be okay regardless.
         xSpinnerModel = new SpinnerNumberModel(0, Integer.MIN_VALUE, Integer.MAX_VALUE, 1);
         JSpinner xSpinner = new JSpinner(xSpinnerModel);
         c.weightx = flist;
@@ -273,7 +270,7 @@ public class JumpDialog extends JFrame {
      * Synchronizes our spinbuttons to the current camera position.
      */
     private void syncToCamera() {
-        FirstPersonCameraController camera = JumpDialog.xray_obj.getCamera();
+        FirstPersonCameraController camera = JumpDialog.worldViewer.getCamera();
         int cam_x = -(int) camera.getPosition().x;
         int cam_z = -(int) camera.getPosition().z;
         if (chunkButton.isSelected()) {
@@ -291,7 +288,7 @@ public class JumpDialog extends JFrame {
         setSelectedValues();
         setVisible(false);
         dispose();
-        JumpDialog.xray_obj.jump_dialog_trigger = true;
+        JumpDialog.worldViewer.jump_dialog_trigger = true;
         JumpDialog.dialog_showing = false;
         synchronized (JumpDialog.this) {
             JumpDialog.this.notify();
@@ -374,9 +371,9 @@ public class JumpDialog extends JFrame {
      *
      * @param windowName the title of the dialog
      */
-    public static void presentDialog(String windowName, WorldViewer xray_obj) {
+    public static void presentDialog(String windowName, WorldViewer viewer) {
         if (!dialog_showing) {
-            JumpDialog.xray_obj = xray_obj;
+            JumpDialog.worldViewer = viewer;
             JumpDialog.dialog_showing = true;
             JumpDialog.jump_dialog = new JumpDialog(windowName);
         }
