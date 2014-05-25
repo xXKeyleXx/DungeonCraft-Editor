@@ -47,6 +47,9 @@ public class BlockTypes {
         blockTypes.put("SIGNPOST", Signpost.class);
         blockTypes.put("END_PORTAL_FRAME", EndPortalFrame.class);
         blockTypes.put("FENCE",Fence.class);
+        blockTypes.put("LADDER", Ladder.class);
+        blockTypes.put("VINE", Vine.class);
+        blockTypes.put("LEVER", Lever.class);
         //blockTypes.put("BED", Bed.class);
         //blockTypes.put("BREWING_STAND", BrewingStand.class);
         //blockTypes.put("BUTTON", Button.class);
