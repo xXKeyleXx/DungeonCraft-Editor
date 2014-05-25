@@ -35,7 +35,7 @@ public class BlockTypes {
 
     public BlockTypes(JSONObject blockTypeObject) {
         blockTypes.put("DEFAULT", Default.class);
-        blockTypes.put("UNKNWON", Unknown.class);
+        blockTypes.put("UNKNOWN", Unknown.class);
         blockTypes.put("DECORATION_CROSS", DecorationCross.class);
         blockTypes.put("LOG", Log.class);
         blockTypes.put("END_PORTAL", EndPortal.class);
@@ -46,6 +46,7 @@ public class BlockTypes {
         blockTypes.put("ENCHANTMENT_TABLE", EnchantmentTable.class);
         blockTypes.put("SIGNPOST", Signpost.class);
         blockTypes.put("END_PORTAL_FRAME", EndPortalFrame.class);
+        blockTypes.put("FENCE",Fence.class);
         //blockTypes.put("BED", Bed.class);
         //blockTypes.put("BREWING_STAND", BrewingStand.class);
         //blockTypes.put("BUTTON", Button.class);

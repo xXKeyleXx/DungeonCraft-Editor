@@ -270,4 +270,8 @@ public class ChunkSchematic {
     public int getMaxLength() {
         return maxLength;
     }
+
+    public Block getBlock(short blockID) {
+        return  MinecraftConstants.getBlockType(blockID);
+    }
 }
