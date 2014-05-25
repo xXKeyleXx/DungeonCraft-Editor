@@ -41,23 +41,17 @@ public class EnchantmentTable extends Block {
 
     @Override
     public void readTextures(JSONObject textures) throws BlockTypeLoadException {
-        if (!textures.containsKey("0")) {
-            throw new BlockTypeLoadException(id + " is missing \"0\" data.");
+        if (textures.containsKey("BOTTOM")) {
+            JSONArray bottomArray = (JSONArray) textures.get("BOTTOM");
+            bottom = new TextureDimensions(this.id, (byte) 0, Integer.parseInt(bottomArray.get(0).toString()), Integer.parseInt(bottomArray.get(1).toString()), TEX16, TEX_Y, false);
         }
-        if (textures.get("0") instanceof JSONObject) {
-            JSONObject textureObject = (JSONObject) textures.get("0");
-            if (textureObject.containsKey("BOTTOM")) {
-                JSONArray feedEnd = (JSONArray) textureObject.get("BOTTOM");
-                bottom = new TextureDimensions(this.id, (byte) 0, Integer.parseInt(feedEnd.get(0).toString()), Integer.parseInt(feedEnd.get(1).toString()), TEX16, TEX_Y, false);
-            }
-            if (textureObject.containsKey("TOP")) {
-                JSONArray feedEnd = (JSONArray) textureObject.get("TOP");
-                top = new TextureDimensions(this.id, (byte) 0, Integer.parseInt(feedEnd.get(0).toString()), Integer.parseInt(feedEnd.get(1).toString()), TEX16, TEX_Y, false);
-            }
-            if (textureObject.containsKey("SIDE")) {
-                JSONArray feedEnd = (JSONArray) textureObject.get("SIDE");
-                side = new TextureDimensions(this.id, (byte) 0, Integer.parseInt(feedEnd.get(0).toString()), Integer.parseInt(feedEnd.get(1).toString()), TEX16, TEX_Y * 0.75f, false);
-            }
+        if (textures.containsKey("TOP")) {
+            JSONArray topArray = (JSONArray) textures.get("TOP");
+            top = new TextureDimensions(this.id, (byte) 0, Integer.parseInt(topArray.get(0).toString()), Integer.parseInt(topArray.get(1).toString()), TEX16, TEX_Y, false);
+        }
+        if (textures.containsKey("SIDE")) {
+            JSONArray sideArray = (JSONArray) textures.get("SIDE");
+            side = new TextureDimensions(this.id, (byte) 0, Integer.parseInt(sideArray.get(0).toString()), Integer.parseInt(sideArray.get(1).toString()), TEX16, TEX_Y * 0.75f, false);
         }
     }
 

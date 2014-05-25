@@ -1625,12 +1625,10 @@
             "idStr": "SIGNPOST",
             "name": "Sign",
             "texture": {
-                "0": {
-                    "FRONT": [
-                        5,
-                        0
-                    ]
-                }
+                "FRONT": [
+                    5,
+                    0
+                ]
             },
             "type": "SIGNPOST"
         },
@@ -2615,20 +2613,18 @@
             "name": "Table",
             "aka": "Enchantment Table",
             "texture": {
-                "0": {
-                    "TOP": [
-                        5,
-                        13
-                    ],
-                    "SIDE": [
-                        4,
-                        13
-                    ],
-                    "BOTTOM": [
-                        3,
-                        13
-                    ]
-                }
+                "TOP": [
+                    5,
+                    13
+                ],
+                "SIDE": [
+                    4,
+                    13
+                ],
+                "BOTTOM": [
+                    3,
+                    13
+                ]
             },
             "type": "ENCHANTMENT_TABLE"
         },
