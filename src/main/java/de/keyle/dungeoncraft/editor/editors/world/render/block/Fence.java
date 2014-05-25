@@ -60,7 +60,7 @@ public class Fence extends Block {
         Renderer.renderVertical(fence, x + fence_postsize + 0.5f, z - fence_postsize + 0.5f, x - fence_postsize + 0.5f, z - fence_postsize + 0.5f, y, 1f);
         Renderer.renderVertical(fence, x - fence_postsize + 0.5f, z - fence_postsize + 0.5f, x - fence_postsize + 0.5f, z + fence_postsize + 0.5f, y, 1f);
         Renderer.renderVertical(fence, x - fence_postsize + 0.5f, z + fence_postsize + 0.5f, x + fence_postsize + 0.5f, z + fence_postsize + 0.5f, y, 1f);
-        if (y == 255 || !chunk.getBlock(chunk.getAdjBlockId(x, y, z, Facing.UP)).isSolid()) {
+        if (y == 255 || chunk.getBlock(chunk.getAdjBlockId(x, y, z, Facing.UP))!= null && !chunk.getBlock(chunk.getAdjBlockId(x, y, z, Facing.UP)).isSolid()) {
             Renderer.renderHorizontal(fence, x + fence_postsize + 0.5f, z + fence_postsize + 0.5f, x - fence_postsize + 0.5f, z - fence_postsize + 0.5f, y +1f ,false);
         }
 
@@ -83,7 +83,7 @@ public class Fence extends Block {
             Renderer.renderVertical(fence, x - fence_postsize + 0.5f, z - fence_postsize_h + 0.5f, x - 1f + fence_postsize + 0.5f, z - fence_postsize_h + 0.5f, slat_start + fence_top_slat_offset, fence_slat_height);
             Renderer.renderHorizontal(fence, x - fence_postsize + 0.5f, z + fence_postsize_h + 0.5f, x - 1f + fence_postsize + 0.5f, z - fence_postsize_h + 0.5f, slat_start + fence_top_slat_offset, false);
             Renderer.renderHorizontal(fence, x - fence_postsize + 0.5f, z + fence_postsize_h + 0.5f, x - 1f + fence_postsize + 0.5f, z - fence_postsize_h + 0.5f, slat_start + fence_top_slat_offset + fence_slat_height, false);
-        } else if (adj_id > -1 && chunk.getBlock(adj_id).isSolid()) {
+        } else if (adj_id > -1 && chunk.getBlock(adj_id)!= null && chunk.getBlock(adj_id).isSolid()) {
             // Solid block to the West
 
             // Bottom slat
@@ -139,7 +139,7 @@ public class Fence extends Block {
                     Renderer.renderHorizontal(fence, x + fence_postsize + 0.5f, z + fence_postsize_h + 0.5f, x + .5f, z - fence_postsize_h + 0.5f, slat_start + fence_top_slat_offset + fence_slat_height,  false);
                 }
             }
-        } else if (adj_id > -1 && chunk.getBlock(adj_id).isSolid()) {
+        } else if (adj_id > -1 && chunk.getBlock(adj_id)!= null && chunk.getBlock(adj_id).isSolid()) {
             // Solid block to the East
 
             // Bottom slat
@@ -169,7 +169,7 @@ public class Fence extends Block {
             Renderer.renderVertical(fence, x - fence_postsize_h + 0.5f, z - fence_postsize + 0.5f, x - fence_postsize_h + 0.5f, z - 1f + fence_postsize + 0.5f, slat_start + fence_top_slat_offset, fence_slat_height);
             Renderer.renderHorizontal(fence, x + fence_postsize_h + 0.5f, z - fence_postsize + 0.5f, x - fence_postsize_h + 0.5f, z - 1f + fence_postsize + 0.5f, slat_start + fence_top_slat_offset, true);
             Renderer.renderHorizontal(fence, x + fence_postsize_h + 0.5f, z - fence_postsize + 0.5f, x - fence_postsize_h + 0.5f, z - 1f + fence_postsize + 0.5f, slat_start + fence_top_slat_offset + fence_slat_height, true);
-        } else if (adj_id > -1 && chunk.getBlock(adj_id).isSolid()) {
+        } else if (adj_id > -1 && chunk.getBlock(adj_id)!= null && chunk.getBlock(adj_id).isSolid()) {
             // Solid block to the North
 
             // Bottom slat
@@ -225,7 +225,7 @@ public class Fence extends Block {
                     Renderer.renderHorizontal(fence, x + fence_postsize_h + 0.5f, z + fence_postsize + 0.5f, x - fence_postsize_h + 0.5f, z + .5f, slat_start + fence_top_slat_offset + fence_slat_height, true);
                 }
             }
-        } else if (adj_id > -1 && chunk.getBlock(adj_id).isSolid()) {
+        } else if (adj_id > -1 && chunk.getBlock(adj_id)!= null && chunk.getBlock(adj_id).isSolid()) {
             // Solid block to the South
 
             // Bottom slat
