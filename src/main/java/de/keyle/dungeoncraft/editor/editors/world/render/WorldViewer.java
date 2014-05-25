@@ -59,14 +59,6 @@ import java.util.logging.Logger;
 import static de.keyle.dungeoncraft.editor.editors.world.render.MinecraftConstants.*;
 
 public class WorldViewer extends Thread {
-
-    // number of chunks around the camera which are visible (Square)
-    private int visible_chunk_range = 5;
-
-    private static final int[] CHUNK_RANGES_KEYS = new int[6];
-    private static final int[] CHUNK_RANGES = new int[]{3, 4, 5, 6, 7, 8};
-    private int currentChunkRange = 4;
-
     // set to true when the program is finished
     private boolean done = false;
 
@@ -79,10 +71,6 @@ public class WorldViewer extends Thread {
     // our camera
     private FirstPersonCameraController camera;
     private boolean camera_lock = false;
-
-    // the current mouseX and mouseY on the screen
-    private int mouseX;
-    private int mouseY;
 
     // the sprite sheet for all textures
     public Texture minecraftTextures;
@@ -120,7 +108,6 @@ public class WorldViewer extends Thread {
     // Toggles that need to be available to the renderers
     public static class RenderToggles {
         public boolean render_water = true;
-        public boolean beta19_fences = true;
         public HIGHLIGHT_TYPE highlightRegions = defaultHighlightRegion;
     }
 
@@ -130,17 +117,8 @@ public class WorldViewer extends Thread {
     private MinecraftLevel level;
     private MinecraftLevel emptyLevel;
 
-    // the current block (universal coordinate) where the camera is hovering on
-    private int levelBlockX, levelBlockZ;
-
     // The same, but as a float, to more accurately show what Minecraft itself shows
     private float reportBlockX, reportBlockZ;
-
-    // the current and previous chunk coordinates where the camera is hovering on
-    private int currentLevelX, currentLevelZ;
-
-    // wheter we need to reload the world
-    private boolean needToReloadWorld = false;
 
     // the width and height of the current screen resolution
     private int screenWidth, screenHeight;
@@ -195,9 +173,8 @@ public class WorldViewer extends Thread {
     private WorldViewerProperties xray_properties;
 
     public boolean jump_dialog_trigger = false;
-    public int open_dialog_trigger = 0;
 
-    public static Logger logger = Logger.getLogger("XRay.class");
+    public static Logger logger = Logger.getLogger("WorldViewer");
 
     private volatile boolean loadNewSchematic = false;
     private volatile boolean resize = false;
@@ -379,20 +356,11 @@ public class WorldViewer extends Thread {
             this.key_mapping.put(action, newkey);
         }
 
-        // Populate our key ranges
-        int i;
-        for (i = 0; i < CHUNK_RANGES.length; i++) {
-            CHUNK_RANGES_KEYS[i] = this.key_mapping.get(KEY_ACTION.valueOf("CHUNK_RANGE_" + (i + 1)));
-        }
-
         // Read in our saved option states, if we have 'em
         this.loadOptionStates();
 
         // Save the file immediately, in case we picked up new defaults which weren't present previously
         this.savePreferences();
-
-        // Force our chunk-rendering distance to our selected value
-        this.setChunkRange(this.currentChunkRange);
 
         // Return
         return errors;
@@ -532,10 +500,6 @@ public class WorldViewer extends Thread {
         } catch (IOException e1) {
             e1.printStackTrace();
         }
-
-        // level data
-        levelBlockX = Integer.MIN_VALUE;
-        levelBlockZ = Integer.MIN_VALUE;
     }
 
     /**
@@ -609,20 +573,6 @@ public class WorldViewer extends Thread {
         Display.create();
         screenWidth = worldOverviewEditor.canvas.getWidth();
         screenHeight = worldOverviewEditor.canvas.getHeight();
-    }
-
-    private void setChunkRange(int n) {
-        if (n >= CHUNK_RANGES.length) {
-            n = CHUNK_RANGES.length - 1;
-        }
-        if (n <= 0) {
-            n = 0;
-        }
-        if (n != currentChunkRange) {
-            this.needToReloadWorld = true;
-        }
-        this.currentChunkRange = n;
-        this.visible_chunk_range = CHUNK_RANGES[n];
     }
 
     /**
@@ -739,9 +689,9 @@ public class WorldViewer extends Thread {
         int key;
 
         // distance in mouse movement from the last getDX() call.
-        mouseX = Mouse.getDX();
+        int mouseX = Mouse.getDX();
         // distance in mouse movement from the last getDY() call.
-        mouseY = Mouse.getDY();
+        int mouseY = Mouse.getDY();
 
         // we are on the main world screen or the level loading screen update the camera (but only if the mouse is grabbed)
         if (Mouse.isGrabbed()) {
@@ -756,7 +706,7 @@ public class WorldViewer extends Thread {
 
         // Speed shifting
         if (Mouse.isButtonDown(0) || Keyboard.isKeyDown(key_mapping.get(KEY_ACTION.SPEED_INCREASE))) {
-            MOVEMENT_SPEED = 30.0f;
+            MOVEMENT_SPEED = 50.0f;
         } else if (Mouse.isButtonDown(1) || Keyboard.isKeyDown(key_mapping.get(KEY_ACTION.SPEED_DECREASE))) {
             MOVEMENT_SPEED = 3.0f;
         } else {
@@ -859,30 +809,6 @@ public class WorldViewer extends Thread {
                         done = true;
                     }
                 }
-                /*
-                else if (key == Keyboard.KEY_P)
-				{
-					// Temp routine to write the minimap out to a PNG (for debugging purposes)
-					BufferedImage bi = minimapTexture.getImage();
-					try {
-						ImageIO.write(bi, "PNG", new File("/home/pez/xray.png"));
-						logger.info("Wrote minimap to disk.");
-					}
-					catch (Exception e)
-					{
-						// whatever
-					}
-				}
-				 */
-                else {
-                    // Handle changing chunk ranges (how far out we draw from the camera
-                    for (int i = 0; i < CHUNK_RANGES.length; i++) {
-                        if (key == CHUNK_RANGES_KEYS[i]) {
-                            setChunkRange(i);
-                            updateRenderDetails();
-                        }
-                    }
-                }
             } else {
                 // Here are keys which we process once they're RELEASED.  The reason for
                 // this is because if we handle it and launch the dialog on the key
@@ -983,9 +909,6 @@ public class WorldViewer extends Thread {
         // Now do various passes
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glColor3f(1.0f, 1.0f, 1.0f);
-        int last_tex = -1;
-        int i;
-
         // Now our regular blocks
 
         //ToDo get texture id
@@ -1050,26 +973,11 @@ public class WorldViewer extends Thread {
             }
             GL11.glEnable(GL11.GL_DEPTH_TEST);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            last_tex = -1;
         }
 
         setLightLevel();
 
         GL11.glPopMatrix();
-
-        /*
-        // Stuff
-        if (currChunk == null) {
-            int x = (int) (Display.getWidth() - outOfRangeWidth) / 2;
-            // TODO: "104" comes from barHeight*2-20 from drawMineralToggle(), should be controlled
-            // with constants
-            int y = Display.getHeight() - (int) outOfRangeHeight - 104;
-            setOrthoOn(); // 2d mode
-            this.drawBgBox((float) x, (float) y, (float) outOfRangeWidth, (float) outOfRangeHeight);
-            SpriteTool.drawSpriteAbsoluteXY(outOfRangeTexture, x, y);
-            setOrthoOff(); // back to 3d mode
-        }
-        */
 
         // draw the user interface (fps and map)
         drawUI();
@@ -1118,8 +1026,8 @@ public class WorldViewer extends Thread {
         g.setColor(Color.WHITE);
         g.fillRect(2, 2, 124, levelInfoTexture_h - 4);
         g.setFont(ARIALFONT);
-        int chunkX = MinecraftLevel.getChunkX(levelBlockX);
-        int chunkZ = MinecraftLevel.getChunkZ(levelBlockZ);
+        int chunkX = -MinecraftLevel.getChunkX((int) camera.getPosition().getX());
+        int chunkZ = -MinecraftLevel.getChunkZ((int) camera.getPosition().getZ());
         g.setColor(Color.BLACK);
         g.drawString("Chunk X:", labelX, 22);
         g.setColor(Color.RED.darker());
@@ -1253,8 +1161,6 @@ public class WorldViewer extends Thread {
             infoboxSlider(g, x_off, line_count * line_h, "Light Level:", Color.BLACK, DETAILFONT, line_h, 90, currentLightLevel, lightLevelEnd.length);
         }
         line_count++;
-        infoboxSlider(g, x_off, line_count * line_h, "Render Dist:", Color.BLACK, DETAILFONT, line_h, 90, currentChunkRange, CHUNK_RANGES.length);
-        line_count++;
         infoboxTextLabel(g, x_off, line_count * line_h, "Region Highlight: ", Color.BLACK, DETAILFONT, toggle.highlightRegions.reportText, toggle.highlightRegions.reportColor, DETAILVALUEFONT);
         if (!toggle.render_water) {
             line_count++;
@@ -1267,10 +1173,6 @@ public class WorldViewer extends Thread {
         if (camera_lock) {
             line_count++;
             infoboxTextLabel(g, x_off, line_count * line_h, "Vertical Lock: ", Color.BLACK, DETAILFONT, "On", Color.green.darker(), DETAILVALUEFONT);
-        }
-        if (!toggle.beta19_fences) {
-            line_count++;
-            infoboxTextLabel(g, x_off, line_count * line_h, "\"New\" Fences: ", Color.BLACK, DETAILFONT, "Off", Color.green.darker(), DETAILVALUEFONT);
         }
 
         // Add a note about our keyboard reference, since we have that now.
@@ -1352,56 +1254,6 @@ public class WorldViewer extends Thread {
         GL11.glColor4f(1.0f, 1.0f, 1.0f, .7f);
         SpriteTool.drawCurrentSprite(0, 48, renderDetails_w, cur_renderDetails_h, 0, 0, renderDetails_w / 256f, cur_renderDetails_h / 256f);
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1f);
-    }
-
-    /**
-     * Draws a 2d GL box over which we can show some info which might be
-     * difficult to make out otherwise
-     *
-     * @param bgX      X coordinate to draw to
-     * @param bgY      Y coordinate to draw to
-     * @param bgWidth  Width of the box
-     * @param bgHeight Height of the box
-     */
-    private void drawBgBox(float bgX, float bgY, float bgWidth, float bgHeight) {
-        this.drawBgBox(bgX, bgY, bgWidth, bgHeight, true);
-    }
-
-    /**
-     * Draws a 2d GL box over which we can show some info which might be
-     * difficult to make out otherwise
-     *
-     * @param bgX      X coordinate to draw to
-     * @param bgY      Y coordinate to draw to
-     * @param bgWidth  Width of the box
-     * @param bgHeight Height of the box
-     * @param flipTex  Whether to toggle 2D Textures or not
-     */
-    private void drawBgBox(float bgX, float bgY, float bgWidth, float bgHeight, boolean flipTex) {
-        GL11.glColor4f(0f, 0f, 0f, .6f);
-        if (flipTex) {
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
-        }
-        GL11.glPushMatrix();
-        GL11.glTranslatef(bgX, bgY, 0.0f);
-        GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
-        GL11.glVertex2f(0, 0);
-        GL11.glVertex2f(bgWidth, 0);
-        GL11.glVertex2f(0, bgHeight);
-        GL11.glVertex2f(bgWidth, bgHeight);
-        GL11.glEnd();
-        GL11.glColor4f(.4f, .4f, .4f, .9f);
-        GL11.glLineWidth(2);
-        GL11.glBegin(GL11.GL_LINE_LOOP);
-        GL11.glVertex2f(0, 0);
-        GL11.glVertex2f(bgWidth, 0);
-        GL11.glVertex2f(bgWidth, bgHeight);
-        GL11.glVertex2f(0, bgHeight);
-        GL11.glEnd();
-        GL11.glPopMatrix();
-        if (flipTex) {
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
-        }
     }
 
     /**
@@ -1498,14 +1350,12 @@ public class WorldViewer extends Thread {
      */
     private void saveOptionStates() {
         xray_properties.setBooleanProperty("STATE_WATER", toggle.render_water);
-        xray_properties.setBooleanProperty("STATE_BETA19_FENCES", toggle.beta19_fences);
         xray_properties.setBooleanProperty("STATE_CAMERA_LOCK", camera_lock);
         xray_properties.setBooleanProperty("STATE_LIGHTING", lightMode);
         xray_properties.setBooleanProperty("STATE_LEVEL_INFO", levelInfoToggle);
         xray_properties.setBooleanProperty("STATE_RENDER_DETAILS", renderDetailsToggle);
         xray_properties.setBooleanProperty("STATE_ACCURATE_GRASS", accurateGrass);
         xray_properties.setBooleanProperty("STATE_CHUNK_BORDERS", renderChunkBorders);
-        xray_properties.setIntProperty("STATE_CHUNK_RANGE", currentChunkRange);
         xray_properties.setIntProperty("STATE_LIGHT_LEVEL", currentLightLevel);
         savePreferences();
     }
@@ -1517,14 +1367,12 @@ public class WorldViewer extends Thread {
      */
     private void loadOptionStates() {
         toggle.render_water = xray_properties.getBooleanProperty("STATE_WATER", toggle.render_water);
-        toggle.beta19_fences = xray_properties.getBooleanProperty("STATE_BETA19_FENCES", toggle.beta19_fences);
         camera_lock = xray_properties.getBooleanProperty("STATE_CAMERA_LOCK", camera_lock);
         lightMode = xray_properties.getBooleanProperty("STATE_LIGHTING", lightMode);
         levelInfoToggle = xray_properties.getBooleanProperty("STATE_LEVEL_INFO", levelInfoToggle);
         renderDetailsToggle = xray_properties.getBooleanProperty("STATE_RENDER_DETAILS", renderDetailsToggle);
         accurateGrass = xray_properties.getBooleanProperty("STATE_ACCURATE_GRASS", accurateGrass);
         renderChunkBorders = xray_properties.getBooleanProperty("STATE_CHUNK_BORDERS", renderChunkBorders);
-        currentChunkRange = xray_properties.getIntProperty("STATE_CHUNK_RANGE", currentChunkRange);
         currentLightLevel = xray_properties.getIntProperty("STATE_LIGHT_LEVEL", currentLightLevel);
     }
 
