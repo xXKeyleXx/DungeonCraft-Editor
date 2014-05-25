@@ -50,20 +50,20 @@ public class Ladder extends Block{
         switch (data) {
             case 2:
                 // South
-                Renderer.renderBlockFace(ladder, x +.5f, y +.5f, z +.5f, Facing.SOUTH);
+                Renderer.renderBlockFace(ladder, x + .5f, y + .5f, z + .45f, Facing.SOUTH);
                 break;
             case 3:
                 // North
-                Renderer.renderBlockFace(ladder, x+.5f, y+.5f, z+.5f, Facing.NORTH);
+                Renderer.renderBlockFace(ladder, x + .5f, y + .5f, z + .55f, Facing.NORTH);
                 break;
             case 4:
                 // East
-                Renderer.renderBlockFace(ladder, x+.5f, y+.5f, z+.5f, Facing.EAST);
+                Renderer.renderBlockFace(ladder, x + .45f, y + .5f, z + .5f, Facing.EAST);
                 break;
             case 5:
             default:
                 // West
-                Renderer.renderBlockFace(ladder, x+.5f, y+.5f, z+.5f, Facing.WEST);
+                Renderer.renderBlockFace(ladder, x + .55f, y + .5f, z + .5f, Facing.WEST);
                 break;
         }
     }
