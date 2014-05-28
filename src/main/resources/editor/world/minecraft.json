@@ -525,32 +525,30 @@
             "idStr": "BED",
             "name": "Bed",
             "texture": {
-                "0": {
-                    "FEED_END": [
-                        2,
-                        3
-                    ],
-                    "FEED_SIDE": [
-                        3,
-                        3
-                    ],
-                    "FEED_TOP": [
-                        4,
-                        3
-                    ],
-                    "HEAD_END": [
-                        5,
-                        3
-                    ],
-                    "HEAD_SIDE": [
-                        6,
-                        3
-                    ],
-                    "HEAD_TOP": [
-                        7,
-                        3
-                    ]
-                }
+                "FEED_END": [
+                    2,
+                    3
+                ],
+                "FEED_SIDE": [
+                    3,
+                    3
+                ],
+                "FEED_TOP": [
+                    4,
+                    3
+                ],
+                "HEAD_END": [
+                    5,
+                    3
+                ],
+                "HEAD_SIDE": [
+                    6,
+                    3
+                ],
+                "HEAD_TOP": [
+                    7,
+                    3
+                ]
             },
             "type": "BED"
         },
