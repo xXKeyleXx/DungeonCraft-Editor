@@ -58,6 +58,9 @@ public class BlockTypes {
         blockTypes.put("CHEST", Chest.class);
         //blockTypes.put("DOOR", Door.class);
         blockTypes.put("DRAGON_EGG", DragonEgg.class);
+        blockTypes.put("SNOW", Snow.class);
+        blockTypes.put("TORCH", Torch.class);
+        blockTypes.put("SOLID_PANE", SolidPane.class);
 
         blocks[0] = new Air();
 
