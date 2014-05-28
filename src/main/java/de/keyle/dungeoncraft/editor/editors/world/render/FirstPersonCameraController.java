@@ -55,6 +55,7 @@ public class FirstPersonCameraController {
     //increment the camera's current yaw rotation
     public void incYaw(float amount) {
         yaw += amount;
+        yaw %= 360;
     }
 
     public float getYaw() {
@@ -64,6 +65,7 @@ public class FirstPersonCameraController {
     //increment the camera's current yaw rotation
     public void incPitch(float amount) {
         pitch += amount;
+        pitch = Math.max(-90, Math.min(90, pitch));
     }
 
     public float getPitch() {
