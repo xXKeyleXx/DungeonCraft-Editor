@@ -1323,12 +1323,10 @@
             "idStr": "REDSTONE_WIRE",
             "name": "Redstone Wire",
             "texture": {
-                "0": {
-                    "TOP": [
-                        6,
-                        7
-                    ]
-                }
+                "TOP": [
+                    6,
+                    7
+                ]
             },
             "type": "FLOOR"
         },
@@ -2517,12 +2515,10 @@
             "idStr": "LILY_PAD",
             "name": "Lilypad",
             "texture": {
-                "0": {
-                    "TOP": [
-                        14,
-                        12
-                    ]
-                }
+                "TOP": [
+                    14,
+                    12
+                ]
             },
             "type": "FLOOR"
         },

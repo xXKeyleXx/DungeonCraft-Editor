@@ -12,7 +12,7 @@ import static de.keyle.dungeoncraft.editor.editors.world.render.MinecraftConstan
 import static de.keyle.dungeoncraft.editor.editors.world.render.MinecraftConstants.TEX_Y;
 
 public class Ladder extends Block{
-    TextureDimensions ladder;
+    TextureDimensions LADDER;
     public Ladder(short id) {
         super(id);
     }
@@ -21,7 +21,7 @@ public class Ladder extends Block{
     public void readTextures(JSONObject textures) throws BlockTypeLoadException {
         if (textures.containsKey("FRONT")) {
             JSONArray sideArray = (JSONArray) textures.get("FRONT");
-            ladder = new TextureDimensions(this.id, Integer.parseInt(sideArray.get(0).toString()), Integer.parseInt(sideArray.get(1).toString()), TEX16, TEX_Y * 0.75f, false);
+            LADDER = new TextureDimensions(this.id, Integer.parseInt(sideArray.get(0).toString()), Integer.parseInt(sideArray.get(1).toString()), TEX16, TEX_Y, false);
         } else {
             throw new BlockTypeLoadException(id + " FRONT texture.");
         }
@@ -38,20 +38,20 @@ public class Ladder extends Block{
         switch (data) {
             case 2:
                 // South
-                Renderer.renderBlockFace(ladder, x, y, z - 0.01f, Facing.SOUTH);
+                Renderer.renderBlockFace(LADDER, x, y, z - 0.01f, Facing.SOUTH);
                 break;
             case 3:
                 // North
-                Renderer.renderBlockFace(ladder, x, y, z + 0.01f, Facing.NORTH);
+                Renderer.renderBlockFace(LADDER, x, y, z + 0.01f, Facing.NORTH);
                 break;
             case 4:
                 // East
-                Renderer.renderBlockFace(ladder, x - 0.01f, y, z, Facing.EAST);
+                Renderer.renderBlockFace(LADDER, x - 0.01f, y, z, Facing.EAST);
                 break;
             case 5:
             default:
                 // West
-                Renderer.renderBlockFace(ladder, x + 0.01f, y, z, Facing.WEST);
+                Renderer.renderBlockFace(LADDER, x + 0.01f, y, z, Facing.WEST);
                 break;
         }
     }

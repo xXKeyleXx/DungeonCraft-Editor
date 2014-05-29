@@ -61,6 +61,7 @@ public class BlockTypes {
         blockTypes.put("SNOW", Snow.class);
         blockTypes.put("TORCH", Torch.class);
         blockTypes.put("SOLID_PANE", SolidPane.class);
+        blockTypes.put("FLOOR", Floor.class);
 
         blocks[0] = new Air();
 
