@@ -68,6 +68,7 @@ public class BlockTypes {
         blockTypes.put("PORTAL", Portal.class);
         blockTypes.put("WALLSIGN", WallSign.class);
         blockTypes.put("TRAPDOOR", TrapDoor.class);
+        blockTypes.put("HUGE_MUSHROOM", HugeMushroom.class);
 
         blocks[0] = new Air();
 

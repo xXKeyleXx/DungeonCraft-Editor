@@ -2373,20 +2373,18 @@
             "idStr": "HUGE_BROWN_MUSHROOM",
             "name": "Huge Brown Mushroom",
             "texture": {
-                "0": {
-                    "SKIN": [
-                        1,
-                        12
-                    ],
-                    "STEM": [
-                        0,
-                        12
-                    ],
-                    "INSIDE": [
-                        15,
-                        11
-                    ]
-                }
+                "SKIN": [
+                    1,
+                    12
+                ],
+                "STEM": [
+                    0,
+                    12
+                ],
+                "INSIDE": [
+                    15,
+                    11
+                ]
             },
             "type": "HUGE_MUSHROOM"
         },
@@ -2395,20 +2393,18 @@
             "idStr": "HUGE_RED_MUSHROOM",
             "name": "Huge Red Mushroom",
             "texture": {
-                "0": {
-                    "SKIN": [
-                        2,
-                        12
-                    ],
-                    "STEM": [
-                        0,
-                        12
-                    ],
-                    "INSIDE": [
-                        15,
-                        11
-                    ]
-                }
+                "SKIN": [
+                    2,
+                    12
+                ],
+                "STEM": [
+                    0,
+                    12
+                ],
+                "INSIDE": [
+                    15,
+                    11
+                ]
             },
             "type": "HUGE_MUSHROOM"
         },
