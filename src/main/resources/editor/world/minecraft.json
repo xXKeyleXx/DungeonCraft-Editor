@@ -3136,21 +3136,12 @@
             "name": "Beacon",
             "texture": {
                 "0": {
-                    "INSIDE": [
+                    "SIDE": [
                         11,
                         14
-                    ],
-                    "OUTSIDE": [
-                        7,
-                        2
-                    ],
-                    "SOCKET": [
-                        11,
-                        6
                     ]
                 }
-            },
-            "type": "BEACON"
+            }
         },
         {
             "id": 139,
