@@ -33,13 +33,6 @@ public class TextureLoadException extends Exception {
     private String extraStatus1;
     private String extraStatus2;
 
-    public TextureLoadException(String message) {
-        super(message);
-        this.origException = null;
-        this.extraStatus1 = ExceptionDialog.getExtraStatus1();
-        this.extraStatus2 = ExceptionDialog.getExtraStatus2();
-    }
-
     public TextureLoadException(String message, Exception origException) {
         super(message);
         this.origException = origException;

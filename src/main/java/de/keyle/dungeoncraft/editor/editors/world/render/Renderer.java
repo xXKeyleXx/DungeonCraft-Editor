@@ -412,17 +412,4 @@ public class Renderer {
         GL11.glVertex3f(x + curFace[3][0], y + curFace[3][1], z + curFace[3][2]);
         GL11.glEnd();
     }
-
-    /**
-     * This is actually used for rendering "decoration" type things which are on
-     * the floor (eg: minecart tracks, redstone wires, etc)
-     *
-     * @param dimensions
-     * @param x
-     * @param y
-     * @param z
-     */
-    public void renderFloor(TextureDimensions dimensions, int x, int y, int z) {
-        renderBlockFace(dimensions, x, y, z, Facing.DOWN);
-    }
 }

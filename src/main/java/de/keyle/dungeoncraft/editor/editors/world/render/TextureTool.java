@@ -44,70 +44,12 @@ import java.nio.IntBuffer;
  * @author Vincent
  */
 public class TextureTool {
-    public static double invln2 = 1.0 / Math.log(2.0);
     public static ColorModel glAlphaColorModel = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_sRGB),
             new int[]{8, 8, 8, 8},
             true,
             false,
             ComponentColorModel.TRANSLUCENT,
             DataBuffer.TYPE_BYTE);
-    public static ColorModel glColorModel = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_sRGB),
-            new int[]{8, 8, 8, 0},
-            false,
-            false,
-            ComponentColorModel.OPAQUE,
-            DataBuffer.TYPE_BYTE);
-
-    public static Texture allocateTexture(Texture frame) {
-        return TextureTool.allocateTexture(frame, GL11.GL_RGBA,     // dst pixel format
-                GL11.GL_LINEAR, // min filter (unused)
-                GL11.GL_LINEAR, // mag filter (unused)
-                true);
-    }
-
-    public static Texture allocateTexture(Texture frame, int dstPixelFormat,
-                                          int minFilter,
-                                          int magFilter,
-                                          boolean wrap) {
-        int srcPixelFormat = 0;
-
-        // create the texture ID for this texture
-        int textureId = TextureTool.createTextureID();
-
-        frame.setTextureId(textureId);
-
-        frame.bind();
-
-        frame.initializeTextureCompatibleBuffer();
-        frame.updateTextureCompatibleBuffer();
-
-        if (frame.getImage().getColorModel().hasAlpha()) {
-            srcPixelFormat = GL11.GL_RGBA;
-        } else {
-            srcPixelFormat = GL11.GL_RGB;
-        }
-
-        // convert that image into a byte buffer of texture data
-        //ByteBuffer textureBuffer = TextureLoader.convertImageData(bufferedImage,texture); 
-        int wrapMode = wrap ? GL11.GL_REPEAT : GL11.GL_CLAMP;
-
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, wrapMode);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, wrapMode);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, minFilter);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, magFilter);
-
-        GL11.glTexImage2D(GL11.GL_TEXTURE_2D,
-                0,
-                dstPixelFormat,
-                frame.getTextureWidth(),
-                frame.getTextureHeight(),
-                0,
-                srcPixelFormat,
-                GL11.GL_UNSIGNED_BYTE,
-                frame.getTextureCompatibleBuffer());
-
-        return frame;
-    }
 
     public static Texture allocateTexture(int width, int height) throws IOException {
         return TextureTool.allocateTexture(
@@ -117,19 +59,6 @@ public class TextureTool {
                 width,
                 height,
                 true);  // wrap?
-    }
-
-    public static Texture allocateTexture(BufferedImage image) throws IOException {
-        Texture tex = TextureTool.allocateTexture(
-                GL11.GL_RGBA,     // dst pixel format
-                GL11.GL_LINEAR, // min filter (unused)
-                GL11.GL_LINEAR, // mag filter (unused)
-                image.getWidth(),
-                image.getHeight(),
-                true);  // wrap?
-        Graphics2D g = tex.getImage().createGraphics();
-        g.drawImage(image, 0, 0, null);
-        return tex;
     }
 
     public static Texture allocateTexture(BufferedImage image, int filter) throws IOException {
@@ -154,7 +83,7 @@ public class TextureTool {
             int width,
             int height,
             boolean wrap) throws IOException {
-        int srcPixelFormat = 0;
+        int srcPixelFormat;
 
         // create the texture ID for this texture
         int textureId = TextureTool.createTextureID();
@@ -205,26 +134,6 @@ public class TextureTool {
         return newBuffer.get(0);
     }
 
-
-    public static void updateTexture(Texture frame) {
-        frame.bind();
-
-        GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, frame.getTextureWidth(), frame.getTextureHeight(), GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, frame.getTextureCompatibleBuffer());
-    }
-
-    public static void updateTexture(Texture frame, BufferedImage image) {
-        frame.setImage(image);
-        frame.updateTextureCompatibleBuffer();
-
-        frame.bind();
-
-        GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, frame.getTextureWidth(), frame.getTextureHeight(), GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, frame.getTextureCompatibleBuffer());
-    }
-
-    public static int get2Fold2(int num) {
-        return (int) Math.pow(2, Math.ceil(Math.log(num) * invln2));
-    }
-
     /**
      * Calculate how many bits wide a number is, i.e. position of highest 1 bit.
      * Fully unraveled binary search method.
@@ -235,7 +144,7 @@ public class TextureTool {
      * @author Dirk Bosmans Dirk.Bosmans@tijd.com
      * @author Vincent Vollers
      */
-    static public final int get2Fold(int n) {
+    static public int get2Fold(int n) {
         if (n < 0) {
             return 32;
         }

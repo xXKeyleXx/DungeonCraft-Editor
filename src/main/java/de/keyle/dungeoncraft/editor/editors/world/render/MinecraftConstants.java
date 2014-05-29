@@ -129,8 +129,6 @@ public class MinecraftConstants {
         }
     }
 
-    public static final BlockVector[] SURROUNDINGBLOCKS = new BlockVector[]{new BlockVector(+1, 0, 0), new BlockVector(-1, 0, 0), new BlockVector(0, +1, 0), new BlockVector(0, -1, 0), new BlockVector(0, 0, +1), new BlockVector(0, 0, -1),};
-
     static void initialize() throws BlockTypeLoadException {
         loadBlocks("minecraft.json");
     }

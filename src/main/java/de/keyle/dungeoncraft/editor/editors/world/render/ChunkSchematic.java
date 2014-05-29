@@ -35,7 +35,6 @@ public class ChunkSchematic {
 
     protected int lx, ly, lz;
     private int fromX = 0;
-    private int fromY = 0;
     private int fromZ = 0;
 
     public ChunkSchematic(Schematic schematic) {

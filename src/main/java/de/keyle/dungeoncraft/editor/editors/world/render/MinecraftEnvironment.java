@@ -30,7 +30,6 @@ import de.keyle.dungeoncraft.editor.GuiMain;
 import de.keyle.dungeoncraft.editor.editors.world.render.dialog.ExceptionDialog;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 
@@ -100,24 +99,6 @@ public class MinecraftEnvironment {
             e.printStackTrace();
             return null;
         }
-    }
-
-    /**
-     * Tints a square at the given coords by the given color, into the specified BufferedImage
-     *
-     * @param coords       The coordinates to read from and draw to
-     * @param square_width width of each square
-     * @param ac           an AlphaComposite to blend with
-     * @param color        The color to tint
-     * @param bi           The image we'll be drawing to and reading from
-     * @param g2d          That image's Graphics2D object
-     */
-    private static void tintSquare(int[] coords, int square_width, AlphaComposite ac, Color color, BufferedImage bi, Graphics2D g2d) {
-        Rectangle rect = new Rectangle(coords[0] * square_width, coords[1] * square_width, square_width, square_width);
-        g2d.setComposite(ac);
-        g2d.setColor(color);
-        g2d.fill(rect);
-        g2d.drawImage(bi, null, 0, 0);
     }
 
     /**
