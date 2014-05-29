@@ -49,37 +49,37 @@ public class Bed extends Block {
     public void readTextures(JSONObject textures) throws BlockTypeLoadException {
         if (textures.containsKey("FEED_END")) {
             JSONArray feedEndArray = (JSONArray) textures.get("FEED_END");
-            FEED_END = new TextureDimensions(26, (byte) 0, Integer.parseInt(feedEndArray.get(0).toString()), Integer.parseInt(feedEndArray.get(1).toString()), TEX16, TEX_Y * 0.5625f, false);
+            FEED_END = new TextureDimensions(26, Integer.parseInt(feedEndArray.get(0).toString()), Integer.parseInt(feedEndArray.get(1).toString()), TEX16, TEX_Y * 0.5625f, false);
         } else {
             throw new BlockTypeLoadException(id + " is missing FEED_END texture.");
         }
         if (textures.containsKey("FEED_SIDE")) {
             JSONArray feedSideArray = (JSONArray) textures.get("FEED_SIDE");
-            FEED_SIDE = new TextureDimensions(26, (byte) 0, Integer.parseInt(feedSideArray.get(0).toString()), Integer.parseInt(feedSideArray.get(1).toString()), TEX16, TEX_Y * 0.5625f, false);
+            FEED_SIDE = new TextureDimensions(26, Integer.parseInt(feedSideArray.get(0).toString()), Integer.parseInt(feedSideArray.get(1).toString()), TEX16, TEX_Y * 0.5625f, false);
         } else {
             throw new BlockTypeLoadException(id + " is missing FEED_SIDE texture.");
         }
         if (textures.containsKey("FEED_TOP")) {
             JSONArray feedTopArray = (JSONArray) textures.get("FEED_TOP");
-            FEED_TOP = new TextureDimensions(26, (byte) 0, Integer.parseInt(feedTopArray.get(0).toString()), Integer.parseInt(feedTopArray.get(1).toString()));
+            FEED_TOP = new TextureDimensions(26, Integer.parseInt(feedTopArray.get(0).toString()), Integer.parseInt(feedTopArray.get(1).toString()));
         } else {
             throw new BlockTypeLoadException(id + " is missing FEED_TOP texture.");
         }
         if (textures.containsKey("HEAD_END")) {
             JSONArray headEndArray = (JSONArray) textures.get("HEAD_END");
-            HEAD_END = new TextureDimensions(26, (byte) 0, Integer.parseInt(headEndArray.get(0).toString()), Integer.parseInt(headEndArray.get(1).toString()), TEX16, TEX_Y * 0.5625f, false);
+            HEAD_END = new TextureDimensions(26, Integer.parseInt(headEndArray.get(0).toString()), Integer.parseInt(headEndArray.get(1).toString()), TEX16, TEX_Y * 0.5625f, false);
         } else {
             throw new BlockTypeLoadException(id + " is missing HEAD_END texture.");
         }
         if (textures.containsKey("HEAD_SIDE")) {
             JSONArray headSideArray = (JSONArray) textures.get("HEAD_SIDE");
-            HEAD_SIDE = new TextureDimensions(26, (byte) 0, Integer.parseInt(headSideArray.get(0).toString()), Integer.parseInt(headSideArray.get(1).toString()), TEX16, TEX_Y * 0.5625f, false);
+            HEAD_SIDE = new TextureDimensions(26, Integer.parseInt(headSideArray.get(0).toString()), Integer.parseInt(headSideArray.get(1).toString()), TEX16, TEX_Y * 0.5625f, false);
         } else {
             throw new BlockTypeLoadException(id + " is missing HEAD_SIDE texture.");
         }
         if (textures.containsKey("HEAD_TOP")) {
             JSONArray headTopArray = (JSONArray) textures.get("HEAD_TOP");
-            HEAD_TOP = new TextureDimensions(26, (byte) 0, Integer.parseInt(headTopArray.get(0).toString()), Integer.parseInt(headTopArray.get(1).toString()));
+            HEAD_TOP = new TextureDimensions(26, Integer.parseInt(headTopArray.get(0).toString()), Integer.parseInt(headTopArray.get(1).toString()));
         } else {
             throw new BlockTypeLoadException(id + " is missing HEAD_TOP texture.");
         }

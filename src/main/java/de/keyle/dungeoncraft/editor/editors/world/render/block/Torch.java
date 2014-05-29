@@ -4,7 +4,6 @@ import de.keyle.dungeoncraft.editor.editors.world.render.BlockTypeLoadException;
 import de.keyle.dungeoncraft.editor.editors.world.render.ChunkSchematic;
 import de.keyle.dungeoncraft.editor.editors.world.render.Renderer;
 import de.keyle.dungeoncraft.editor.editors.world.render.TextureDimensions;
-import de.keyle.dungeoncraft.editor.util.Util;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -21,22 +20,11 @@ public class Torch extends Block {
 
     @Override
     public void readTextures(JSONObject textures) throws BlockTypeLoadException {
-        if (!textures.containsKey("0")) {
-            throw new BlockTypeLoadException(id + " is missing \"0\" data.");
-        }
-        for (Object key : textures.keySet()) {
-            if (textures.get(key) instanceof JSONObject) {
-                if (Util.isByte(key.toString())) {
-                    byte data = Byte.parseByte(key.toString());
-                    JSONObject textureObject = (JSONObject) textures.get(key);
-                    if (textureObject.containsKey("SIDE")) {
-                        JSONArray sideArray = (JSONArray) textureObject.get("SIDE");
-                        torch = new TextureDimensions(this.id, data, Integer.parseInt(sideArray.get(0).toString()), Integer.parseInt(sideArray.get(1).toString()), TEX16, TEX_Y, false);
-                    } else {
-                        throw new BlockTypeLoadException(id + " SIDE texture.");
-                    }
-                }
-            }
+        if (textures.containsKey("SIDE")) {
+            JSONArray sideArray = (JSONArray) textures.get("SIDE");
+            torch = new TextureDimensions(this.id, Integer.parseInt(sideArray.get(0).toString()), Integer.parseInt(sideArray.get(1).toString()), TEX16, TEX_Y, false);
+        } else {
+            throw new BlockTypeLoadException(id + " SIDE texture.");
         }
     }
 
@@ -64,7 +52,6 @@ public class Torch extends Block {
                 return;
             default:
                 Renderer.renderRectDecoration(torch, x, y, z, 0, 0, 0, 0, 0);
-                return;
         }
     }
 }

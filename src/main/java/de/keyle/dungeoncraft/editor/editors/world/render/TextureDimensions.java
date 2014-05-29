@@ -40,6 +40,10 @@ public class TextureDimensions {
         this.texHeight = texHeight;
     }
 
+    public TextureDimensions(int blockId, float texLeft, float texTop, float texWidth, float texHeight) {
+        this(blockId, (byte) 0, texLeft, texTop, texWidth, texHeight);
+    }
+
     public TextureDimensions(int blockId, byte data, int texLeft, int texTop) {
         this.blockId = blockId;
         this.data = data;
@@ -49,6 +53,10 @@ public class TextureDimensions {
         this.texHeight = TEX_Y;
     }
 
+    public TextureDimensions(int blockId, int texLeft, int texTop) {
+        this(blockId, (byte) 0, texLeft, texTop);
+    }
+
     public TextureDimensions(int blockId, byte data, int texLeft, int texTop, float texWidth, float texHeigh, boolean top) {
         this.blockId = blockId;
         this.data = data;
@@ -56,6 +64,10 @@ public class TextureDimensions {
         this.texTop = texTop * TEX_Y + (top ? 0 : (TEX_Y - texHeigh));
         this.texWidth = texWidth;
         this.texHeight = texHeigh;
+    }
+
+    public TextureDimensions(int blockId, int texLeft, int texTop, float texWidth, float texHeigh, boolean top) {
+        this(blockId, (byte) 0, texLeft, texTop, texWidth, texHeigh, top);
     }
 
     public int getBlockId() {

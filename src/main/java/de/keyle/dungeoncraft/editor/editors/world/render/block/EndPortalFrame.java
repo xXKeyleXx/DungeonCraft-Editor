@@ -43,28 +43,22 @@ public class EndPortalFrame extends Block {
 
     @Override
     public void readTextures(JSONObject textures) throws BlockTypeLoadException {
-        if (!textures.containsKey("0")) {
-            throw new BlockTypeLoadException(id + " is missing \"0\" data.");
+        if (textures.containsKey("BOTTOM")) {
+            JSONArray feedEnd = (JSONArray) textures.get("BOTTOM");
+            bottom = new TextureDimensions(this.id, Integer.parseInt(feedEnd.get(0).toString()), Integer.parseInt(feedEnd.get(1).toString()), TEX16, TEX_Y, false);
         }
-        if (textures.get("0") instanceof JSONObject) {
-            JSONObject textureObject = (JSONObject) textures.get("0");
-            if (textureObject.containsKey("BOTTOM")) {
-                JSONArray feedEnd = (JSONArray) textureObject.get("BOTTOM");
-                bottom = new TextureDimensions(this.id, (byte) 0, Integer.parseInt(feedEnd.get(0).toString()), Integer.parseInt(feedEnd.get(1).toString()), TEX16, TEX_Y, false);
-            }
-            if (textureObject.containsKey("TOP")) {
-                JSONArray feedEnd = (JSONArray) textureObject.get("TOP");
-                top = new TextureDimensions(this.id, (byte) 0, Integer.parseInt(feedEnd.get(0).toString()), Integer.parseInt(feedEnd.get(1).toString()), TEX16, TEX_Y, false);
-            }
-            if (textureObject.containsKey("SIDE")) {
-                JSONArray feedEnd = (JSONArray) textureObject.get("SIDE");
-                side = new TextureDimensions(this.id, (byte) 0, Integer.parseInt(feedEnd.get(0).toString()), Integer.parseInt(feedEnd.get(1).toString()), TEX16, TEX_Y * 0.8125f, false);
-            }
-            if (textureObject.containsKey("EYE")) {
-                JSONArray eyeTopArray = (JSONArray) textureObject.get("EYE");
-                eyeTop = new TextureDimensions(this.id, (byte) 0, Integer.parseInt(eyeTopArray.get(0).toString()) * TEX16 + TEX16 * 0.25f, Integer.parseInt(eyeTopArray.get(1).toString()) * TEX_Y + TEX_Y * 0.25f, TEX16 / 2, TEX_Y / 2);
-                eyeSide = new TextureDimensions(this.id, (byte) 0, Integer.parseInt(eyeTopArray.get(0).toString()) * TEX16 + TEX16 * 0.25f, Integer.parseInt(eyeTopArray.get(1).toString()) * TEX_Y, TEX16 / 2, TEX_Y / 4);
-            }
+        if (textures.containsKey("TOP")) {
+            JSONArray feedEnd = (JSONArray) textures.get("TOP");
+            top = new TextureDimensions(this.id, Integer.parseInt(feedEnd.get(0).toString()), Integer.parseInt(feedEnd.get(1).toString()), TEX16, TEX_Y, false);
+        }
+        if (textures.containsKey("SIDE")) {
+            JSONArray feedEnd = (JSONArray) textures.get("SIDE");
+            side = new TextureDimensions(this.id, Integer.parseInt(feedEnd.get(0).toString()), Integer.parseInt(feedEnd.get(1).toString()), TEX16, TEX_Y * 0.8125f, false);
+        }
+        if (textures.containsKey("EYE")) {
+            JSONArray eyeTopArray = (JSONArray) textures.get("EYE");
+            eyeTop = new TextureDimensions(this.id, Integer.parseInt(eyeTopArray.get(0).toString()) * TEX16 + TEX16 * 0.25f, Integer.parseInt(eyeTopArray.get(1).toString()) * TEX_Y + TEX_Y * 0.25f, TEX16 / 2, TEX_Y / 2);
+            eyeSide = new TextureDimensions(this.id, Integer.parseInt(eyeTopArray.get(0).toString()) * TEX16 + TEX16 * 0.25f, Integer.parseInt(eyeTopArray.get(1).toString()) * TEX_Y, TEX16 / 2, TEX_Y / 4);
         }
     }
 

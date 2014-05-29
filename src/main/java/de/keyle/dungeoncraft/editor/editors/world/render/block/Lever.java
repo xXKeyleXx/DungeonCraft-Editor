@@ -4,7 +4,6 @@ import de.keyle.dungeoncraft.editor.editors.world.render.BlockTypeLoadException;
 import de.keyle.dungeoncraft.editor.editors.world.render.ChunkSchematic;
 import de.keyle.dungeoncraft.editor.editors.world.render.Renderer;
 import de.keyle.dungeoncraft.editor.editors.world.render.TextureDimensions;
-import de.keyle.dungeoncraft.editor.util.Util;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -18,9 +17,9 @@ public class Lever extends Block {
     static float box_height = .1875f;
     static float box_length = .25f;
     static float box_width = .375f;
-    static float box_height_h = box_height *0.5f;
-    static float box_length_h = box_length*0.5f;
-    static float box_width_h = box_width*0.5f;
+    static float box_height_h = box_height * 0.5f;
+    static float box_length_h = box_length * 0.5f;
+    static float box_width_h = box_width * 0.5f;
 
     public Lever(short id) {
         super(id);
@@ -28,28 +27,17 @@ public class Lever extends Block {
 
     @Override
     public void readTextures(JSONObject textures) throws BlockTypeLoadException {
-        if (!textures.containsKey("0")) {
-            throw new BlockTypeLoadException(id + " is missing \"0\" data.");
+        if (textures.containsKey("BASE")) {
+            JSONArray sideArray = (JSONArray) textures.get("BASE");
+            base = new TextureDimensions(this.id, Integer.parseInt(sideArray.get(0).toString()), Integer.parseInt(sideArray.get(1).toString()), TEX16, TEX_Y, false);
+        } else {
+            throw new BlockTypeLoadException(id + " BASE texture.");
         }
-        for (Object key : textures.keySet()) {
-            if (textures.get(key) instanceof JSONObject) {
-                if (Util.isByte(key.toString())) {
-                    byte data = Byte.parseByte(key.toString());
-                    JSONObject textureObject = (JSONObject) textures.get(key);
-                    if (textureObject.containsKey("BASE")) {
-                        JSONArray sideArray = (JSONArray) textureObject.get("BASE");
-                        base = new TextureDimensions(this.id, data, Integer.parseInt(sideArray.get(0).toString()), Integer.parseInt(sideArray.get(1).toString()), TEX16, TEX_Y, false);
-                    } else {
-                        throw new BlockTypeLoadException(id + " BASE texture.");
-                    }
-                    if (textureObject.containsKey("LEVER")) {
-                        JSONArray sideArray = (JSONArray) textureObject.get("LEVER");
-                        lever = new TextureDimensions(this.id, data, Integer.parseInt(sideArray.get(0).toString()), Integer.parseInt(sideArray.get(1).toString()), TEX16, TEX_Y * 0.625f, false);
-                    } else {
-                        throw new BlockTypeLoadException(id + " LEVER texture.");
-                    }
-                }
-            }
+        if (textures.containsKey("LEVER")) {
+            JSONArray sideArray = (JSONArray) textures.get("LEVER");
+            lever = new TextureDimensions(this.id, Integer.parseInt(sideArray.get(0).toString()), Integer.parseInt(sideArray.get(1).toString()), TEX16, TEX_Y * 0.625f, false);
+        } else {
+            throw new BlockTypeLoadException(id + " LEVER texture.");
         }
     }
 
@@ -71,47 +59,47 @@ public class Lever extends Block {
         // First draw the base
         switch (data) {
             case 1:
-                Renderer.renderVertical(base, x+1f-box_height, z + 0.5f -box_width_h, x + 1, z + 0.5f + box_width_h, y - box_length_h +0.5f, box_length);
-                Renderer.renderVertical(base, x+1f-box_height_h, z - box_width, x + box_height, z - box_width, y - box_length, box_length);
-                Renderer.renderVertical(base, x+1f + box_height_h, z + box_width, x + box_height, z - box_width, y - box_length, box_length);
-                Renderer.renderHorizontal(base, x+1f , z - box_width, x + box_height, z + box_width, y,false);
-                Renderer.renderHorizontal(base, x+1f, z - box_width, x + box_height, z + box_width, y + box_length,false);
+                Renderer.renderVertical(base, x + 1f - box_height, z + 0.5f - box_width_h, x + 1, z + 0.5f + box_width_h, y - box_length_h + 0.5f, box_length);
+                Renderer.renderVertical(base, x + 1f - box_height_h, z - box_width, x + box_height, z - box_width, y - box_length, box_length);
+                Renderer.renderVertical(base, x + 1f + box_height_h, z + box_width, x + box_height, z - box_width, y - box_length, box_length);
+                Renderer.renderHorizontal(base, x + 1f, z - box_width, x + box_height, z + box_width, y, false);
+                Renderer.renderHorizontal(base, x + 1f, z - box_width, x + box_height, z + box_width, y + box_length, false);
                 break;
             case 2:
                 Renderer.renderVertical(base, x + .5f, z + box_width, x + .5f - box_height, z + box_width, y - box_length, box_length);
                 Renderer.renderVertical(base, x + .5f, z - box_width, x + .5f - box_height, z - box_width, y - box_length, box_length);
                 Renderer.renderVertical(base, x + .5f - box_height, z + box_width, x + .5f - box_height, z - box_width, y - box_length, box_length);
-                Renderer.renderHorizontal(base, x + .5f, z - box_width, x + .5f - box_height, z + box_width, y,false);
-                Renderer.renderHorizontal(base, x + .5f, z - box_width, x + .5f - box_height, z + box_width, y + box_length,false);
+                Renderer.renderHorizontal(base, x + .5f, z - box_width, x + .5f - box_height, z + box_width, y, false);
+                Renderer.renderHorizontal(base, x + .5f, z - box_width, x + .5f - box_height, z + box_width, y + box_length, false);
                 break;
             case 3:
                 Renderer.renderVertical(base, x - box_width, z - .5f, x - box_width, z - .5f + box_height, y - box_length, box_length);
                 Renderer.renderVertical(base, x + box_width, z - .5f, x + box_width, z - .5f + box_height, y - box_length, box_length);
                 Renderer.renderVertical(base, x - box_width, z - .5f + box_height, x + box_width, z - .5f + box_height, y - box_length, box_length);
-                Renderer.renderHorizontal(base, x - box_width, z - .5f, x + box_width, z - .5f + box_height, y,false);
-                Renderer.renderHorizontal(base, x - box_width, z - .5f, x + box_width, z - .5f + box_height, y + box_length,false);
+                Renderer.renderHorizontal(base, x - box_width, z - .5f, x + box_width, z - .5f + box_height, y, false);
+                Renderer.renderHorizontal(base, x - box_width, z - .5f, x + box_width, z - .5f + box_height, y + box_length, false);
                 break;
             case 4:
                 Renderer.renderVertical(base, x - box_width, z + .5f, x - box_width, z + .5f - box_height, y, box_length);
                 Renderer.renderVertical(base, x + box_width, z + .5f, x + box_width, z + .5f - box_height, y - box_length, box_length);
                 Renderer.renderVertical(base, x - box_width, z + .5f - box_height, x + box_width, z + .5f - box_height, y - box_length, box_length);
-                Renderer.renderHorizontal(base, x - box_width, z + .5f, x + box_width, z + .5f - box_height, y,false);
-                Renderer.renderHorizontal(base, x - box_width, z + .5f, x + box_width, z + .5f - box_height, y + box_length,false);
+                Renderer.renderHorizontal(base, x - box_width, z + .5f, x + box_width, z + .5f - box_height, y, false);
+                Renderer.renderHorizontal(base, x - box_width, z + .5f, x + box_width, z + .5f - box_height, y + box_length, false);
                 break;
             case 5:
-                Renderer.renderVertical(base, x - box_width+.5f, z + box_length+.5f, x - box_width+.5f, z - box_length+.5f, y, box_height);
-                Renderer.renderVertical(base, x + box_width+.5f, z + box_length+.5f, x + box_width+.5f, z - box_length+.5f, y, box_height);
-                Renderer.renderVertical(base, x - box_width+.5f, z + box_length+.5f, x + box_width+.5f, z + box_length+.5f, y, box_height);
-                Renderer.renderVertical(base, x + box_width+.5f, z - box_length+.5f, x - box_width+.5f, z - box_length+.5f, y, box_height);
-                Renderer.renderHorizontal(base, x - box_width+.5f, z - box_length+.5f, x + box_width+.5f, z + box_length+.5f, y + box_height,false);
+                Renderer.renderVertical(base, x - box_width + .5f, z + box_length + .5f, x - box_width + .5f, z - box_length + .5f, y, box_height);
+                Renderer.renderVertical(base, x + box_width + .5f, z + box_length + .5f, x + box_width + .5f, z - box_length + .5f, y, box_height);
+                Renderer.renderVertical(base, x - box_width + .5f, z + box_length + .5f, x + box_width + .5f, z + box_length + .5f, y, box_height);
+                Renderer.renderVertical(base, x + box_width + .5f, z - box_length + .5f, x - box_width + .5f, z - box_length + .5f, y, box_height);
+                Renderer.renderHorizontal(base, x - box_width + .5f, z - box_length + .5f, x + box_width + .5f, z + box_length + .5f, y + box_height, false);
                 break;
             case 6:
             default:
-                Renderer.renderVertical(base, x - box_length+.5f, z + box_width+.5f, x - box_length+.5f, z - box_width+.5f, y, box_height);
-                Renderer.renderVertical(base, x + box_length+.5f, z + box_width+.5f, x + box_length+.5f, z - box_width+.5f, y, box_height);
-                Renderer.renderVertical(base, x - box_length+.5f, z + box_width+.5f, x + box_length+.5f, z + box_width+.5f, y, box_height);
-                Renderer.renderVertical(base, x + box_length+.5f, z - box_width+.5f, x - box_length+.5f, z - box_width+.5f, y, box_height);
-                Renderer.renderHorizontal(base, x - box_length+.5f, z - box_width+.5f, x + box_length+.5f, z + box_width+.5f, y + box_height,false);
+                Renderer.renderVertical(base, x - box_length + .5f, z + box_width + .5f, x - box_length + .5f, z - box_width + .5f, y, box_height);
+                Renderer.renderVertical(base, x + box_length + .5f, z + box_width + .5f, x + box_length + .5f, z - box_width + .5f, y, box_height);
+                Renderer.renderVertical(base, x - box_length + .5f, z + box_width + .5f, x + box_length + .5f, z + box_width + .5f, y, box_height);
+                Renderer.renderVertical(base, x + box_length + .5f, z - box_width + .5f, x - box_length + .5f, z - box_width + .5f, y, box_height);
+                Renderer.renderHorizontal(base, x - box_length + .5f, z - box_width + .5f, x + box_length + .5f, z + box_width + .5f, y + box_height, false);
                 break;
         }
 

@@ -4,7 +4,6 @@ import de.keyle.dungeoncraft.editor.editors.world.render.BlockTypeLoadException;
 import de.keyle.dungeoncraft.editor.editors.world.render.ChunkSchematic;
 import de.keyle.dungeoncraft.editor.editors.world.render.Renderer;
 import de.keyle.dungeoncraft.editor.editors.world.render.TextureDimensions;
-import de.keyle.dungeoncraft.editor.util.Util;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.lwjgl.opengl.GL11;
@@ -13,11 +12,11 @@ import static de.keyle.dungeoncraft.editor.editors.world.render.MinecraftConstan
 import static de.keyle.dungeoncraft.editor.editors.world.render.MinecraftConstants.TEX_Y;
 
 public class Cauldron extends Block{
-    TextureDimensions top;
-    TextureDimensions side;
-    TextureDimensions inner;
-    TextureDimensions bottom;
-    TextureDimensions water;
+    TextureDimensions TOP;
+    TextureDimensions SIDE;
+    TextureDimensions INNER;
+    TextureDimensions BOTTOM;
+    TextureDimensions WATER;
 
     public Cauldron(short id) {
         super(id);
@@ -25,46 +24,35 @@ public class Cauldron extends Block{
 
     @Override
     public void readTextures(JSONObject textures) throws BlockTypeLoadException {
-        if (!textures.containsKey("0")) {
-            throw new BlockTypeLoadException(id + " is missing \"0\" data.");
+        if (textures.containsKey("INNER")) {
+            JSONArray inner = (JSONArray) textures.get("INNER");
+            INNER = new TextureDimensions(this.id, Integer.parseInt(inner.get(0).toString()), Integer.parseInt(inner.get(1).toString()), TEX16, TEX_Y, false);
+        } else {
+            throw new BlockTypeLoadException(id + " INNER texture.");
         }
-        for (Object key : textures.keySet()) {
-            if (textures.get(key) instanceof JSONObject) {
-                if (Util.isByte(key.toString())) {
-                    byte data = Byte.parseByte(key.toString());
-                    JSONObject textureObject = (JSONObject) textures.get(key);
-                    if (textureObject.containsKey("INNER")) {
-                        JSONArray sideArray = (JSONArray) textureObject.get("INNER");
-                        inner = new TextureDimensions(this.id, data, Integer.parseInt(sideArray.get(0).toString()), Integer.parseInt(sideArray.get(1).toString()), TEX16, TEX_Y, false);
-                    } else {
-                        throw new BlockTypeLoadException(id + " INNER texture.");
-                    }
-                    if (textureObject.containsKey("TOP")) {
-                        JSONArray sideArray = (JSONArray) textureObject.get("TOP");
-                        top = new TextureDimensions(this.id, data, Integer.parseInt(sideArray.get(0).toString()), Integer.parseInt(sideArray.get(1).toString()), TEX16, TEX_Y , false);
-                    } else {
-                        throw new BlockTypeLoadException(id + " TOP texture.");
-                    }
-                    if (textureObject.containsKey("SIDE")) {
-                        JSONArray sideArray = (JSONArray) textureObject.get("SIDE");
-                        side = new TextureDimensions(this.id, data, Integer.parseInt(sideArray.get(0).toString()), Integer.parseInt(sideArray.get(1).toString()), TEX16, TEX_Y , false);
-                    } else {
-                        throw new BlockTypeLoadException(id + " SIDE texture.");
-                    }
-                    if (textureObject.containsKey("BOTTOM")) {
-                        JSONArray sideArray = (JSONArray) textureObject.get("BOTTOM");
-                        bottom = new TextureDimensions(this.id, data, Integer.parseInt(sideArray.get(0).toString()), Integer.parseInt(sideArray.get(1).toString()), TEX16, TEX_Y , false);
-                    } else {
-                        throw new BlockTypeLoadException(id + " BOTTOM texture.");
-                    }
-                    if (textureObject.containsKey("WATER")) {
-                        JSONArray sideArray = (JSONArray) textureObject.get("WATER");
-                        water = new TextureDimensions(this.id, data, Integer.parseInt(sideArray.get(0).toString()), Integer.parseInt(sideArray.get(1).toString()), TEX16, TEX_Y , false);
-                    } else {
-                        throw new BlockTypeLoadException(id + " WATER texture.");
-                    }
-                }
-            }
+        if (textures.containsKey("TOP")) {
+            JSONArray top = (JSONArray) textures.get("TOP");
+            TOP = new TextureDimensions(this.id, Integer.parseInt(top.get(0).toString()), Integer.parseInt(top.get(1).toString()), TEX16, TEX_Y, false);
+        } else {
+            throw new BlockTypeLoadException(id + " TOP texture.");
+        }
+        if (textures.containsKey("SIDE")) {
+            JSONArray side = (JSONArray) textures.get("SIDE");
+            SIDE = new TextureDimensions(this.id, Integer.parseInt(side.get(0).toString()), Integer.parseInt(side.get(1).toString()), TEX16, TEX_Y, false);
+        } else {
+            throw new BlockTypeLoadException(id + " SIDE texture.");
+        }
+        if (textures.containsKey("BOTTOM")) {
+            JSONArray bottom = (JSONArray) textures.get("BOTTOM");
+            BOTTOM = new TextureDimensions(this.id, Integer.parseInt(bottom.get(0).toString()), Integer.parseInt(bottom.get(1).toString()), TEX16, TEX_Y, false);
+        } else {
+            throw new BlockTypeLoadException(id + " BOTTOM texture.");
+        }
+        if (textures.containsKey("WATER")) {
+            JSONArray water = (JSONArray) textures.get("WATER");
+            WATER = new TextureDimensions(this.id, Integer.parseInt(water.get(0).toString()), Integer.parseInt(water.get(1).toString()), TEX16, TEX_Y, false);
+        } else {
+            throw new BlockTypeLoadException(id + " WATER texture.");
         }
     }
 
@@ -91,27 +79,27 @@ public class Cauldron extends Block{
         GL11.glTranslatef(x+.5f, y+.5f, z+.5f);
 
         // Base
-        Renderer.renderHorizontal(this.bottom, edge, edge, -edge, -edge, base, false);
+        Renderer.renderHorizontal(this.BOTTOM, edge, edge, -edge, -edge, base, false);
 
         // Sides
-        Renderer.renderVertical(side, edge, edge, -edge, edge, bottom, height);
-        Renderer.renderVertical(side, edge, -edge, -edge, -edge, bottom, height);
-        Renderer.renderVertical(side, edge, edge, edge, -edge, bottom, height);
-        Renderer.renderVertical(side, -edge, edge, -edge, -edge, bottom, height);
+        Renderer.renderVertical(SIDE, edge, edge, -edge, edge, bottom, height);
+        Renderer.renderVertical(SIDE, edge, -edge, -edge, -edge, bottom, height);
+        Renderer.renderVertical(SIDE, edge, edge, edge, -edge, bottom, height);
+        Renderer.renderVertical(SIDE, -edge, edge, -edge, -edge, bottom, height);
 
         // Inside faces
-        Renderer.renderVertical(inner, inside, inside, -inside, inside, base, insideheight);
-        Renderer.renderVertical(inner, inside, -inside, -inside, -inside, base, insideheight);
-        Renderer.renderVertical(inner, inside, inside, inside, -inside, base, insideheight);
-        Renderer.renderVertical(inner, -inside, inside, -inside, -inside, base, insideheight);
+        Renderer.renderVertical(INNER, inside, inside, -inside, inside, base, insideheight);
+        Renderer.renderVertical(INNER, inside, -inside, -inside, -inside, base, insideheight);
+        Renderer.renderVertical(INNER, inside, inside, inside, -inside, base, insideheight);
+        Renderer.renderVertical(INNER, -inside, inside, -inside, -inside, base, insideheight);
 
         // Contents
         if (data > 0) {
-            Renderer.renderHorizontal(water, inside, inside, -inside, -inside, base + ((insideheight - .0625f) * (data / 3f)),false);
+            Renderer.renderHorizontal(WATER, inside, inside, -inside, -inside, base + ((insideheight - .0625f) * (data / 3f)), false);
         }
 
         // Top
-        Renderer.renderHorizontal(top, edge, edge, -edge, -edge, height - .5f,false);
+        Renderer.renderHorizontal(TOP, edge, edge, -edge, -edge, height - .5f, false);
 
         GL11.glPopMatrix();
     }

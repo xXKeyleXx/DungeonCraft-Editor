@@ -1232,12 +1232,10 @@
             "idStr": "TORCH",
             "name": "Torch",
             "texture": {
-                "0": {
-                    "SIDE": [
-                        12,
-                        6
-                    ]
-                }
+                "SIDE": [
+                    12,
+                    6
+                ]
             },
             "type": "TORCH"
         },
@@ -1289,36 +1287,34 @@
             "idStr": "CHEST",
             "name": "Chest",
             "texture": {
-                "0": {
-                    "FRONT": [
-                        15,
-                        6
-                    ],
-                    "SIDE": [
-                        0,
-                        7
-                    ],
-                    "BOTTOM": [
-                        1,
-                        7
-                    ],
-                    "FRONT_LEFT": [
-                        4,
-                        7
-                    ],
-                    "FRONT_RIGHT": [
-                        5,
-                        7
-                    ],
-                    "BACK_LEFT": [
-                        2,
-                        7
-                    ],
-                    "BACK_RIGHT": [
-                        3,
-                        7
-                    ]
-                }
+                "FRONT": [
+                    15,
+                    6
+                ],
+                "SIDE": [
+                    0,
+                    7
+                ],
+                "BOTTOM": [
+                    1,
+                    7
+                ],
+                "FRONT_LEFT": [
+                    4,
+                    7
+                ],
+                "FRONT_RIGHT": [
+                    5,
+                    7
+                ],
+                "BACK_LEFT": [
+                    2,
+                    7
+                ],
+                "BACK_RIGHT": [
+                    3,
+                    7
+                ]
             },
             "type": "CHEST"
         },
@@ -1651,12 +1647,10 @@
             "idStr": "LADDER",
             "name": "Ladder",
             "texture": {
-                "0": {
-                    "FRONT": [
-                        12,
-                        8
-                    ]
-                }
+                "FRONT": [
+                    12,
+                    8
+                ]
             },
             "type": "LADDER"
         },
@@ -1711,16 +1705,14 @@
             "idStr": "LEVER",
             "name": "Lever",
             "texture": {
-                "0": {
-                    "BASE": [
-                        0,
-                        0
-                    ],
-                    "LEVER": [
-                        15,
-                        8
-                    ]
-                }
+                "BASE": [
+                    0,
+                    0
+                ],
+                "LEVER": [
+                    15,
+                    8
+                ]
             },
             "type": "LEVER"
         },
@@ -1799,12 +1791,10 @@
             "idStr": "REDSTONE_TORCH_OFF",
             "name": "Redstone Torch (off)",
             "texture": {
-                "0": {
-                    "SIDE": [
-                        1,
-                        9
-                    ]
-                }
+                "SIDE": [
+                    1,
+                    9
+                ]
             },
             "type": "TORCH"
         },
@@ -1813,12 +1803,10 @@
             "idStr": "REDSTONE_TORCH_ON",
             "name": "Redstone Torch (on)",
             "texture": {
-                "0": {
-                    "SIDE": [
-                        2,
-                        9
-                    ]
-                }
+                "SIDE": [
+                    2,
+                    9
+                ]
             },
             "type": "TORCH"
         },
@@ -2454,12 +2442,10 @@
             "idStr": "VINE",
             "name": "Vine",
             "texture": {
-                "0": {
-                    "FRONT": [
-                        11,
-                        12
-                    ]
-                }
+                "FRONT": [
+                    11,
+                    12
+                ]
             },
             "type": "VINE"
         },
@@ -2633,16 +2619,14 @@
             "idStr": "BREWING_STAND",
             "name": "Brewing Stand",
             "texture": {
-                "0": {
-                    "TOP": [
-                        6,
-                        13
-                    ],
-                    "BASE": [
-                        7,
-                        13
-                    ]
-                }
+                "TOP": [
+                    6,
+                    13
+                ],
+                "BASE": [
+                    7,
+                    13
+                ]
             },
             "type": "BREWING_STAND"
         },
@@ -2651,28 +2635,26 @@
             "idStr": "CAULDRON",
             "name": "Cauldron",
             "texture": {
-                "0": {
-                    "SIDE": [
-                        10,
-                        13
-                    ],
-                    "TOP": [
-                        11,
-                        13
-                    ],
-                    "INNER": [
-                        9,
-                        13
-                    ],
-                    "BOTTOM": [
-                        9,
-                        13
-                    ],
-                    "WATER": [
-                        2,
-                        1
-                    ]
-                }
+                "SIDE": [
+                    10,
+                    13
+                ],
+                "TOP": [
+                    11,
+                    13
+                ],
+                "INNER": [
+                    9,
+                    13
+                ],
+                "BOTTOM": [
+                    9,
+                    13
+                ],
+                "WATER": [
+                    2,
+                    1
+                ]
             },
             "type": "CAULDRON"
         },
@@ -2695,24 +2677,22 @@
             "idStr": "END_PORTAL_FRAME",
             "name": "Ender Portal Frame",
             "texture": {
-                "0": {
-                    "TOP": [
-                        13,
-                        13
-                    ],
-                    "SIDE": [
-                        12,
-                        13
-                    ],
-                    "BOTTOM": [
-                        15,
-                        13
-                    ],
-                    "EYE": [
-                        14,
-                        13
-                    ]
-                }
+                "TOP": [
+                    13,
+                    13
+                ],
+                "SIDE": [
+                    12,
+                    13
+                ],
+                "BOTTOM": [
+                    15,
+                    13
+                ],
+                "EYE": [
+                    14,
+                    13
+                ]
             },
             "type": "END_PORTAL_FRAME"
         },
@@ -3278,36 +3258,34 @@
             "idStr": "TRAPPED_CHEST",
             "name": "Trapped Chest",
             "texture": {
-                "0": {
-                    "FRONT": [
-                        5,
-                        20
-                    ],
-                    "SIDE": [
-                        0,
-                        7
-                    ],
-                    "BOTTOM": [
-                        1,
-                        7
-                    ],
-                    "FRONT_LEFT": [
-                        6,
-                        20
-                    ],
-                    "FRONT_RIGHT": [
-                        7,
-                        20
-                    ],
-                    "BACK_LEFT": [
-                        2,
-                        7
-                    ],
-                    "BACK_RIGHT": [
-                        3,
-                        7
-                    ]
-                }
+                "FRONT": [
+                    5,
+                    20
+                ],
+                "SIDE": [
+                    0,
+                    7
+                ],
+                "BOTTOM": [
+                    1,
+                    7
+                ],
+                "FRONT_LEFT": [
+                    6,
+                    20
+                ],
+                "FRONT_RIGHT": [
+                    7,
+                    20
+                ],
+                "BACK_LEFT": [
+                    2,
+                    7
+                ],
+                "BACK_RIGHT": [
+                    3,
+                    7
+                ]
             },
             "type": "CHEST"
         },

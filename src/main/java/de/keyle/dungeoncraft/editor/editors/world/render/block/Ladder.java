@@ -5,7 +5,6 @@ import de.keyle.dungeoncraft.editor.editors.world.render.ChunkSchematic;
 import de.keyle.dungeoncraft.editor.editors.world.render.Renderer;
 import de.keyle.dungeoncraft.editor.editors.world.render.TextureDimensions;
 import de.keyle.dungeoncraft.editor.util.Facing;
-import de.keyle.dungeoncraft.editor.util.Util;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -20,22 +19,11 @@ public class Ladder extends Block{
 
     @Override
     public void readTextures(JSONObject textures) throws BlockTypeLoadException {
-        if (!textures.containsKey("0")) {
-            throw new BlockTypeLoadException(id + " is missing \"0\" data.");
-        }
-        for (Object key : textures.keySet()) {
-            if (textures.get(key) instanceof JSONObject) {
-                if (Util.isByte(key.toString())) {
-                    byte data = Byte.parseByte(key.toString());
-                    JSONObject textureObject = (JSONObject) textures.get(key);
-                    if (textureObject.containsKey("FRONT")) {
-                        JSONArray sideArray = (JSONArray) textureObject.get("FRONT");
-                        ladder = new TextureDimensions(this.id, data, Integer.parseInt(sideArray.get(0).toString()), Integer.parseInt(sideArray.get(1).toString()), TEX16, TEX_Y * 0.75f, false);
-                    } else {
-                        throw new BlockTypeLoadException(id + " FRONT texture.");
-                    }
-                }
-            }
+        if (textures.containsKey("FRONT")) {
+            JSONArray sideArray = (JSONArray) textures.get("FRONT");
+            ladder = new TextureDimensions(this.id, Integer.parseInt(sideArray.get(0).toString()), Integer.parseInt(sideArray.get(1).toString()), TEX16, TEX_Y * 0.75f, false);
+        } else {
+            throw new BlockTypeLoadException(id + " FRONT texture.");
         }
     }
 
