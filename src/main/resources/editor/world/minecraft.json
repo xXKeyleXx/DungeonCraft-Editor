@@ -1895,12 +1895,10 @@
             "idStr": "STONE_BUTTON",
             "name": "Stone Button",
             "texture": {
-                "0": {
-                    "FRONT": [
-                        0,
-                        0
-                    ]
-                }
+                "SIDE": [
+                    0,
+                    0
+                ]
             },
             "type": "BUTTON"
         },
@@ -3293,12 +3291,10 @@
             "idStr": "WOODEN_BUTTON",
             "name": "Wooden Button",
             "texture": {
-                "0": {
-                    "SIDE": [
-                        5,
-                        0
-                    ]
-                }
+                "SIDE": [
+                    5,
+                    0
+                ]
             },
             "type": "BUTTON"
         },
