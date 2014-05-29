@@ -33,7 +33,7 @@ import static de.keyle.dungeoncraft.editor.editors.world.render.MinecraftConstan
 import static de.keyle.dungeoncraft.editor.editors.world.render.MinecraftConstants.TEX_Y;
 
 public class DecorationCross extends Block {
-    TextureDimensions dimensions;
+    protected final TextureDimensions[] dimensions = new TextureDimensions[16];
 
     public DecorationCross(short id) throws BlockTypeLoadException {
         super(id);
@@ -51,7 +51,7 @@ public class DecorationCross extends Block {
                     JSONObject textureObject = (JSONObject) textures.get(key);
                     if (textureObject.containsKey("SIDE")) {
                         JSONArray sideArray = (JSONArray) textureObject.get("SIDE");
-                        dimensions = new TextureDimensions(this.id, data, Integer.parseInt(sideArray.get(0).toString()), Integer.parseInt(sideArray.get(1).toString()), TEX16, TEX_Y, false);
+                        dimensions[data] = new TextureDimensions(this.id, data, Integer.parseInt(sideArray.get(0).toString()), Integer.parseInt(sideArray.get(1).toString()), TEX16, TEX_Y, false);
                     } else {
                         throw new BlockTypeLoadException(id + " SIDE texture.");
                     }
@@ -70,8 +70,12 @@ public class DecorationCross extends Block {
         GL11.glPushMatrix();
         GL11.glTranslatef(x, y, z);
 
-        Renderer.renderNonstandardVertical(dimensions, 0, 0, 0, 1, 1, 1);
-        Renderer.renderNonstandardVertical(dimensions, 1, 0, 0, 0, 1, 1);
+        if (dimensions[blockData] == null) {
+            blockData = 0;
+        }
+
+        Renderer.renderNonstandardVertical(dimensions[blockData], 0, 0, 0, 1, 1, 1);
+        Renderer.renderNonstandardVertical(dimensions[blockData], 1, 0, 0, 0, 1, 1);
 
         GL11.glPopMatrix();
     }

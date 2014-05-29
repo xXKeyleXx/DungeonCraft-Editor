@@ -33,7 +33,7 @@ import static de.keyle.dungeoncraft.editor.editors.world.render.MinecraftConstan
 import static de.keyle.dungeoncraft.editor.editors.world.render.MinecraftConstants.TEX_Y;
 
 public class DecorationGrid extends Block {
-    TextureDimensions dimensions;
+    protected final TextureDimensions[] dimensions = new TextureDimensions[16];
 
     public DecorationGrid(short id) throws BlockTypeLoadException {
         super(id);
@@ -51,7 +51,7 @@ public class DecorationGrid extends Block {
                     JSONObject textureObject = (JSONObject) textures.get(key);
                     if (textureObject.containsKey("SIDE")) {
                         JSONArray sideArray = (JSONArray) textureObject.get("SIDE");
-                        dimensions = new TextureDimensions(this.id, data, Integer.parseInt(sideArray.get(0).toString()), Integer.parseInt(sideArray.get(1).toString()), TEX16, TEX_Y, false);
+                        dimensions[data] = new TextureDimensions(this.id, data, Integer.parseInt(sideArray.get(0).toString()), Integer.parseInt(sideArray.get(1).toString()), TEX16, TEX_Y, false);
                     } else {
                         throw new BlockTypeLoadException(id + " SIDE texture.");
                     }
@@ -70,10 +70,14 @@ public class DecorationGrid extends Block {
         GL11.glPushMatrix();
         GL11.glTranslatef(x, y, z);
 
-        Renderer.renderNonstandardVertical(dimensions, 0.25f, 0, 0, 0.25f, 1, 1);
-        Renderer.renderNonstandardVertical(dimensions, 0.75f, 0, 0, 0.75f, 1, 1);
-        Renderer.renderNonstandardVertical(dimensions, 0, 0, 0.25f, 1, 1, 0.25f);
-        Renderer.renderNonstandardVertical(dimensions, 0, 0, 0.75f, 1, 1, 0.75f);
+        if (dimensions[blockData] == null) {
+            blockData = 0;
+        }
+
+        Renderer.renderNonstandardVertical(dimensions[blockData], 0.25f, 0, 0, 0.25f, 1, 1);
+        Renderer.renderNonstandardVertical(dimensions[blockData], 0.75f, 0, 0, 0.75f, 1, 1);
+        Renderer.renderNonstandardVertical(dimensions[blockData], 0, 0, 0.25f, 1, 1, 0.25f);
+        Renderer.renderNonstandardVertical(dimensions[blockData], 0, 0, 0.75f, 1, 1, 0.75f);
 
         GL11.glPopMatrix();
     }
