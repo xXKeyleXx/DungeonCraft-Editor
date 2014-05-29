@@ -53,7 +53,7 @@ public class BlockTypes {
         blockTypes.put("BED", Bed.class);
         blockTypes.put("BREWING_STAND", BrewingStand.class);
         //blockTypes.put("BUTTON", Button.class);
-        //blockTypes.put("CAKE", Cake.class);
+        blockTypes.put("CAKE", Cake.class);
         blockTypes.put("CAULDRON", Cauldron.class);
         blockTypes.put("CHEST", Chest.class);
         blockTypes.put("DOOR", Door.class);
