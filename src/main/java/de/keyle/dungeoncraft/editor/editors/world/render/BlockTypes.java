@@ -62,6 +62,12 @@ public class BlockTypes {
         blockTypes.put("TORCH", Torch.class);
         blockTypes.put("SOLID_PANE", SolidPane.class);
         blockTypes.put("FLOOR", Floor.class);
+        blockTypes.put("PRESSURE_PLATE", PressurePlate.class);
+        blockTypes.put("CARPET", Carpet.class);
+        blockTypes.put("SLAB", Slab.class);
+        blockTypes.put("PORTAL", Portal.class);
+        blockTypes.put("WALLSIGN", WallSign.class);
+        blockTypes.put("TRAPDOOR", TrapDoor.class);
 
         blocks[0] = new Air();
 

@@ -272,4 +272,21 @@ public class ChunkSchematic {
     public Block getBlock(short blockID) {
         return MinecraftConstants.getBlockType(blockID);
     }
+
+    public boolean shouldRenderHalfHeightAdj(boolean top, short adj_block, byte adj_data) {
+        if (adj_block < 0) {
+            return true;
+        }
+        if (getBlock(adj_block) == null) {
+            return true;
+        }
+        if (getBlock(adj_block).isSolid()) {
+            return false;
+        }
+        if (getBlock(adj_block).getBlockType().equals("HALFHEIGHT")) {
+            return (top != ((adj_data & 0x8) == 0x8));
+        } else {
+            return true;
+        }
+    }
 }

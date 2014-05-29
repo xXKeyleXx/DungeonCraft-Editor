@@ -629,20 +629,18 @@
             "idStr": "PISTON_STICKY_BODY",
             "name": "Sticky Piston",
             "texture": {
-                "0": {
-                    "BODY_BOTTOM": [
-                        12,
-                        3
-                    ],
-                    "BODY_SIDE": [
-                        14,
-                        3
-                    ],
-                    "BODY_TOP": [
-                        13,
-                        3
-                    ]
-                }
+                "BODY_BOTTOM": [
+                    12,
+                    3
+                ],
+                "BODY_SIDE": [
+                    14,
+                    3
+                ],
+                "BODY_TOP": [
+                    13,
+                    3
+                ]
             },
             "type": "PISTON_BODY"
         },
@@ -711,28 +709,18 @@
             "idStr": "PISTON_BODY",
             "name": "Piston",
             "texture": {
-                "0": {
-                    "BODY_BOTTOM": [
-                        12,
-                        3
-                    ],
-                    "BODY_SIDE": [
-                        14,
-                        3
-                    ],
-                    "BODY_TOP": [
-                        13,
-                        3
-                    ],
-                    "TOP_NORMAL": [
-                        4,
-                        4
-                    ],
-                    "TOP_STICKY": [
-                        15,
-                        3
-                    ]
-                }
+                "BODY_BOTTOM": [
+                    12,
+                    3
+                ],
+                "BODY_SIDE": [
+                    14,
+                    3
+                ],
+                "BODY_TOP": [
+                    13,
+                    3
+                ]
             },
             "type": "PISTON_BODY"
         },
@@ -1100,24 +1088,36 @@
                     "TOP": [
                         4,
                         6
+                    ],
+                    "BOTTOM": [
+                        4,
+                        6
                     ]
                 },
                 "1": {
                     "SIDE": [
                         14,
-                        3
+                        2
                     ],
                     "TOP": [
                         12,
-                        3
+                        2
                     ],
                     "BOTTOM": [
                         13,
-                        3
+                        2
                     ]
                 },
                 "2": {
                     "SIDE": [
+                        5,
+                        0
+                    ],
+                    "TOP": [
+                        5,
+                        0
+                    ],
+                    "BOTTOM": [
                         5,
                         0
                     ]
@@ -1126,10 +1126,26 @@
                     "SIDE": [
                         4,
                         0
+                    ],
+                    "TOP": [
+                        4,
+                        0
+                    ],
+                    "BOTTOM": [
+                        4,
+                        0
                     ]
                 },
                 "4": {
                     "SIDE": [
+                        5,
+                        6
+                    ],
+                    "TOP": [
+                        5,
+                        6
+                    ],
+                    "BOTTOM": [
                         5,
                         6
                     ]
@@ -1138,10 +1154,26 @@
                     "SIDE": [
                         11,
                         11
+                    ],
+                    "TOP": [
+                        11,
+                        11
+                    ],
+                    "BOTTOM": [
+                        11,
+                        11
                     ]
                 },
                 "6": {
                     "SIDE": [
+                        15,
+                        12
+                    ],
+                    "TOP": [
+                        15,
+                        12
+                    ],
+                    "BOTTOM": [
                         15,
                         12
                     ]
@@ -1154,16 +1186,36 @@
                     "TOP": [
                         1,
                         16
+                    ],
+                    "BOTTOM": [
+                        1,
+                        16
                     ]
                 },
                 "8": {
                     "SIDE": [
                         4,
                         6
+                    ],
+                    "TOP": [
+                        4,
+                        6
+                    ],
+                    "BOTTOM": [
+                        4,
+                        6
                     ]
                 },
                 "9": {
                     "SIDE": [
+                        12,
+                        3
+                    ],
+                    "TOP": [
+                        12,
+                        3
+                    ],
+                    "BOTTOM": [
                         12,
                         3
                     ]
@@ -1183,7 +1235,7 @@
                     ]
                 }
             },
-            "type": "HALFHEIGHT",
+            "type": "SLAB",
             "texture_data_bits": 3
         },
         {
@@ -1725,12 +1777,10 @@
             "idStr": "WALL_SIGN",
             "name": "Wall Sign",
             "texture": {
-                "0": {
-                    "FRONT": [
-                        5,
-                        0
-                    ]
-                }
+                "FRONT": [
+                    5,
+                    0
+                ]
             },
             "type": "WALLSIGN"
         },
@@ -1755,12 +1805,10 @@
             "idStr": "STONE_PRESSURE_PLATE",
             "name": "Stone Pressure Plate",
             "texture": {
-                "0": {
-                    "TOP": [
-                        0,
-                        0
-                    ]
-                }
+                "TOP": [
+                    0,
+                    0
+                ]
             },
             "type": "PRESSURE_PLATE"
         },
@@ -1785,12 +1833,10 @@
             "idStr": "WOODEN_PRESSURE_PLATE",
             "name": "Wooden Pressure Plate",
             "texture": {
-                "0": {
-                    "TOP": [
-                        5,
-                        0
-                    ]
-                }
+                "TOP": [
+                    5,
+                    0
+                ]
             },
             "type": "PRESSURE_PLATE"
         },
@@ -2052,12 +2098,10 @@
             "idStr": "PORTAL",
             "name": "Portal",
             "texture": {
-                "0": {
-                    "SIDE": [
-                        3,
-                        10
-                    ]
-                }
+                "SIDE": [
+                    3,
+                    10
+                ]
             },
             "type": "PORTAL"
         },
@@ -2115,12 +2159,10 @@
             "idStr": "REDSTONE_REPEATER_OFF",
             "name": "Repeater (off)",
             "texture": {
-                "0": {
-                    "TOP": [
-                        8,
-                        10
-                    ]
-                }
+                "TOP": [
+                    8,
+                    10
+                ]
             },
             "type": "PRESSURE_PLATE"
         },
@@ -2129,12 +2171,10 @@
             "idStr": "REDSTONE_REPEATER_ON",
             "name": "Repeater (on)",
             "texture": {
-                "0": {
-                    "TOP": [
-                        9,
-                        10
-                    ]
-                }
+                "TOP": [
+                    9,
+                    10
+                ]
             },
             "type": "PRESSURE_PLATE"
         },
@@ -2247,12 +2287,10 @@
             "idStr": "TRAPDOOR",
             "name": "Trapdoor",
             "texture": {
-                "0": {
-                    "SIDE": [
-                        10,
-                        11
-                    ]
-                }
+                "SIDE": [
+                    10,
+                    11
+                ]
             },
             "type": "TRAPDOOR"
         },
@@ -2833,10 +2871,26 @@
                     "SIDE": [
                         5,
                         0
+                    ],
+                    "TOP": [
+                        5,
+                        0
+                    ],
+                    "BOTTOM": [
+                        5,
+                        0
                     ]
                 },
                 "1": {
                     "SIDE": [
+                        6,
+                        0
+                    ],
+                    "TOP": [
+                        6,
+                        0
+                    ],
+                    "BOTTOM": [
                         6,
                         0
                     ]
@@ -2845,10 +2899,26 @@
                     "SIDE": [
                         7,
                         0
+                    ],
+                    "TOP": [
+                        7,
+                        0
+                    ],
+                    "BOTTOM": [
+                        7,
+                        0
                     ]
                 },
                 "3": {
                     "SIDE": [
+                        8,
+                        0
+                    ],
+                    "TOP": [
+                        8,
+                        0
+                    ],
+                    "BOTTOM": [
                         8,
                         0
                     ]
@@ -2857,16 +2927,32 @@
                     "SIDE": [
                         9,
                         0
+                    ],
+                    "TOP": [
+                        9,
+                        0
+                    ],
+                    "BOTTOM": [
+                        9,
+                        0
                     ]
                 },
                 "5": {
                     "SIDE": [
                         10,
                         0
+                    ],
+                    "TOP": [
+                        10,
+                        0
+                    ],
+                    "BOTTOM": [
+                        10,
+                        0
                     ]
                 }
             },
-            "type": "HALFHEIGHT"
+            "type": "SLAB"
         },
         {
             "id": 127,
@@ -3326,12 +3412,10 @@
             "idStr": "LIGHT_WEIGHTED_PRESSURE_PLATE",
             "name": "Light Weighted Pressure Plate",
             "texture": {
-                "0": {
-                    "TOP": [
-                        1,
-                        6
-                    ]
-                }
+                "TOP": [
+                    1,
+                    6
+                ]
             },
             "type": "PRESSURE_PLATE"
         },
@@ -3340,12 +3424,10 @@
             "idStr": "HEAVY_WEIGHTED_PRESSURE_PLATE",
             "name": "Heavy Weighted Pressure Plate",
             "texture": {
-                "0": {
-                    "TOP": [
-                        2,
-                        6
-                    ]
-                }
+                "TOP": [
+                    2,
+                    6
+                ]
             },
             "type": "PRESSURE_PLATE"
         },
@@ -3354,12 +3436,10 @@
             "idStr": "UNPOWERED_COMPERATOR",
             "name": "Comperator (off)",
             "texture": {
-                "0": {
-                    "TOP": [
-                        6,
-                        15
-                    ]
-                }
+                "TOP": [
+                    6,
+                    15
+                ]
             },
             "type": "PRESSURE_PLATE"
         },
@@ -3368,12 +3448,10 @@
             "idStr": "POWERED_COMPERATOR",
             "name": "Comperator (on)",
             "texture": {
-                "0": {
-                    "TOP": [
-                        7,
-                        15
-                    ]
-                }
+                "TOP": [
+                    7,
+                    15
+                ]
             },
             "type": "PRESSURE_PLATE"
         },
@@ -4017,12 +4095,10 @@
             "idStr": "IRON_TRAPDOOR",
             "name": "Iron Trapdoor",
             "texture": {
-                "0": {
-                    "SIDE": [
-                        10,
-                        20
-                    ]
-                }
+                "SIDE": [
+                    10,
+                    20
+                ]
             },
             "type": "TRAPDOOR"
         },
