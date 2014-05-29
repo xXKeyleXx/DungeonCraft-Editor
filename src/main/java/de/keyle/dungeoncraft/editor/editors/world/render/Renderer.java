@@ -24,7 +24,6 @@ import de.keyle.dungeoncraft.editor.util.Facing;
 import org.lwjgl.opengl.GL11;
 
 import static de.keyle.dungeoncraft.editor.editors.world.render.MinecraftConstants.TEX16;
-import static de.keyle.dungeoncraft.editor.editors.world.render.MinecraftConstants.TEX64;
 
 public class Renderer {
     /**
@@ -378,22 +377,22 @@ public class Renderer {
         float curFace[][];
         switch (facing) {
             case UP:
-                curFace = new float[][]{{-0.5f, +0.5f, +0.5f}, {-0.5f, +0.5f, -0.5f}, {+0.5f, +0.5f, +0.5f}, {+0.5f, +0.5f, -0.5f}};
+                curFace = new float[][]{{0f, 1f, 1f}, {0f, 1f, 0f}, {1f, 1f, 1f}, {1f, 1f, 0f}};
                 break;
             case DOWN:
-                curFace = new float[][]{{-0.5f, -0.5f, +0.5f}, {-0.5f, -0.5f, -0.5f}, {+0.5f, -0.5f, +0.5f}, {+0.5f, -0.5f, -0.5f}};
+                curFace = new float[][]{{0f, 0f, 1f}, {0f, 0f, 0f}, {1f, 0f, 1f}, {1f, 0f, 0f}};
                 break;
             case NORTH:
-                curFace = new float[][]{{-0.5f, +0.5f, -0.5f}, {+0.5f, +0.5f, -0.5f}, {-0.5f, -0.5f, -0.5f}, {+0.5f, -0.5f, -0.5f}};
+                curFace = new float[][]{{0f, 1f, 0f}, {1f, 1f, 0f}, {0f, 0f, 0f}, {1f, 0f, 0f}};
                 break;
             case SOUTH:
-                curFace = new float[][]{{-0.5f, +0.5f, +0.5f}, {+0.5f, +0.5f, +0.5f}, {-0.5f, -0.5f, +0.5f}, {+0.5f, -0.5f, +0.5f}};
+                curFace = new float[][]{{0f, 1f, 1f}, {1f, 1f, 1f}, {0f, 0f, 1f}, {1f, 0f, 1f}};
                 break;
             case WEST:
-                curFace = new float[][]{{-0.5f, +0.5f, +0.5f}, {-0.5f, +0.5f, -0.5f}, {-0.5f, -0.5f, +0.5f}, {-0.5f, -0.5f, -0.5f}};
+                curFace = new float[][]{{0f, 1f, 1f}, {0f, 1f, 0f}, {0f, 0f, 1f}, {0f, 0f, 0f}};
                 break;
             case EAST:
-                curFace = new float[][]{{+0.5f, +0.5f, +0.5f}, {+0.5f, +0.5f, -0.5f}, {+0.5f, -0.5f, +0.5f}, {+0.5f, -0.5f, -0.5f}};
+                curFace = new float[][]{{1f, 1f, 1f}, {1f, 1f, 0f}, {1f, 0f, 1f}, {1f, 0f, 0f}};
                 break;
             default:
                 return;
@@ -424,6 +423,6 @@ public class Renderer {
      * @param z
      */
     public void renderFloor(TextureDimensions dimensions, int x, int y, int z) {
-        renderBlockFace(dimensions, x, y + TEX64, z, Facing.DOWN);
+        renderBlockFace(dimensions, x, y, z, Facing.DOWN);
     }
 }

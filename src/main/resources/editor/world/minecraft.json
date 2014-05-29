@@ -1635,16 +1635,14 @@
             "idStr": "WOODEN_DOOR",
             "name": "Wooden Door",
             "texture": {
-                "0": {
-                    "TOP": [
-                        11,
-                        8
-                    ],
-                    "BOTTOM": [
-                        10,
-                        8
-                    ]
-                }
+                "TOP": [
+                    11,
+                    8
+                ],
+                "BOTTOM": [
+                    10,
+                    8
+                ]
             },
             "type": "DOOR"
         },
@@ -1745,16 +1743,14 @@
             "idStr": "IRON_DOOR",
             "name": "Iron Door",
             "texture": {
-                "0": {
-                    "TOP": [
-                        4,
-                        20
-                    ],
-                    "BOTTOM": [
-                        3,
-                        20
-                    ]
-                }
+                "TOP": [
+                    4,
+                    20
+                ],
+                "BOTTOM": [
+                    3,
+                    20
+                ]
             },
             "type": "DOOR"
         },

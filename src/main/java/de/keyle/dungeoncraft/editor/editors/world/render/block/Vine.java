@@ -50,27 +50,27 @@ public class Vine extends Block {
         boolean rendered = false;
         if ((data & 1) == 1) {
             // South
-            Renderer.renderBlockFace(vine, x+0.5f, y+0.5f, z+0.45f, Facing.SOUTH);
+            Renderer.renderBlockFace(vine, x, y, z - 0.01f, Facing.SOUTH);
             rendered = true;
         }
         if ((data & 2) == 2) {
             // West
-            Renderer.renderBlockFace(vine, x+0.55f, y+0.5f, z+0.5f, Facing.WEST);
+            Renderer.renderBlockFace(vine, x + 0.01f, y, z, Facing.WEST);
             rendered = true;
         }
         if ((data & 4) == 4) {
             // North
-            Renderer.renderBlockFace(vine, x+0.5f, y+0.5f, z+0.55f, Facing.NORTH);
+            Renderer.renderBlockFace(vine, x, y, z + 0.01f, Facing.NORTH);
             rendered = true;
         }
         if ((data & 8) == 8) {
             // East
-            Renderer.renderBlockFace(vine, x+0.45f, y+0.5f, z+0.5f, Facing.EAST);
+            Renderer.renderBlockFace(vine, x - 0.01f, y + 0.5f, z + 0.5f, Facing.EAST);
             rendered = true;
         }
         if (data == 0 || (rendered && chunk.getBlockType(x, y+1, z).isSolid())) {
             // Top
-            Renderer.renderHorizontal(vine, (float)x, (float)z, x + 1f, z + 1f, y + 0.95f, false);
+            Renderer.renderBlockFace(vine, x, y - 0.01f, z, Facing.UP);
         }
     }
 }
