@@ -56,6 +56,8 @@ public class ConfigEditor implements Editor {
     private JButton addCutomOptionButton;
     private JButton deleteCutomOptionButton;
     private JScrollPane configScrollPane;
+    private JTextArea plugindepTextArea;
+    private JTextField bukkitVersiontextField;
 
     DefaultTableModel customOptionsTabelModel;
     File configFile = null;
@@ -150,6 +152,8 @@ public class ConfigEditor implements Editor {
         commandsTextArea.setText("");
         customOptionsTabelModel.setRowCount(0);
         deleteCutomOptionButton.setEnabled(false);
+        plugindepTextArea.setText("");
+        bukkitVersiontextField.setText("");
     }
 
     @Override
@@ -277,6 +281,22 @@ public class ConfigEditor implements Editor {
                     customOptionsTabelModel.addRow(new Object[]{key, optionsMap.get(key)});
                 }
             }
+
+            if (configMap.containsKey("dependencies")) {
+                Map<String, Object> dependenciesMap = (Map<String, Object>) configMap.get("dependencies");
+                if (dependenciesMap.containsKey("plugins")) {
+                    List<Object> allowedList = (List<Object>) dependenciesMap.get("plugins");
+                    String requiredPlugins = "";
+                    for (Object plugin : allowedList) {
+                        requiredPlugins += plugin.toString() + "\n";
+                    }
+                    plugindepTextArea.setText(requiredPlugins);
+                }
+
+                if(dependenciesMap.containsKey("bukkit")) {
+                    bukkitVersiontextField.setText(dependenciesMap.get("bukkit").toString());
+                }
+            }
         }
     }
 
@@ -334,6 +354,19 @@ public class ConfigEditor implements Editor {
             optionsMap.put(key, value);
         }
         configMap.put("options", optionsMap);
+
+        Map<String, Object> dependenciesMap = new HashMap<String, Object>();
+        List<String> pluginsRequiredList = new ArrayList<String>();
+        for (String line : plugindepTextArea.getText().split("\\n")) {
+            line = line.trim();
+            if (line.equals("")) {
+                continue;
+            }
+            pluginsRequiredList.add(line);
+        }
+        dependenciesMap.put("plugins", pluginsRequiredList);
+        dependenciesMap.put("bukkit", Integer.parseInt(bukkitVersiontextField.getText()));
+        configMap.put("dependencies",dependenciesMap);
 
         config.save();
     }
